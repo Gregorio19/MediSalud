@@ -1,0 +1,43 @@
+<div>
+    <span>Rut</span>
+    <input type="text">
+</div>
+<div>
+    <span>Nombre</span>
+    <input type="text">
+</div>
+<div>
+    <span>Numero de Telefono</span>
+    <input type="text">
+</div>
+<div>
+    <span>Direccion</span>
+    <input type="text">
+</div>
+<div>
+    <span>Correo</span>
+    <input type="text">
+</div>
+<div>
+    <span>Fecha Nacimiento</span>
+    <p-calendar [(ngModel)]="fechaN" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy" [monthNavigator]="true"
+        [yearNavigator]="true" yearRange="1915:2030"></p-calendar>
+</div>
+<div>
+    <span>Previsión</span>
+    <input type="text">
+</div>
+<div>
+    <span>Es usted titular del presente</span>
+    <select [(ngModel)]="titular">
+        <option>NO</option>
+        <option>SI</option>
+    </select>
+</div>
+<div>
+    <span>Sexo</span>
+    <select [(ngModel)]="sexo">
+        <option>Masculino</option>
+        <option>Femenino</option>
+    </select>
+</div>
