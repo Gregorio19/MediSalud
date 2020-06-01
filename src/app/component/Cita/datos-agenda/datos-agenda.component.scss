@@ -1,0 +1,14 @@
+@import "../../../../assets/scss/general.scss";
+
+.agenda {
+  height: calc(100vh - 66px);
+  > .row {
+    height: 100%;
+    .box-data {
+      background-color: $green-light;
+      border-right: 11px solid $green-dark;
+      overflow-y: auto;
+      height: 100%;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./datos-agenda.component.scss']
 })
 export class DatosAgendaComponent implements OnInit {
+  val2: string = 'Option 1';
 
   especialidad: string;
   sucursal: string;
@@ -19,11 +20,17 @@ export class DatosAgendaComponent implements OnInit {
   SelecDoctor: boolean;
   SelecFechaA: boolean;
   SelecHorario: boolean;
+  options: any;
 
+  overlays: any[];
 
   constructor() { }
 
   ngOnInit(): void {
+    this.options = {
+      center: {lat: 36.890257, lng: 30.707417},
+      zoom: 12
+  };
     this.es = {
       firstDayOfWeek: 1,
       dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],

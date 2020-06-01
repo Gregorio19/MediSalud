@@ -1,0 +1,55 @@
+<div class="container-fluid agenda">
+    <div class="row">
+        <div class="col-12 col-md-3 box-data">
+
+        </div>
+        <div class="col-12 col-md-9">
+            <h5>SEDE:</h5>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p-radioButton name="group2" value="Option 1" label="Option 1" [(ngModel)]="val2" inputId="preopt1">
+                    </p-radioButton>
+                </div>
+                <div class="col-12 col-md-6">
+                    <p-radioButton name="group2" value="Option 2" label="Option 2" [(ngModel)]="val2" inputId="preopt2">
+                    </p-radioButton>
+                </div>
+            </div>
+            <p-gmap [options]="options" [style]="{'width':'100%','height':'320px'}" ></p-gmap>
+
+            <div>
+                <span>Especialidad</span>
+                <select [(ngModel)]="especialidad" (change)="ActivarAtributos('E')">
+                    <option>Gastroenterologia</option>
+                    <option>Internista</option>
+                </select>
+            </div>
+            <div *ngIf="SelecEspecialidad" (change)="ActivarAtributos('S')">
+                <span>Sucursal</span>
+                <select [(ngModel)]="sucursal">
+                    <option>Las Condes</option>
+                    <option>Providencia</option>
+                </select>
+            </div>
+            <div *ngIf="SelecSucursal" (change)="ActivarAtributos('D')">
+                <span>Doctor</span>
+                <select [(ngModel)]="Doctor">
+                    <option>Chicho</option>
+                    <option>Cesar</option>
+                </select>
+            </div>
+            <div *ngIf="SelecDoctor">
+                <span>Fecha Nacimiento</span>
+                <p-calendar (ngModelChange)="ActivarAtributos('F')" [(ngModel)]="fechaA" [showIcon]="true" [locale]="es"
+                    dateFormat="dd/mm/yy"></p-calendar>
+            </div>
+            <div *ngIf="SelecFechaA" (change)="ActivarAtributos('H')">
+                <span>Horario</span>
+                <select [(ngModel)]="horario">
+                    <option>12:00 - 12:30</option>
+                    <option>12:30 - 1:00</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
