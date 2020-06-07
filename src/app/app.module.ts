@@ -11,6 +11,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GMapModule} from 'primeng/gmap';
+import {DropdownModule} from 'primeng/dropdown';
+
 
 //Crear Agendamiento
 import { DatosClienteComponent } from './component/Cita/datos-cliente/datos-cliente.component';
@@ -34,6 +36,7 @@ import { HeaderComponent } from './component/Shared/header/header.component';
     CheckboxModule,
     RadioButtonModule,
     GMapModule,
+    DropdownModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

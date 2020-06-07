@@ -1,55 +1,126 @@
 <div class="container-fluid agenda">
     <div class="row">
         <div class="col-12 col-md-3 box-data">
-
+            <div class="resumen">
+                <div class="title-resumen">
+                    <h4>RESUMEN</h4>
+                    <p>
+                        Edite los datos a conveniencia
+                    </p>
+                </div>
+                <div class="datos-paciente">
+                    <div class="form-group form-text">
+                        <label>
+                            PACIENTE
+                        </label>
+                        <span>
+                            Pedro Pablo Perez Gonzalez
+                        </span>
+                    </div>
+                    <div class="form-group form-text">
+                        <label>
+                            RUT
+                        </label>
+                        <span>
+                            12.345.678-9
+                        </span>
+                    </div>
+                    <div class="form-group form-text">
+                        <label>
+                            SEDE
+                        </label>
+                        <span>
+                            Rigoberto Jara 365
+                        </span>
+                    </div>
+                    <div class="form-group div-outline mt-2">
+                        <span>Psicología</span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group div-outline">
+                        <span>Sede Principal Avenida.</span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group div-outline">
+                        <span>Doctora Alejandra L. Flores M.</span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group div-outline">
+                        <span>30/06/2020 </span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group  row mx-0">
+                        <label class="col-sm-3 col-form-label">HORA:</label>
+                        <div class="div-outline col-sm-9">
+                            <span>13:00 h-13:15h</span>
+                            <i class="pi pi-times "></i>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="nota" rows="5" placeholder="Nota al especialista"></textarea>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-9">
-            <h5>SEDE:</h5>
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <p-radioButton name="group2" value="Option 1" label="Option 1" [(ngModel)]="val2" inputId="preopt1">
-                    </p-radioButton>
-                </div>
-                <div class="col-12 col-md-6">
-                    <p-radioButton name="group2" value="Option 2" label="Option 2" [(ngModel)]="val2" inputId="preopt2">
-                    </p-radioButton>
-                </div>
-            </div>
-            <p-gmap [options]="options" [style]="{'width':'100%','height':'320px'}" ></p-gmap>
+        <div class="col-12 col-md-9 box-selected">
+            <div class="row ">
+                <div class="col-12 col-md-6 ">
+                    <div class="row">
 
-            <div>
-                <span>Especialidad</span>
-                <select [(ngModel)]="especialidad" (change)="ActivarAtributos('E')">
-                    <option>Gastroenterologia</option>
-                    <option>Internista</option>
-                </select>
+                        <div class="form-group col-12 col-md-6">
+                            <label for="especialidades">Especialidad</label>
+                            <p-dropdown [options]="especialidades" [(ngModel)]="selectedEsp"
+                                (onChange)="ActivarAtributos('E')" [filter]="true" placeholder="Especialidad"
+                                filterBy="label,value.name" styleClass="w-100"></p-dropdown>
+                        </div>
+                        <div *ngIf="SelecEspecialidad" class="form-group  col-12 col-md-6">
+                            <label for="sucursales">Sucursales</label>
+                            <p-dropdown [options]="sucursales" [(ngModel)]="selectedSuc"
+                                (onChange)="ActivarAtributos('S')" [filter]="true" placeholder="Sucursal"
+                                filterBy="label,value.name"  styleClass="w-100"></p-dropdown>
+                        </div>
+                        <div *ngIf="SelecSucursal" (change)="ActivarAtributos('D')" class="form-group col-12">
+                            <label for="Medico">Medico</label>
+                            <p-dropdown [options]="medico" [(ngModel)]="selectedMed" (onChange)="ActivarAtributos('S')"
+                                [filter]="true" placeholder="Medico" filterBy="label,value.name"  styleClass="w-100">
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <img src="assets/showcase/images/demo/car/{{item.label}}.png"
+                                        style="width:16px;vertical-align:middle" />
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                                <ng-template let-car pTemplate="item">
+                                    <div class="ui-helper-clearfix" style="position: relative;height:25px;">
+                                        <img src="assets/showcase/images/demo/car/{{car.label}}.png"
+                                            style="width:24px;position:absolute;top:1px;left:5px" />
+                                        <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
+                                        <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div *ngIf="SelecDoctor">
+                            <span>Fecha Nacimiento</span>
+                            <p-calendar (ngModelChange)="ActivarAtributos('F')" [(ngModel)]="fechaA" [showIcon]="true"
+                                [locale]="es" dateFormat="dd/mm/yy"></p-calendar>
+                        </div>
+                        <div *ngIf="SelecFechaA" (change)="ActivarAtributos('H')">
+                            <span>Horario</span>
+                            <select [(ngModel)]="horario">
+                                <option>12:00 - 12:30</option>
+                                <option>12:30 - 1:00</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <p-gmap [options]="options" [style]="{'width':'100%','height':'150px'}"></p-gmap>
+                    <p-calendar [(ngModel)]="calendarHorario" [inline]="true"></p-calendar>
+                </div>
             </div>
-            <div *ngIf="SelecEspecialidad" (change)="ActivarAtributos('S')">
-                <span>Sucursal</span>
-                <select [(ngModel)]="sucursal">
-                    <option>Las Condes</option>
-                    <option>Providencia</option>
-                </select>
-            </div>
-            <div *ngIf="SelecSucursal" (change)="ActivarAtributos('D')">
-                <span>Doctor</span>
-                <select [(ngModel)]="Doctor">
-                    <option>Chicho</option>
-                    <option>Cesar</option>
-                </select>
-            </div>
-            <div *ngIf="SelecDoctor">
-                <span>Fecha Nacimiento</span>
-                <p-calendar (ngModelChange)="ActivarAtributos('F')" [(ngModel)]="fechaA" [showIcon]="true" [locale]="es"
-                    dateFormat="dd/mm/yy"></p-calendar>
-            </div>
-            <div *ngIf="SelecFechaA" (change)="ActivarAtributos('H')">
-                <span>Horario</span>
-                <select [(ngModel)]="horario">
-                    <option>12:00 - 12:30</option>
-                    <option>12:30 - 1:00</option>
-                </select>
-            </div>
+
+
         </div>
     </div>
 </div>

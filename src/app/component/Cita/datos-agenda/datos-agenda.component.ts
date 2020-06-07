@@ -1,12 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 
+interface City {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'app-datos-agenda',
   templateUrl: './datos-agenda.component.html',
   styleUrls: ['./datos-agenda.component.scss']
 })
+
 export class DatosAgendaComponent implements OnInit {
-  val2: string = 'Option 1';
+
+    especialidades;
+    sucursales;
+    medico;
+    selectedEsp: City;
+    selectedSuc: City;
+    selectedMed: City;
+    calendarHorario: Date;
 
   especialidad: string;
   sucursal: string;
@@ -24,13 +36,25 @@ export class DatosAgendaComponent implements OnInit {
 
   overlays: any[];
 
-  constructor() { }
+  constructor() {   }
 
   ngOnInit(): void {
+    this.especialidades = [
+      {label:'Gastroenterologia', value:{id:1, name: 'Gastroenterologia'}},
+      {label:'Internista', value:{id:2, name: 'Internista'}},
+    ];
+    this.sucursales = [
+      {label:'Las Condes', value:{id:1, name: 'Las Condes'}},
+      {label:'Providencia', value:{id:2, name: 'Providencia'}},
+    ];
+    this.medico = [
+      {label:'Chicho', value:{id:1, name: 'Chicho'}},
+      {label:'Cesar', value:{id:2, name: 'Cesar'}},
+    ];
     this.options = {
-      center: {lat: 36.890257, lng: 30.707417},
-      zoom: 12
-  };
+        center: {lat: 36.890257, lng: 30.707417},
+        zoom: 12
+    };
     this.es = {
       firstDayOfWeek: 1,
       dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
