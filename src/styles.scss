@@ -1,94 +1,213 @@
 @import "assets/scss/fonts.scss";
 @import "assets/scss/general.scss";
 
-::-webkit-scrollbar{
-    height:8px;
-    width:8px
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
 }
-::-webkit-scrollbar-track{
-    background-color:$white;
+::-webkit-scrollbar-track {
+  background-color: $white;
 }
-::-webkit-scrollbar-thumb{
-    border-radius:4px;
-    background-color:$gray-dark;
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: $gray-dark;
 }
-::-webkit-scrollbar-button:start:decrement{
-    display:none
+::-webkit-scrollbar-button:start:decrement {
+  display: none;
 }
-::-webkit-scrollbar-button:end:increment{
-    display:none
+::-webkit-scrollbar-button:end:increment {
+  display: none;
 }
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
-body{
-    height: 100%;
-    width: 100%;
-    font-family: "Roboto-Regular";
-    font-size: 1em;
-
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Roboto-Regular";
+  font-size: 1em;
 }
-
 
 h1 {
-    display: block;
-    font-size: 2em;
-    margin-top: 0.67em;
-    margin-bottom: 0.67em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h3 {
+  display: block;
+  font-size: 1.125em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+h4 {
+  display: block;
+  font-size: 1em;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 19px;
+}
+h5 {
+  display: block;
+  font-size: 0.813em;
+  margin-top: 1.67em;
+  margin-bottom: 1.67em;
+  margin-left: 0;
+  margin-right: 0;
+}
+h6 {
+  display: block;
+  font-size: 0.625em;
+  margin-top: 2.33em;
+  margin-bottom: 2.33em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+p {
+  display: block;
+  font-size: 0.75em;
+}
+
+.form-group {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.medi_calendar {
+  width: 100%;
+  background-color: $green-light;
+  .medi_calendar--panel {
+    background-color: $green-light;
+
+    .ui-datepicker-header {
+      background-color: $green-dark;
+      color: $white;
+      .ui-datepicker-title select{
+        margin: 0;
+        background-color: transparent;
+        color: $white;
+        border: 1px solid $white;
+        border-radius: 3px;
+
+        &:focus{
+          box-shadow: none !important;
+        }
+        &.ui-datepicker-month {
+          margin-right: 10px;
+        }
+        option{
+          color: $gray-dark;
+          &:checked { 
+            background-color: $green-dark;
+            color: $white;
+          }
+          &:hover{
+            background-color: $green-dark !important;
+          }
+        }
+      }
+      .ui-datepicker-prev,
+      .ui-datepicker-next {
+        color: $white;
+        top: 5px;
+        &:hover{
+          color: $white !important;
+        }
+        &:focus{
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    table {
+      th{
+        padding: 0;
+      }
+      td {
+        padding: 0.2em;
+        a,span {
+          height: 1.4em;
+          padding: 0px;
+          width: 2em;
+          margin: auto;
+          background-color: $white;
+          border-radius: 3px;
+          &.ui-state-active{
+            background-color: $green-dark;
+            color: $white;
+          }
+          &.workday{
+            background-color: $blue;
+            color: $white;
+          }
+          &.inherit{
+            background-color: transparent;
+          }
+        }
+        
+      }
+    }
   }
-  h2 {
-    display: block;
-    font-size: 1.5em;
-    margin-top: 0.83em;
-    margin-bottom: 0.83em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
-  }
-  h3 {
-    display: block;
-    font-size: 1.125em;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
-  }
-  
-  h4 {
-    display: block;
-    font-size: 1em;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 900;
-    line-height: 19px;
-  }
-  h5 {
-    display: block;
-    font-size: 0.813em;
-    margin-top: 1.67em;
-    margin-bottom: 1.67em;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  h6 {
-    display: block;
-    font-size: 0.625em;
-    margin-top: 2.33em;
-    margin-bottom: 2.33em;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  
-p{
-    display: block;
-    font-size: 0.750em;
+}
+
+
+input[type="radio"] {
+  visibility: hidden; /* 1 */
+  height: 0; /* 2 */
+  width: 0; /* 2 */
+}
+
+label {
+  display: flex;
+  flex: auto;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  background-color: $gray-light;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: color 0.1s ease-out, 
+              background-color 0.1s ease-in;
+  user-select: none;
+ margin-right: 8px;
+}
+
+label:last-of-type {
+ margin-right: 0;
+}
+
+input[type="radio"]:checked + label {
+  background-color: $green-dark;
+  color: $white;
+}
+
+input[type="radio"]:hover:not(:checked) + label {
+ background-color: $green-dark;
+  color: $white;
 }
