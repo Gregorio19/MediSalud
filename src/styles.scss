@@ -25,13 +25,14 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  height: 100%;
+  width: 100%;
 }
 body {
   height: 100%;
   width: 100%;
   font-family: "Roboto-Regular";
   font-size: 1em;
-}
 
 h1 {
   display: block;
@@ -180,34 +181,133 @@ input[type="radio"] {
   width: 0; /* 2 */
 }
 
-label {
-  display: flex;
+.hour_label {
+  // display: flex;
   flex: auto;
   vertical-align: middle;
   align-items: center;
   justify-content: center;
   text-align: center;
-  cursor: pointer;
-  background-color: $gray-light;
+  background-color: $blue;
   color: white;
   padding: 5px 10px;
   border-radius: 6px;
   transition: color 0.1s ease-out, 
-              background-color 0.1s ease-in;
+  background-color 0.1s ease-in;
   user-select: none;
- margin-right: 8px;
+  margin-right: 8px;
 }
 
-label:last-of-type {
+.hour_label:last-of-type {
  margin-right: 0;
 }
 
-input[type="radio"]:checked + label {
+input[type="radio"]:checked + .hour_label {
   background-color: $green-dark;
   color: $white;
 }
+input[type="radio"]:disabled + .hour_label {
+  background-color: $gray-hour;
+  color: $gray-dark;
+}
+input[type="radio"].full + .hour_label {
+  background-color: $red;
+  color: $white;
+}
 
-input[type="radio"]:hover:not(:checked) + label {
+input[type="radio"]:hover:not(:checked):not(:disabled):not(.full) + .hour_label {
  background-color: $green-dark;
   color: $white;
+  cursor: pointer;
+
+}
+
+input[type="radio"]:checked:hover  + .hour_label,
+input[type="radio"]:disabled:hover  + .hour_label,
+input[type="radio"].full:hover  + .hour_label{
+  cursor: not-allowed;
+
+}
+
+
+.indicators{
+    display: flex;
+    align-items: center;
+    padding: 0 5px ;
+    .circle-indicator{
+   
+      height: 11px;
+      width: 11px;
+      border-radius: 50%;
+      margin-right: 3px;
+
+      &.libre{
+        background-color: $blue-disponible;
+      }
+      &.seleccionada{
+        background-color: $green-dark
+      }
+      &.ocupada{
+        background-color: $red;
+      }
+      
+    }
+    span{
+      color: $gray-dark;
+      font-size: 10px;
+    }
+  }
+
+  .btn-siguiente{
+    height: 50px;
+    width: 50px;
+    background-color: $green-dark;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    &:focus{
+      outline: none;
+    }
+    i{
+      color: $white;
+
+    }
+    &:hover{
+      box-shadow: 1px 1px 1px 0px $gray-dark;
+      background-color: $green;
+      &::before{
+        content: "Siguiente";
+        font-size: 7px;
+        color: #fff;
+        font-weight: bold;
+        font-family: "InkFree";
+        text-transform: uppercase;
+      }
+    }
+    
+  }
+
+.ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight,
+.ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item-group.ui-state-highlight{
+    background-color: $green-light;
+    color: $gray-dark;
+  }
+  .ui-dropdown-panel .ui-dropdown-filter-container .ui-dropdown-filter-icon{
+    color: $gray-dark;
+
+  }
+  .ui-inputtext:enabled:focus:not(.ui-state-error),
+  .ui-dropdown:not(.ui-state-disabled).ui-state-focus{
+        box-shadow: none;
+        border-color: $gray-dark;
+  }
+  .ui-inputtext:enabled:focus:not(.ui-state-error){
+    border-color: $gray-dark;
+  }
 }

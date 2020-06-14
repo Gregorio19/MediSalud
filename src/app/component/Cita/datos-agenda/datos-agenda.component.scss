@@ -1,7 +1,7 @@
 @import "../../../../assets/scss/general.scss";
 
 .agenda {
-  height: calc(100vh - 76px);
+  height: calc(100% - 76px);
   > .row {
     height: 100%;
     .box-data {
@@ -125,6 +125,7 @@
         left: 5px;
         border-radius: 50%;
         background-color: $bg-icon;
+        
       }
       .inf-User {
         margin-top: 4px;
@@ -139,7 +140,28 @@
           text-transform: uppercase;
         }
       }
-      
+      .user_selected{
+        h3{
+          font-family: Roboto;
+          font-style: normal;
+          font-weight: 900;
+          font-size: 18px;
+          line-height: 21px;
+          color: $gray-dark;
+          width: 100%;
+          margin: 0px;
+        }
+        h5{
+          font-family: Roboto;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 11px;
+          line-height: 13px;
+          letter-spacing: 0.2em;
+          color: $gray-light;
+          margin: 0px 0 5px 0;
+        }
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <div class="container-fluid agenda">
-    <div class="row">
+    <div class="row ">
         <div class="col-12 col-md-3 box-data">
             <div class="resumen">
                 <div class="title-resumen">
@@ -116,6 +116,25 @@
                                 <option>12:30 - 1:00</option>
                             </select>
                         </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div>
+                                        <img src="assets/images/user.png" class="user_icon w-100" />
+                                    </div>
+                                </div>
+                                <div class="col-9 user_selected">
+                                    <h3>Juan Ardiles Fierro</h3>
+                                    <h5>PSIQUIATRA </h5>
+                                    <p>
+                                        Psicólogo con formación en el área educacional, cuenta con más de 10 años de experiencia en el área infanto-juvenil, desarrollando tratamiento en temáticas como:
+                                        <br>
+                                        -Problemas emocionales y de comportamiento: Trastorno por angustia de separación, fobia escolar, evitación, aislamiento, timidez. <br>
+-Problemas escolares y de aprendizaje: Déficit de atención y concentración (con o sin hiperactividad), bajo rendimiento escolar, baja motivación, déficit de hábitos de estudio, problemas escolares en general. 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -151,18 +170,77 @@
                                 </ng-template> -->
                             </p-calendar>
 
-                            <div class="InputGroup"> 
- 
-                                <input type="radio" name="size" id="size_1" value="small" checked />
-                                <label for="size_1">Non-Diary Milk</label>
-                               
-                                <input type="radio" name="size" id="size_2" value="small" />
-                                <label for="size_2">Water</label>
-                               
-                                <input type="radio" name="size" id="size_3" value="small" />
-                                <label for="size_3">Beer</label>
-                               
-                               </div>
+                            <div class="InputGroup row mx-0 mt-2"> 
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_1" value="small"  disabled/>
+                                    <label for="size_1" class="hour_label">10:00</label>  
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_2" value="small" disabled/>
+                                    <label for="size_2" class="hour_label">10:30</label>   
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_3" value="small" />
+                                    <label for="size_3" class="hour_label">11:00</label>    
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_4" value="small"  />
+                                    <label for="size_4" class="hour_label">11:30</label>  
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_5" value="small" />
+                                    <label for="size_5" class="hour_label">12:00</label>   
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_6" value="small"  class="full"/>
+                                    <label for="size_6" class="hour_label">12:30</label>    
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_7" value="small"  class="full" />
+                                    <label for="size_7" class="hour_label">13:00</label>  
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_8" value="small" />
+                                    <label for="size_8" class="hour_label">13:30</label>   
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_9" value="small" />
+                                    <label for="size_9" class="hour_label">14:00</label>    
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_10" value="small" checked />
+                                    <label for="size_10" class="hour_label">14:30</label>  
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_12" value="small" disabled/>
+                                    <label for="size_12" class="hour_label">15:00</label>   
+                                </div>
+                                <div class="px-2">
+                                    <input type="radio" name="size" id="size_13" value="small"  class="full"/>
+                                    <label for="size_13" class="hour_label">15:30</label>    
+                                </div>
+                            </div>
+                            <div class="row mx-0  justify-content-end">
+                                <div class="indicators">
+                                    <div class="circle-indicator libre"></div>
+                                    <span>Libre</span>
+                                </div>
+                                <div class="indicators">
+                                    <div class="circle-indicator seleccionada"></div>
+                                    <span>Seleccionada</span>
+                                </div>
+                                <div class="indicators">
+                                    <div class="circle-indicator ocupada"></div>
+                                    <span>Ocupada</span>
+                                </div>
+                            </div>
+                            <div class="row mx-0 ">
+                                <div class="col-12 px-0">
+                                    <button class="btn-siguiente ml-auto">
+                                        <i class="pi pi-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
