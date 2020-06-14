@@ -1,22 +1,22 @@
 <div>
     <span>Rut</span>
-    <input type="text">
+    <input type="text" [(ngModel)]="RUT" (blur)="CompararCliente()">
 </div>
 <div>
     <span>Nombre</span>
-    <input type="text">
+    <input type="text" [(ngModel)]="Nombre">
 </div>
 <div>
     <span>Numero de Telefono</span>
-    <input type="text">
+    <input type="text" [(ngModel)]="NUmTel">
 </div>
 <div>
     <span>Direccion</span>
-    <input type="text">
+    <input type="text" [(ngModel)]="Direccion">
 </div>
 <div>
     <span>Correo</span>
-    <input type="text">
+    <input type="text" [(ngModel)]="Correo">
 </div>
 <div>
     <span>Fecha Nacimiento</span>
@@ -25,8 +25,9 @@
 </div>
 <div>
     <span>Previsión</span>
-    <input type="text">
+    <p-dropdown [options]="Previciones" [(ngModel)]="Prevision" filter="true" optionLabel="sNombre"></p-dropdown>
 </div>
+
 <div>
     <span>Es usted titular del presente</span>
     <select [(ngModel)]="titular">
@@ -40,4 +41,8 @@
         <option>Masculino</option>
         <option>Femenino</option>
     </select>
+</div>
+
+<div class="btn btn-primary" (click)="AgregarCliente()">
+siguiente
 </div>
