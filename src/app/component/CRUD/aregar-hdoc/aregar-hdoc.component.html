@@ -1,34 +1,48 @@
 <div>
     <span>Doctores</span>
-    <p-dropdown [options]="Doctores" (ngModelChange)="changePress('D')" [(ngModel)]="Doctor" filter="true" optionLabel="sNombre"></p-dropdown>
+    <p-dropdown [options]="Doctores" (ngModelChange)="changePress('D')" [(ngModel)]="Doctor" filter="true"
+        optionLabel="sNombre"></p-dropdown>
 </div>
 
 <div [hidden]="!pressdoctor">
     <span>Especialidad</span>
-    <p-dropdown [options]="Especialidades" (ngModelChange)="changePress('E')" [(ngModel)]="Especialidad" filter="true" optionLabel="sNomEsp"></p-dropdown>
+    <p-dropdown [options]="Especialidades" (ngModelChange)="changePress('E')" [(ngModel)]="Especialidad" filter="true"
+        optionLabel="sNomEsp"></p-dropdown>
 </div>
 
 <div [hidden]="!pressEspecialidad">
     <span>Minutos de consulta</span>
-    <p-dropdown [options]="horarios" (ngModelChange)="changePress('T')" [(ngModel)]="horario"  optionLabel="min"></p-dropdown>
+    <p-dropdown [options]="horarios" (ngModelChange)="changePress('T')" [(ngModel)]="horario" optionLabel="min">
+    </p-dropdown>
     <!-- //<input type="number" min="9" max="15">:<input type="number" min="0" max="59"> -->
 </div>
 
 <div [hidden]="!pressTiempo">
     <span>Sucursusales</span>
-    <p-dropdown [options]="Sucursusales" (ngModelChange)="changePress('S')" [(ngModel)]="Sucursal" filter="true" optionLabel="sNombre"></p-dropdown>
+    <p-dropdown [options]="Sucursusales" (ngModelChange)="changePress('S')" [(ngModel)]="Sucursal" filter="true"
+        optionLabel="sNombre"></p-dropdown>
 </div>
 
 <div [hidden]="!pressSucursal">
     <span>Horarios</span><br>
-<div *ngFor="let item of horariosxDia;let i=index">
-<p-checkbox name="groupname" value="val1" (click)="vercheck(i)"></p-checkbox>
-<span>{{item.dia}}: </span> 
-<span>Hora Inicio: </span><p-dropdown [options]="horas" [(ngModel)]="item.horaI"  optionLabel="Hora" [disabled]="item.Act == false"></p-dropdown>
-<span>:</span><p-dropdown [options]="minutosI" [(ngModel)]="item.minI"  optionLabel="Minuto" [disabled]="item.Act == false"></p-dropdown>
-<span>Hora Fin: </span><p-dropdown [options]="horas" [(ngModel)]="item.horaF"  optionLabel="Hora" [disabled]="item.Act == false"></p-dropdown>
-<span>:</span><p-dropdown [options]="minutosF" [(ngModel)]="item.minF"  optionLabel="Minuto" [disabled]="item.Act == false"></p-dropdown>
-</div>    
+    <div *ngFor="let item of horariosxDia;let i=index">
+        <p-checkbox name="groupname" value="val1" (click)="vercheck(i)"></p-checkbox>
+        <span>{{item.dia}}: </span>
+        <span>Hora Inicio: </span>
+        <p-dropdown [options]="horas" [(ngModel)]="item.horaI" optionLabel="Hora" [disabled]="item.Act == false">
+        </p-dropdown>
+        <span>:</span>
+        <p-dropdown [options]="minutosI" [(ngModel)]="item.minI" optionLabel="Minuto" [disabled]="item.Act == false">
+        </p-dropdown>
+        <span>Hora Fin: </span>
+        <p-dropdown [options]="horas" [(ngModel)]="item.horaF" optionLabel="Hora" [disabled]="item.Act == false">
+        </p-dropdown>
+        <span>:</span>
+        <p-dropdown [options]="minutosF" [(ngModel)]="item.minF" optionLabel="Minuto" [disabled]="item.Act == false">
+        </p-dropdown>
+    </div>
 </div>
 
-
+<div class="btn btn-primary" (click)="AgregarHorarioDoc()" [hidden]="!pressSucursal">
+Agregar
+</div>

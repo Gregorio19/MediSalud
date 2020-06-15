@@ -92,6 +92,22 @@ export class MediwebServiceService {
     }
   }
 
+  async AgregarHorarioDoctor(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/AgrearHorariosDoc" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async GetDataGeneral(req) {
     try {
       return await this.http.post(
