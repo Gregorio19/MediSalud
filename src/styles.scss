@@ -96,10 +96,30 @@ p {
   padding-left: 5px;
   padding-right: 5px;
 }
+.ui-inputtext
+{
+  border: 1px solid $gray-form;
+}
+.ui-dropdown{
+  border: 1px solid $gray-form;
+  font-size: 1rem;
+  height: calc(1.5em + 0.75rem + 2px);
+}
 
 .medi_calendar {
   width: 100%;
   background-color: $green-light;
+  .ui-button{
+    background-color: $green-dark;
+    border: 1px solid $green-dark;
+    height: 35.2px;
+
+    &:enabled:hover {
+      background-color: #65d4ce;
+      color: $white;
+      border-color: #65d4ce;
+    }
+  }
   .medi_calendar--panel {
     background-color: $green-light;
 
@@ -174,8 +194,12 @@ p {
   }
 }
 
-
-input[type="radio"] {
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: $white;
+  border-color: $green-dark;
+  background-color: $green-dark;
+}
+input[type="radio"] + .hour_label{
   visibility: hidden; /* 1 */
   height: 0; /* 2 */
   width: 0; /* 2 */
@@ -227,6 +251,74 @@ input[type="radio"]:disabled:hover  + .hour_label,
 input[type="radio"].full:hover  + .hour_label{
   cursor: not-allowed;
 
+}
+
+/* The checkbox */
+.checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: $white;
+  border: 1px solid $green;
+  border-radius: 3px;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox:hover input ~ .checkmark {
+  background-color: $green;;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox input:checked ~ .checkmark {
+  background-color: $white;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox .checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 11px;
+  border: solid $green;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 
@@ -284,7 +376,7 @@ input[type="radio"].full:hover  + .hour_label{
       &::before{
         content: "Siguiente";
         font-size: 7px;
-        color: #fff;
+        color: $white;
         font-weight: bold;
         font-family: "InkFree";
         text-transform: uppercase;
@@ -298,7 +390,7 @@ input[type="radio"].full:hover  + .hour_label{
     background-color: $green-light;
     color: $gray-dark;
   }
-  .ui-dropdown-panel .ui-dropdown-filter-container .ui-dropdown-filter-icon{
+  .ui-dropdown-panel .ui-dropdown-filter-checkbox .ui-dropdown-filter-icon{
     color: $gray-dark;
 
   }

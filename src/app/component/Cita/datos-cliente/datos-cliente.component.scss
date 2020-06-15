@@ -1,0 +1,13 @@
+@import "../../../../assets/scss/general.scss";
+.container-agenda{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $green-light;
+    height: calc(100% - 76px);
+    width: 100%;
+    .container{
+        background-color: $white;
+        padding: 20px;
+    }
+}

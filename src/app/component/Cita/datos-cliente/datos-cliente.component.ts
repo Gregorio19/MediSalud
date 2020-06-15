@@ -12,14 +12,18 @@ import { Router } from '@angular/router';
 export class DatosClienteComponent implements OnInit {
 
   RUT: string;
+  RutTitular: string;
   Nombre: string;
+  NombreTitular: string;
+  ApellidoP: string;
+  ApellidoM: string;
   NUmTel: string;
   Direccion: string;
   Correo: string;
   fechaN: Date
   Prevision: SelectItem;
   sexo: string;
-  titular: string;
+  titular: boolean;
 
 
   minDate: Date;
@@ -36,7 +40,7 @@ export class DatosClienteComponent implements OnInit {
     this.GetPreviciones();
     this.GetClientes();
     this.sexo = "Masculino";
-    this.titular = "NO";
+    this.titular = false;
     this.es = {
       firstDayOfWeek: 1,
       dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
@@ -45,7 +49,9 @@ export class DatosClienteComponent implements OnInit {
       monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
       monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
       today: 'Hoy',
-      clear: 'Borrar'
+      clear: 'Borrar',
+      dateFormat: 'mm/dd/yy',
+
     }
     let today = new Date();
     let month = today.getMonth();
@@ -93,7 +99,7 @@ export class DatosClienteComponent implements OnInit {
   }
 
   async AgregarCliente() {
-    var estitu = this.titular == "SI" ? 1:0;
+    var estitu = this.titular == true ? 1:0;
     var susexo = this.sexo == "Masculino" ? 'M':'F';
     var rutadd = this.RUT.replace(".","").replace("-","");
     rutadd =  rutadd.substring(0,rutadd.length-1)+"-"+ rutadd.substring(rutadd.length-1,rutadd.length);
@@ -141,10 +147,10 @@ export class DatosClienteComponent implements OnInit {
         this.Direccion = element["sDirec"];
         this.Prevision = this.Previciones[element["iIdPrev"]];
         if (element["btit"] == true) {
-          this.titular = "SI";
+          this.titular = true;
         }
         else{
-          this.titular = "NO";
+          this.titular = false;
         }
         
         if (element["sSexo"] == "F") {
