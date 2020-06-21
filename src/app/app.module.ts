@@ -13,6 +13,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GMapModule} from 'primeng/gmap';
 import {DropdownModule} from 'primeng/dropdown';
+import {TableModule } from 'primeng/table';
 
 
 
@@ -33,6 +34,7 @@ import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.co
 
 // Google Maps de Angular 9 
 import {GoogleMapsModule} from '@angular/google-maps';
+import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
 
 
 
@@ -46,7 +48,8 @@ import {GoogleMapsModule} from '@angular/google-maps';
     SucursalComponent,
     EspecialidadComponent,
     DoctorComponent,
-    AregarHDocComponent
+    AregarHDocComponent,
+    AdmCitaComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +63,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
     GMapModule,
     GoogleMapsModule,
     DropdownModule,
+    TableModule,
   ],
   providers: [MediwebServiceService,MapaserviceService],
   bootstrap: [AppComponent]

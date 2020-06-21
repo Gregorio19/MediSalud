@@ -124,5 +124,37 @@ export class MediwebServiceService {
     }
   }
 
+  async GetAllCitas(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/TraerCitas" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async ActCita(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ActuCita" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
 
 }
