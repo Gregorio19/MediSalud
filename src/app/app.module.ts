@@ -33,6 +33,8 @@ import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.co
 
 // Google Maps de Angular 9 
 import {GoogleMapsModule} from '@angular/google-maps';
+import { PrincipalComponent } from './component/Cita/principal/principal.component';
+import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
 
 
 
@@ -46,7 +48,9 @@ import {GoogleMapsModule} from '@angular/google-maps';
     SucursalComponent,
     EspecialidadComponent,
     DoctorComponent,
-    AregarHDocComponent
+    AregarHDocComponent,
+    PrincipalComponent,
+    ResumenCitaComponent
   ],
   imports: [
     BrowserModule,

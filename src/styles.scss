@@ -109,10 +109,17 @@ p {
 .medi_calendar {
   width: 100%;
   background-color: $green-light;
+  .ui-inputtext{
+    line-height: normal;
+    width: calc(100% - 2.357em);
+    &:enabled:hover:not(.ui-state-error) {
+        border-color: #ced4da;
+    }
+  }
   .ui-button{
     background-color: $green-dark;
     border: 1px solid $green-dark;
-    height: 35.2px;
+    height: 34.2px;
 
     &:enabled:hover {
       background-color: #65d4ce;

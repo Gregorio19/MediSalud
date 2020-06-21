@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DatosClienteComponent } from './component/Cita/datos-cliente/datos-cliente.component';
 import { DatosAgendaComponent } from './component/Cita/datos-agenda/datos-agenda.component';
+import { PrincipalComponent } from './component/Cita/principal/principal.component';
+import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
 
 
 import { SucursalComponent } from './component/CRUD/sucursal/sucursal.component';
@@ -17,6 +19,8 @@ const routes: Routes = [
   { path: 'Doctor', component: DoctorComponent},
   { path: 'HorarioDoctor', component: AregarHDocComponent},
   { path: 'Agendar', component: DatosAgendaComponent},
+  { path: 'Principal', component: PrincipalComponent},
+  { path: 'Resumen', component: ResumenCitaComponent},
   { path: '', component: DatosAgendaComponent},
   
 ];
