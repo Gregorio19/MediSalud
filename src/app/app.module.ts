@@ -53,7 +53,7 @@ import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
     DoctorComponent,
     AregarHDocComponent,
     PrincipalComponent,
-    ResumenCitaComponent
+    ResumenCitaComponent,
     AdmCitaComponent
 
   ],
