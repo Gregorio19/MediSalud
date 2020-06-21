@@ -1,94 +1,412 @@
 @import "assets/scss/fonts.scss";
 @import "assets/scss/general.scss";
 
-::-webkit-scrollbar{
-    height:8px;
-    width:8px
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
 }
-::-webkit-scrollbar-track{
-    background-color:$white;
+::-webkit-scrollbar-track {
+  background-color: $white;
 }
-::-webkit-scrollbar-thumb{
-    border-radius:4px;
-    background-color:$gray-dark;
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: $gray-dark;
 }
-::-webkit-scrollbar-button:start:decrement{
-    display:none
+::-webkit-scrollbar-button:start:decrement {
+  display: none;
 }
-::-webkit-scrollbar-button:end:increment{
-    display:none
+::-webkit-scrollbar-button:end:increment {
+  display: none;
 }
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
 }
-body{
-    height: 100%;
-    width: 100%;
-    font-family: "Roboto-Regular";
-    font-size: 1em;
-
-}
-
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Roboto-Regular";
+  font-size: 1em;
 
 h1 {
-    display: block;
-    font-size: 2em;
-    margin-top: 0.67em;
-    margin-bottom: 0.67em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+h3 {
+  display: block;
+  font-size: 1.125em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+h4 {
+  display: block;
+  font-size: 1em;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 19px;
+}
+h5 {
+  display: block;
+  font-size: 0.813em;
+  margin-top: 1.67em;
+  margin-bottom: 1.67em;
+  margin-left: 0;
+  margin-right: 0;
+}
+h6 {
+  display: block;
+  font-size: 0.625em;
+  margin-top: 2.33em;
+  margin-bottom: 2.33em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+p {
+  display: block;
+  font-size: 0.75em;
+}
+
+.form-group {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.ui-inputtext
+{
+  border: 1px solid $gray-form;
+}
+.ui-dropdown{
+  border: 1px solid $gray-form;
+  font-size: 1rem;
+  height: calc(1.5em + 0.75rem + 2px);
+}
+
+.medi_calendar {
+  width: 100%;
+  background-color: $green-light;
+  .ui-inputtext{
+    line-height: normal;
+    width: calc(100% - 2.357em);
+    &:enabled:hover:not(.ui-state-error) {
+        border-color: #ced4da;
+    }
   }
-  h2 {
-    display: block;
-    font-size: 1.5em;
-    margin-top: 0.83em;
-    margin-bottom: 0.83em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
+  .ui-button{
+    background-color: $green-dark;
+    border: 1px solid $green-dark;
+    height: 34.2px;
+
+    &:enabled:hover {
+      background-color: #65d4ce;
+      color: $white;
+      border-color: #65d4ce;
+    }
   }
-  h3 {
-    display: block;
-    font-size: 1.125em;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
+  .medi_calendar--panel {
+    background-color: $green-light;
+
+    .ui-datepicker-header {
+      background-color: $green-dark;
+      color: $white;
+      .ui-datepicker-title select{
+        margin: 0;
+        background-color: transparent;
+        color: $white;
+        border: 1px solid $white;
+        border-radius: 3px;
+
+        &:focus{
+          box-shadow: none !important;
+        }
+        &.ui-datepicker-month {
+          margin-right: 10px;
+        }
+        option{
+          color: $gray-dark;
+          &:checked { 
+            background-color: $green-dark;
+            color: $white;
+          }
+          &:hover{
+            background-color: $green-dark !important;
+          }
+        }
+      }
+      .ui-datepicker-prev,
+      .ui-datepicker-next {
+        color: $white;
+        top: 5px;
+        &:hover{
+          color: $white !important;
+        }
+        &:focus{
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    table {
+      th{
+        padding: 0;
+      }
+      td {
+        padding: 0.2em;
+        a,span {
+          height: 1.4em;
+          padding: 0px;
+          width: 2em;
+          margin: auto;
+          background-color: $white;
+          border-radius: 3px;
+          &.ui-state-active{
+            background-color: $green-dark;
+            color: $white;
+          }
+          &.workday{
+            background-color: $blue;
+            color: $white;
+          }
+          &.inherit{
+            background-color: transparent;
+          }
+        }
+        
+      }
+    }
   }
-  
-  h4 {
-    display: block;
-    font-size: 1em;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 900;
-    line-height: 19px;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: $white;
+  border-color: $green-dark;
+  background-color: $green-dark;
+}
+input[type="radio"] + .hour_label{
+  visibility: hidden; /* 1 */
+  height: 0; /* 2 */
+  width: 0; /* 2 */
+}
+
+.hour_label {
+  // display: flex;
+  flex: auto;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: $blue;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: color 0.1s ease-out, 
+  background-color 0.1s ease-in;
+  user-select: none;
+  margin-right: 8px;
+}
+
+.hour_label:last-of-type {
+ margin-right: 0;
+}
+
+input[type="radio"]:checked + .hour_label {
+  background-color: $green-dark;
+  color: $white;
+}
+input[type="radio"]:disabled + .hour_label {
+  background-color: $gray-hour;
+  color: $gray-dark;
+}
+input[type="radio"].full + .hour_label {
+  background-color: $red;
+  color: $white;
+}
+
+input[type="radio"]:hover:not(:checked):not(:disabled):not(.full) + .hour_label {
+ background-color: $green-dark;
+  color: $white;
+  cursor: pointer;
+
+}
+
+input[type="radio"]:checked:hover  + .hour_label,
+input[type="radio"]:disabled:hover  + .hour_label,
+input[type="radio"].full:hover  + .hour_label{
+  cursor: not-allowed;
+
+}
+
+/* The checkbox */
+.checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: $white;
+  border: 1px solid $green;
+  border-radius: 3px;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox:hover input ~ .checkmark {
+  background-color: $green;;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox input:checked ~ .checkmark {
+  background-color: $white;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox .checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 11px;
+  border: solid $green;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+.indicators{
+    display: flex;
+    align-items: center;
+    padding: 0 5px ;
+    .circle-indicator{
+   
+      height: 11px;
+      width: 11px;
+      border-radius: 50%;
+      margin-right: 3px;
+
+      &.libre{
+        background-color: $blue-disponible;
+      }
+      &.seleccionada{
+        background-color: $green-dark
+      }
+      &.ocupada{
+        background-color: $red;
+      }
+      
+    }
+    span{
+      color: $gray-dark;
+      font-size: 10px;
+    }
   }
-  h5 {
-    display: block;
-    font-size: 0.813em;
-    margin-top: 1.67em;
-    margin-bottom: 1.67em;
-    margin-left: 0;
-    margin-right: 0;
+
+  .btn-siguiente{
+    height: 50px;
+    width: 50px;
+    background-color: $green-dark;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    &:focus{
+      outline: none;
+    }
+    i{
+      color: $white;
+
+    }
+    &:hover{
+      box-shadow: 1px 1px 1px 0px $gray-dark;
+      background-color: $green;
+      &::before{
+        content: "Siguiente";
+        font-size: 7px;
+        color: $white;
+        font-weight: bold;
+        font-family: "InkFree";
+        text-transform: uppercase;
+      }
+    }
+    
   }
-  h6 {
-    display: block;
-    font-size: 0.625em;
-    margin-top: 2.33em;
-    margin-bottom: 2.33em;
-    margin-left: 0;
-    margin-right: 0;
+
+.ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight,
+.ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item-group.ui-state-highlight{
+    background-color: $green-light;
+    color: $gray-dark;
   }
-  
-p{
-    display: block;
-    font-size: 0.750em;
+  .ui-dropdown-panel .ui-dropdown-filter-checkbox .ui-dropdown-filter-icon{
+    color: $gray-dark;
+
+  }
+  .ui-inputtext:enabled:focus:not(.ui-state-error),
+  .ui-dropdown:not(.ui-state-disabled).ui-state-focus{
+        box-shadow: none;
+        border-color: $gray-dark;
+  }
+  .ui-inputtext:enabled:focus:not(.ui-state-error){
+    border-color: $gray-dark;
+  }
 }
