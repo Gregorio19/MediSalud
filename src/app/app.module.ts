@@ -13,6 +13,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GMapModule} from 'primeng/gmap';
 import {DropdownModule} from 'primeng/dropdown';
+import {TableModule } from 'primeng/table';
 
 
 
@@ -35,6 +36,8 @@ import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.co
 import {GoogleMapsModule} from '@angular/google-maps';
 import { PrincipalComponent } from './component/Cita/principal/principal.component';
 import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
+import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
+
 
 
 
@@ -51,6 +54,8 @@ import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita
     AregarHDocComponent,
     PrincipalComponent,
     ResumenCitaComponent
+    AdmCitaComponent
+
   ],
   imports: [
     BrowserModule,
@@ -64,6 +69,7 @@ import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita
     GMapModule,
     GoogleMapsModule,
     DropdownModule,
+    TableModule,
   ],
   providers: [MediwebServiceService,MapaserviceService],
   bootstrap: [AppComponent]

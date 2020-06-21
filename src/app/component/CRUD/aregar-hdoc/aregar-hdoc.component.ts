@@ -41,6 +41,7 @@ export class AregarHDocComponent implements OnInit {
     this.pressTiempo = false;
     this.pressSucursal = false;
     this.horarios = [
+      { "min": "seleccione" },
       { "min": "10" },
       { "min": "15" },
       { "min": "20" },
@@ -98,7 +99,12 @@ export class AregarHDocComponent implements OnInit {
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getdoc);
     await this.GetEspecialidad();
     await this.GetSucursales();
-    this.Doctores = JSON.parse(respuesta.toString());
+    var primeratributo = JSON.parse(respuesta.toString());
+    this.Doctores = [];  
+    this.Doctores.unshift({"sNombre": "Seleccione"});
+    primeratributo.forEach(element => {
+      this.Doctores.push(element);
+    });
     console.log(this.Doctores);
     this.Doctor = this.Doctores[0];
     this.Sucursal = this.Sucursusales[0];
@@ -109,14 +115,24 @@ export class AregarHDocComponent implements OnInit {
   async GetSucursales() {
     var getSuc = { "Tipo": "S" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getSuc);
-    this.Sucursusales = JSON.parse(respuesta.toString());
+    var primeratributo = JSON.parse(respuesta.toString());
+    this.Sucursusales = [];  
+    this.Sucursusales.unshift({"sNombre": "Seleccione"});
+    primeratributo.forEach(element => {
+      this.Sucursusales.push(element);
+    });
     console.log(this.Sucursusales);
   }
 
   async GetEspecialidad() {
     var getEsp = { "Tipo": "E" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
-    this.Especialidades = JSON.parse(respuesta.toString());
+    var primeratributo = JSON.parse(respuesta.toString());
+    this.Especialidades = [];  
+    this.Especialidades.unshift({"sNomEsp": "Seleccione"});
+    primeratributo.forEach(element => {
+      this.Especialidades.push(element);
+    });
     console.log(this.Especialidades);
 
   }
@@ -124,24 +140,92 @@ export class AregarHDocComponent implements OnInit {
   OrdenarHorarios() {
     setTimeout(() => {
       this.horas = [];
+      this.horas.push({ "Hora": "Seleccione" });
       for (let index = this.Sucursal["iHIni"]; index < (this.Sucursal["iHFin"] + 1); index++) {
-        this.horas.push({ "Hora": index.toString() });
+        if (index < 10) {
+          this.horas.push({ "Hora": "0"+index.toString() });
+        }
+        else{
+          this.horas.push({ "Hora": index.toString() });
+        }
+        
       }
       this.minutosI = [];
       this.minutosF = [];
+      this.minutosI.push({ "Minuto": "Seleccione" });
+      this.minutosF.push({ "Minuto": "Seleccione" });
       this.minutosI.push({ "Minuto": "00" });
       this.minutosF.push({ "Minuto": "00" });
       var tiempousado = 0;
       for (let index = 0; index < 11; index++) {
         tiempousado += 5;
         if (tiempousado >= this.Sucursal["iMIni"]) {
-          this.minutosI.push({ "Minuto": tiempousado.toString() });
+          if (tiempousado == 5 ) {
+            this.minutosI.push({ "Minuto": "05" });
+          }
+          else{
+            this.minutosI.push({ "Minuto": tiempousado.toString() });
+          }
+          
         }
         if (tiempousado <= this.Sucursal["iMFin"]) {
-          this.minutosI.push({ "Minuto": tiempousado.toString() });
+          if (tiempousado == 5 ) {
+            this.minutosF.push({ "Minuto": "05" });
+          }
+          else{
+            this.minutosF.push({ "Minuto": tiempousado.toString() });
+          }
         }
       }
     }, 1000);
+  }
+
+  async AgregarHorarioDoc(){
+    var newhorarios = "";
+    this.horariosxDia.forEach(element => {
+      console.log(element);
+      
+      if (element.Act == true) {
+        if (element.dia == "Lunes") {
+          newhorarios += "lu,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+        if (element.dia == "Martes") {
+          newhorarios += "ma,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+        if (element.dia == "Miercoles") {
+          newhorarios += "mi,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+        if (element.dia == "Jueves") {
+          newhorarios += "ju,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+        if (element.dia == "Viernes") {
+          newhorarios += "vi,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+        if (element.dia == "Sabado") {
+          newhorarios += "sa,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+        if (element.dia == "Domingo") {
+          newhorarios += "do,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+        }
+      }
+    });
+
+    if (newhorarios != "") {
+      newhorarios = newhorarios.substring(0,newhorarios.length-1)
+    }
+    console.log(newhorarios);
+    
+    var newhdco = {
+      "iddoc": this.Doctor["iIdDoc"].toString(),
+      "idSuc": this.Sucursal["iIdSuc"].toString(),
+      "idEsp": this.Especialidad["iIdEsp"].toString(),
+      "tpoAte":this.horario["min"].toString(),
+      "hab": "1",
+      "horarios": newhorarios
+    }
+    await this.MediwebServiceService.AgregarHorarioDoctor(newhdco);
+    console.log(newhdco);
+    
   }
 
 }

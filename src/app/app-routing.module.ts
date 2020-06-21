@@ -11,6 +11,8 @@ import { EspecialidadComponent } from './component/CRUD/especialidad/especialida
 import { DoctorComponent } from './component/CRUD/doctor/doctor.component';
 import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.component';
 
+import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
+
 
 const routes: Routes = [
   { path: 'Cliente-Agenda', component: DatosClienteComponent},
@@ -21,6 +23,7 @@ const routes: Routes = [
   { path: 'Agendar', component: DatosAgendaComponent},
   { path: 'Principal', component: PrincipalComponent},
   { path: 'Resumen', component: ResumenCitaComponent},
+  { path: 'AdmCita', component: AdmCitaComponent},
   { path: '', component: DatosAgendaComponent},
   
 ];
