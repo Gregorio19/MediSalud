@@ -8,18 +8,29 @@
     width: 100%;
     .container{
         background-color: $white;
-        padding: 30px;
+        padding: 20px 30px;
         border: 1px solid $gray-dark;
         -webkit-box-shadow: 2px 2px 5px 0px  $gray-dark;
         -moz-box-shadow: 2px 2px 5px 0px  $gray-dark;
         box-shadow: 2px 2px 5px 0px  $gray-dark;
 
         .datos-paciente {
+            padding: 20px 30px;
             .form-group {
               margin-bottom: 0.8rem;
               &.form-text {
                 margin-bottom: 0.3rem;
               }
+            }
+            .estimado{
+                span{
+                    font-weight: 700;
+                    font-family: "AcuminVariableConcept";
+                    line-height: 8px;
+                }
+                p{
+                    font-size: 10px;
+                }
             }
             label {
               font-family: Roboto;
@@ -93,6 +104,19 @@
                 font-size: 14px;
               }
             }
+            
           }
+          .datos-contacto{
+            span{
+                text-align: right;
+                font-family: Roboto;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 14px;
+                color: $gray-light;
+
+            }
+        }
     }
 }
