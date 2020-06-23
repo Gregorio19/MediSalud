@@ -71,34 +71,26 @@
 
                         <div class="form-group col-12 col-md-6">
                             <label for="especialidades">Especialidad</label>
-                            <p-dropdown [options]="especialidades" [(ngModel)]="selectedEsp"
+                            <p-dropdown [options]="especialidades" [(ngModel)]="especialidad"
                                 (onChange)="ActivarAtributos('E')" [filter]="true" placeholder="Especialidad"
-                                filterBy="label,value.name" styleClass="w-100"></p-dropdown>
+                                optionLabel="sNomEsp" styleClass="w-100"></p-dropdown>
                         </div>
                         <div *ngIf="SelecEspecialidad" class="form-group  col-12 col-md-6">
                             <label for="sucursales">Sucursales</label>
-                            <p-dropdown [options]="sucursales" [(ngModel)]="selectedSuc"
+                            <p-dropdown [options]="sucursales" [(ngModel)]="sucursal" optionLabel="sNombre"
                                 (onChange)="ActivarAtributos('S')" [filter]="true" placeholder="Sucursal"
-                                filterBy="label,value.name" styleClass="w-100"></p-dropdown>
+                                 styleClass="w-100"></p-dropdown>
                         </div>
-                        <div *ngIf="SelecSucursal" (change)="ActivarAtributos('D')" class="form-group col-12">
+                        <div *ngIf="SelecSucursal" class="form-group col-12">
                             <label for="Medico">Medico</label>
-                            <p-dropdown [options]="medico" [(ngModel)]="selectedMed" (onChange)="ActivarAtributos('S')"
-                                [filter]="true" placeholder="Medico" filterBy="label,value.name" styleClass="w-100">
-                                <ng-template let-item pTemplate="selectedItem">
-                                    <div class="selectedMed">
-                                        <img src="assets/images/user.png" class="user_select_icon" />
-                                        <span style="vertical-align:middle">{{item.label}}</span>
-                                    </div>
-
-                                </ng-template>
+                            <p-dropdown [options]="medico" [(ngModel)]="Doctor" (onChange)="ActivarAtributos('D')"
+                                [filter]="true" placeholder="Medico" styleClass="w-100">
                                 <ng-template let-car pTemplate="item">
-                                    <div class="ui-helper-clearfix"
+                                    <div class="ui-helper-clearfix d-flex align-items-center"
                                         style="position: relative;height:50px;padding-left: 60px;">
                                         <img src="assets/images/user.png" class="user_icon" />
                                         <div class="inf-User">
-                                            <div class="nombre">{{car.label}}</div>
-                                            <div class="especialidad">sub</div>
+                                            <div class="nombre">{{car.sNombre}}</div>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -127,10 +119,15 @@
                                     <h3>Juan Ardiles Fierro</h3>
                                     <h5>PSIQUIATRA </h5>
                                     <p>
-                                        Psicólogo con formación en el área educacional, cuenta con más de 10 años de experiencia en el área infanto-juvenil, desarrollando tratamiento en temáticas como:
+                                        Psicólogo con formación en el área educacional, cuenta con más de 10 años de
+                                        experiencia en el área infanto-juvenil, desarrollando tratamiento en temáticas
+                                        como:
                                         <br>
-                                        -Problemas emocionales y de comportamiento: Trastorno por angustia de separación, fobia escolar, evitación, aislamiento, timidez. <br>
--Problemas escolares y de aprendizaje: Déficit de atención y concentración (con o sin hiperactividad), bajo rendimiento escolar, baja motivación, déficit de hábitos de estudio, problemas escolares en general. 
+                                        -Problemas emocionales y de comportamiento: Trastorno por angustia de
+                                        separación, fobia escolar, evitación, aislamiento, timidez. <br>
+                                        -Problemas escolares y de aprendizaje: Déficit de atención y concentración (con
+                                        o sin hiperactividad), bajo rendimiento escolar, baja motivación, déficit de
+                                        hábitos de estudio, problemas escolares en general.
                                     </p>
                                 </div>
                             </div>
@@ -143,81 +140,73 @@
                             <p-gmap [options]="options" [style]="{'width':'100%','height':'150px'}"></p-gmap>
                         </div>
                         <div class="col-12 mt-2">
-                            <p-calendar 
-                                [(ngModel)]="calendarHorario" 
-                                [locale]="es" 
-                                [inline]="true"  
-                                styleClass="medi_calendar" 
-                                panelStyleClass="medi_calendar--panel"
-                                dateFormat="dd/mm/yy" 
-                                [disabledDates]="invalidDates"
-                                [monthNavigator]="true" 
-                                [yearNavigator]="true"
-                                yearRange="2020:2050"
-                            >
-                                <ng-template pTemplate="date" let-date >
+                            <p-calendar [(ngModel)]="calendarHorario" [locale]="es" [inline]="true"
+                                styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" dateFormat="dd/mm/yy"
+                                [disabledDates]="invalidDates" [monthNavigator]="true" [yearNavigator]="true"
+                                yearRange="2020:2050">
+                                <ng-template pTemplate="date" let-date>
                                     <div *ngIf="checkDateForWork(date);then workDate else normalDate"></div>
                                     <ng-template #workDate>
                                         <span [ngClass]="'workday'" style="display:block">{{date.day}}</span>
                                     </ng-template>
                                     <ng-template #normalDate>
-                                            <span [ngClass]="'inherit'" style="display:block">{{date.day}}</span>
+                                        <span [ngClass]="'inherit'" style="display:block">{{date.day}}</span>
                                     </ng-template>
-                            
+
                                 </ng-template>
                                 <!-- <ng-template pTemplate="date" let-date>
                                     <span [ngClass]=" (date.day < 21 && date.day > 10) ? 'workday' : 'inherit'" style="display:block">{{date.day}}</span>
                                 </ng-template> -->
                             </p-calendar>
 
-                            <div class="InputGroup row mx-0 mt-2"> 
+                            <div class="InputGroup row mx-0 mt-2">
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_1" value="small"  disabled/>
-                                    <label for="size_1" class="hour_label">10:00</label>  
+                                    <input type="radio" name="size" id="size_1" value="small" disabled />
+                                    <label for="size_1" class="hour_label">10:00</label>
                                 </div>
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_2" value="small" disabled/>
-                                    <label for="size_2" class="hour_label">10:30</label>   
+                                    <input type="radio" name="size" id="size_2" value="small" disabled />
+                                    <label for="size_2" class="hour_label">10:30</label>
                                 </div>
                                 <div class="px-2">
                                     <input type="radio" name="size" id="size_3" value="small" />
-                                    <label for="size_3" class="hour_label">11:00</label>    
+                                    <label for="size_3" class="hour_label">11:00</label>
                                 </div>
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_4" value="small"  />
-                                    <label for="size_4" class="hour_label">11:30</label>  
+                                    <input type="radio" name="size" id="size_4" value="small" />
+                                    <label for="size_4" class="hour_label">11:30</label>
                                 </div>
                                 <div class="px-2">
                                     <input type="radio" name="size" id="size_5" value="small" />
-                                    <label for="size_5" class="hour_label">12:00</label>   
+                                    <label for="size_5" class="hour_label">12:00</label>
                                 </div>
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_6" value="small"  class="full"/>
-                                    <label for="size_6" class="hour_label">12:30</label>    
+                                    <input type="radio" name="size" id="size_6" value="small" class="full" />
+                                    <label for="size_6" class="hour_label">12:30</label>
                                 </div>
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_7" value="small"  class="full" />
-                                    <label for="size_7" class="hour_label">13:00</label>  
+                                    <input type="radio" name="size" id="size_7" value="small" class="full" />
+                                    <label for="size_7" class="hour_label">13:00</label>
                                 </div>
                                 <div class="px-2">
                                     <input type="radio" name="size" id="size_8" value="small" />
-                                    <label for="size_8" class="hour_label">13:30</label>   
+                                    <label for="size_8" class="hour_label">13:30</label>
                                 </div>
                                 <div class="px-2">
                                     <input type="radio" name="size" id="size_9" value="small" />
-                                    <label for="size_9" class="hour_label">14:00</label>    
+                                    <label for="size_9" class="hour_label">14:00</label>
                                 </div>
                                 <div class="px-2">
                                     <input type="radio" name="size" id="size_10" value="small" checked />
-                                    <label for="size_10" class="hour_label">14:30</label>  
+                                    <label for="size_10" class="hour_label">14:30</label>
                                 </div>
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_12" value="small" disabled/>
-                                    <label for="size_12" class="hour_label">15:00</label>   
+                                    <input type="radio" name="size" id="size_12" value="small" disabled />
+                                    <label for="size_12" class="hour_label">15:00</label>
                                 </div>
                                 <div class="px-2">
-                                    <input type="radio" name="size" id="size_13" value="small"  class="full"/>
-                                    <label for="size_13" class="hour_label">15:30</label>    
+                                    <input type="radio" name="size" id="size_13" value="small" class="full" />
+                                    <label for="size_13" class="hour_label">15:30</label>
                                 </div>
                             </div>
                             <div class="row mx-0  justify-content-end">

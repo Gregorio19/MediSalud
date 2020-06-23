@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
+import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
 interface City {
   name: string;
   code: string;
@@ -12,15 +13,15 @@ interface City {
 
 export class DatosAgendaComponent implements OnInit {
 
-    especialidades;
-    sucursales;
-    medico;
-    selectedEsp: City;
-    selectedSuc: City;
-    selectedMed: City;
-    calendarHorario: Date;
-    invalidDates: Array<Date>= new Array<Date>();
-    worksDate: Array<Date>= new Array<Date>();
+  especialidades;
+  sucursales;
+  medico;
+  selectedEsp: City;
+  selectedSuc: City;
+  selectedMed: City;
+  calendarHorario: Date;
+  invalidDates: Array<Date> = new Array<Date>();
+  worksDate: Array<Date> = new Array<Date>();
 
   especialidad: string;
   sucursal: string;
@@ -38,32 +39,33 @@ export class DatosAgendaComponent implements OnInit {
 
   overlays: any[];
 
-  constructor() { 
-    }
+  constructor(private MediwebServiceService: MediwebServiceService) {
+  }
 
   ngOnInit(): void {
 
     let invalidDate = moment("10/06/2020", "DD/MM/YYYY").toDate();
     let workDate = moment("11/06/2020", "DD/MM/YYYY").toDate();
     let workDate2 = moment("12/06/2020", "DD/MM/YYYY").toDate();
-    
+    this.traerEspecialidad();
+
     this.invalidDates = [invalidDate];
-    this.worksDate = [workDate,workDate2];
-    this.especialidades = [
-      {label:'Gastroenterologia', value:{id:1, name: 'Gastroenterologia'}},
-      {label:'Internista', value:{id:2, name: 'Internista'}},
-    ];
-    this.sucursales = [
-      {label:'Las Condes', value:{id:1, name: 'Las Condes'}},
-      {label:'Providencia', value:{id:2, name: 'Providencia'}},
-    ];
-    this.medico = [
-      {label:'Chicho', value:{id:1, name: 'Chicho'}},
-      {label:'Cesar', value:{id:2, name: 'Cesar'}},
-    ];
+    this.worksDate = [workDate, workDate2];
+    // this.especialidades = [
+    //   {label:'Gastroenterologia', value:{id:1, name: 'Gastroenterologia'}},
+    //   {label:'Internista', value:{id:2, name: 'Internista'}},
+    // ];
+    // this.sucursales = [
+    //   {label:'Las Condes', value:{id:1, name: 'Las Condes'}},
+    //   {label:'Providencia', value:{id:2, name: 'Providencia'}},
+    // ];
+    // this.medico = [
+    //   {label:'Chicho', value:{id:1, name: 'Chicho'}},
+    //   {label:'Cesar', value:{id:2, name: 'Cesar'}},
+    // ];
     this.options = {
-        center: {lat: 36.890257, lng: 30.707417},
-        zoom: 12
+      center: { lat: 36.890257, lng: 30.707417 },
+      zoom: 12
     };
     this.es = {
       firstDayOfWeek: 0,
@@ -84,38 +86,78 @@ export class DatosAgendaComponent implements OnInit {
     this.SelecHorario = false;
   }
 
-  ActivarAtributos(tipo){
+  ActivarAtributos(tipo) {
+    setTimeout(() => {
+      if (tipo == "E") {
+        this.SelecEspecialidad = true;
+        console.log(this.especialidad);
 
-    if (tipo == "E") {
-      this.SelecEspecialidad = true;
-    }
-    if (tipo == "S") {
-      this.SelecSucursal = true;
-    }
-    if (tipo == "D") {
-      this.SelecDoctor = true;
-    }
-    if (tipo == "F") {
-      console.log("entra");
-      
-      this.SelecFechaA = true;
-    }
-    if (tipo == "H") {
-      this.SelecHorario = true;
-    }
+        this.traerSucursales();
+      }
+      if (tipo == "S") {
+        this.SelecSucursal = true;
+        this.traerDoctores();
+      }
+      if (tipo == "D") {
+        this.SelecDoctor = true;
+      }
+      if (tipo == "F") {
+        this.SelecFechaA = true;
+      }
+      if (tipo == "H") {
+        this.SelecHorario = true;
+      }
+    }, 300);
+
   }
 
-  checkDateForWork(date:any){
-    var calendarDate = new Date(date.year,date.month,date.day);
-    calendarDate.setHours(0,0,0,0);
-    
+  checkDateForWork(date: any) {
+    var calendarDate = new Date(date.year, date.month, date.day);
+    calendarDate.setHours(0, 0, 0, 0);
+
     return this.isInArray(calendarDate);
   }
 
-  isInArray(value:Date) {
+  isInArray(value: Date) {
     return !!this.worksDate.find(item => {
       return item.getTime() == value.getTime()
-      });
+    });
+  }
+
+  async traerEspecialidad() {
+    var respuesta = await this.MediwebServiceService.Traerespecialidad();
+    var especialidades = JSON.parse(respuesta.toString());
+    this.especialidades = especialidades;
+  }
+
+  async traerSucursales() {
+    var req = {
+      "id": this.especialidad["iIdEsp"].toString(),
+      "nombre": this.especialidad["sNomEsp"].toString()
     }
+    var respuesta = await this.MediwebServiceService.SucursalsxEspecialiad(req);
+    var sucursales = JSON.parse(respuesta.toString());
+    this.sucursales = sucursales;
+    console.log(this.sucursales);
+    
+  }
+
+  async traerDoctores() {
+    var req = {
+      "idSuc": this.sucursal["iIdSuc"].toString(),
+      "iesp": this.especialidad["iIdEsp"].toString()
+    }
+    var respuesta = await this.MediwebServiceService.ObtenerDocXSucursalXEspecialidades(req);
+    var doctores = JSON.parse(respuesta.toString());
+    this.medico = doctores;
+    console.log(this.medico);
+  }
+
+  imprimir(alo){
+console.log(alo);
+
+  }
+
+
 
 }

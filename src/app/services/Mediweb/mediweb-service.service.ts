@@ -140,6 +140,54 @@ export class MediwebServiceService {
     }
   }
 
+  async ObtenerDocXSucursalXEspecialidades(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ObtenerDocXSucursalXEspecialidades" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async SucursalsxEspecialiad(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ObtenerSucursalXEspecialidades" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async Traerespecialidad() {
+    try {
+      return await this.http.get(
+        this.apiUrl  + "/Cita/ObtenerEspecialidades" , { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async ActCita(req) {
     try {
       return await this.http.post(
