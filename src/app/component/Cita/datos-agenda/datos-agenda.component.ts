@@ -99,6 +99,8 @@ export class DatosAgendaComponent implements OnInit {
         this.traerDoctores();
       }
       if (tipo == "D") {
+        console.log("entra");
+        
         this.SelecDoctor = true;
       }
       if (tipo == "F") {

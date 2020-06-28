@@ -85,6 +85,12 @@
                             <label for="Medico">Medico</label>
                             <p-dropdown [options]="medico" [(ngModel)]="Doctor" (onChange)="ActivarAtributos('D')"
                                 [filter]="true" placeholder="Medico" styleClass="w-100">
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <div class="selectedMed">
+                                        <img src="assets/images/user.png" class="user_select_icon" />
+                                        <span style="vertical-align:middle">{{item}}</span>
+                                    </div>
+                                </ng-template>
                                 <ng-template let-car pTemplate="item">
                                     <div class="ui-helper-clearfix d-flex align-items-center"
                                         style="position: relative;height:50px;padding-left: 60px;">
