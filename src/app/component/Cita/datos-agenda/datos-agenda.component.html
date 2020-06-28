@@ -83,26 +83,20 @@
                         </div>
                         <div *ngIf="SelecSucursal" class="form-group col-12">
                             <label for="Medico">Medico</label>
-                            <p-dropdown [options]="medico" [(ngModel)]="Doctor" (onChange)="ActivarAtributos('D')"
-                                [filter]="true" placeholder="Medico" styleClass="w-100">
-                                <ng-template let-item pTemplate="selectedItem">
-                                    <div class="selectedMed">
-                                        <img src="assets/images/user.png" class="user_select_icon" />
-                                        <span style="vertical-align:middle">{{item}}</span>
-                                    </div>
-                                </ng-template>
+                            <p-dropdown [options]="medico" [(ngModel)]="Doctor" optionLabel="sNombre"
+                             (ngModelChange)="ActivarAtributos('D')"  placeholder="Medico"  styleClass="w-100">
                                 <ng-template let-car pTemplate="item">
-                                    <div class="ui-helper-clearfix d-flex align-items-center"
+                                    <div class="ui-helper-clearfix"
                                         style="position: relative;height:50px;padding-left: 60px;">
                                         <img src="assets/images/user.png" class="user_icon" />
                                         <div class="inf-User">
-                                            <div class="nombre">{{car.sNombre}}</div>
+                                            <div class="nombre">{{car.label}}</div>
                                         </div>
                                     </div>
                                 </ng-template>
                             </p-dropdown>
                         </div>
-                        <div *ngIf="SelecDoctor">
+                        <!-- <div *ngIf="SelecDoctor">
                             <span>Fecha Nacimiento</span>
                             <p-calendar (ngModelChange)="ActivarAtributos('F')" [(ngModel)]="fechaA" [showIcon]="true"
                                 [locale]="es" dateFormat="dd/mm/yy"></p-calendar>
@@ -113,8 +107,8 @@
                                 <option>12:00 - 12:30</option>
                                 <option>12:30 - 1:00</option>
                             </select>
-                        </div>
-                        <div class="col-12">
+                        </div> -->
+                        <div class="col-12" *ngIf="SelecDoctor">
                             <div class="row">
                                 <div class="col-3">
                                     <div>
@@ -122,18 +116,10 @@
                                     </div>
                                 </div>
                                 <div class="col-9 user_selected">
-                                    <h3>Juan Ardiles Fierro</h3>
-                                    <h5>PSIQUIATRA </h5>
+                                    <h3>{{Doctor["sNombre"]}}</h3>
+                                    <h5>{{especialidad["sNomEsp"]}} </h5>
                                     <p>
-                                        Psicólogo con formación en el área educacional, cuenta con más de 10 años de
-                                        experiencia en el área infanto-juvenil, desarrollando tratamiento en temáticas
-                                        como:
-                                        <br>
-                                        -Problemas emocionales y de comportamiento: Trastorno por angustia de
-                                        separación, fobia escolar, evitación, aislamiento, timidez. <br>
-                                        -Problemas escolares y de aprendizaje: Déficit de atención y concentración (con
-                                        o sin hiperactividad), bajo rendimiento escolar, baja motivación, déficit de
-                                        hábitos de estudio, problemas escolares en general.
+                                        {{Doctor["sInfoDoc"]}}
                                     </p>
                                 </div>
                             </div>

@@ -18,7 +18,7 @@ export class DatosAgendaComponent implements OnInit {
   medico;
   selectedEsp: City;
   selectedSuc: City;
-  selectedMed: City;
+  selectedMed;
   calendarHorario: Date;
   invalidDates: Array<Date> = new Array<Date>();
   worksDate: Array<Date> = new Array<Date>();
@@ -51,18 +51,6 @@ export class DatosAgendaComponent implements OnInit {
 
     this.invalidDates = [invalidDate];
     this.worksDate = [workDate, workDate2];
-    // this.especialidades = [
-    //   {label:'Gastroenterologia', value:{id:1, name: 'Gastroenterologia'}},
-    //   {label:'Internista', value:{id:2, name: 'Internista'}},
-    // ];
-    // this.sucursales = [
-    //   {label:'Las Condes', value:{id:1, name: 'Las Condes'}},
-    //   {label:'Providencia', value:{id:2, name: 'Providencia'}},
-    // ];
-    // this.medico = [
-    //   {label:'Chicho', value:{id:1, name: 'Chicho'}},
-    //   {label:'Cesar', value:{id:2, name: 'Cesar'}},
-    // ];
     this.options = {
       center: { lat: 36.890257, lng: 30.707417 },
       zoom: 12
@@ -99,9 +87,10 @@ export class DatosAgendaComponent implements OnInit {
         this.traerDoctores();
       }
       if (tipo == "D") {
-        console.log("entra");
+        console.log(this.Doctor);
         
         this.SelecDoctor = true;
+        this.obtenerDiasDetrabajo();
       }
       if (tipo == "F") {
         this.SelecFechaA = true;
@@ -151,8 +140,24 @@ export class DatosAgendaComponent implements OnInit {
     }
     var respuesta = await this.MediwebServiceService.ObtenerDocXSucursalXEspecialidades(req);
     var doctores = JSON.parse(respuesta.toString());
+
     this.medico = doctores;
     console.log(this.medico);
+  }
+
+  obtenerDiasDetrabajo(){
+
+    this.worksDate = [];
+    var hoy  = moment().format("DD/MM/YYYY");
+    var mes  = moment().format("MMM");
+    console.log(moment().add(1, 'days').calendar());
+    
+    if (this.Doctor["sHorarCon"].includes("Lunes")) {
+      
+    }
+    for (let index = 0; index < 46; index++) {
+
+    }
   }
 
   imprimir(alo){
