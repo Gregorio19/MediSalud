@@ -206,7 +206,7 @@ p {
   border-color: $green-dark;
   background-color: $green-dark;
 }
-input[type="radio"] + .hour_label{
+input[type="radio"] {
   visibility: hidden; /* 1 */
   height: 0; /* 2 */
   width: 0; /* 2 */
@@ -398,6 +398,11 @@ input[type="radio"].full:hover  + .hour_label{
     color: $gray-dark;
   }
   .ui-dropdown-panel .ui-dropdown-filter-checkbox .ui-dropdown-filter-icon{
+    color: $gray-dark;
+
+  }
+  
+  .ui-dropdown-panel .ui-dropdown-filter-container .ui-dropdown-filter-icon{
     color: $gray-dark;
 
   }
