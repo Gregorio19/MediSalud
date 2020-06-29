@@ -204,5 +204,21 @@ export class MediwebServiceService {
     }
   }
 
+  async AgregarCita(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/AgrearCitas" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
 
 }
