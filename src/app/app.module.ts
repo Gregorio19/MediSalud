@@ -37,6 +37,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
 import { PrincipalComponent } from './component/Cita/principal/principal.component';
 import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
 import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
+import { LoginComponent } from './component/Shared/login/login.component';
 
 
 
@@ -54,7 +55,8 @@ import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
     AregarHDocComponent,
     PrincipalComponent,
     ResumenCitaComponent,
-    AdmCitaComponent
+    AdmCitaComponent,
+    LoginComponent
 
   ],
   imports: [

@@ -13,6 +13,8 @@ import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.co
 
 import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
 
+import { LoginComponent } from './component/Shared/login/login.component';
+
 
 const routes: Routes = [
   { path: 'Cliente-Agenda', component: DatosClienteComponent},
@@ -24,6 +26,7 @@ const routes: Routes = [
   { path: 'Principal', component: PrincipalComponent},
   { path: 'Resumen', component: ResumenCitaComponent},
   { path: 'AdmCita', component: AdmCitaComponent},
+  { path: 'Login', component: LoginComponent},
   { path: '', component: DatosAgendaComponent},
   
 ];
