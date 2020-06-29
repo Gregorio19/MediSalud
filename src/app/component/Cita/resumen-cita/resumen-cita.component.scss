@@ -1,0 +1,122 @@
+@import "../../../../assets/scss/general.scss";
+.container-agenda{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $green-light;
+    height: calc(100% - 76px);
+    width: 100%;
+    .container{
+        background-color: $white;
+        padding: 20px 30px;
+        border: 1px solid $gray-dark;
+        -webkit-box-shadow: 2px 2px 5px 0px  $gray-dark;
+        -moz-box-shadow: 2px 2px 5px 0px  $gray-dark;
+        box-shadow: 2px 2px 5px 0px  $gray-dark;
+
+        .datos-paciente {
+            padding: 20px 30px;
+            .form-group {
+              margin-bottom: 0.8rem;
+              &.form-text {
+                margin-bottom: 0.3rem;
+              }
+            }
+            .estimado{
+                span{
+                    font-weight: 700;
+                    font-family: "AcuminVariableConcept";
+                    line-height: 8px;
+                }
+                p{
+                    font-size: 10px;
+                }
+            }
+            label {
+              font-family: Roboto;
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 14px;
+              display: flex;
+              align-items: center;
+              letter-spacing: 0.2em;
+              color: $gray-light;
+              margin-bottom: 0;
+            }
+            span {
+              font-family: Roboto;
+              font-style: normal;
+              font-weight: 500;
+              font-size: 16px;
+              line-height: 19px;
+              display: flex;
+              align-items: center;
+              color: $gray-dark;
+            }
+  
+            textarea::placeholder {
+              font-family: Roboto;
+              font-style: normal;
+              font-weight: 300;
+              font-size: 10px;
+              line-height: 12px;
+              display: flex;
+              align-items: center;
+              color: $gray;
+            }
+            textarea {
+              font-family: Roboto;
+              font-style: normal;
+              font-weight: 300;
+              font-size: 12px;
+              line-height: 19px;
+              display: flex;
+              align-items: center;
+              color: $gray-dark;
+              -webkit-box-shadow: 1px 1px 1px 0px $gray-dark;
+              -moz-box-shadow: 1px 1px 1px 0px $gray-dark;
+              box-shadow: 1px 1px 1px 0px $gray-dark;
+              border: none;
+            }
+            .div-outline {
+              background: $white;
+              -webkit-box-shadow: 1px 1px 1px 0px $gray-dark;
+              -moz-box-shadow: 1px 1px 1px 0px $gray-dark;
+              box-shadow: 1px 1px 1px 0px $gray-dark;
+              box-sizing: border-box;
+              border-radius: 3px;
+              font-family: Roboto;
+              font-style: normal;
+              font-weight: normal;
+              font-size: 16px;
+              line-height: 19px;
+              display: flex;
+              align-items: center;
+              color: $gray-dark;
+              height: 35.16px;
+              position: relative;
+              padding: 0 10px;
+  
+              .pi-times {
+                position: absolute;
+                right: 10px;
+                font-size: 14px;
+              }
+            }
+            
+          }
+          .datos-contacto{
+            span{
+                text-align: right;
+                font-family: Roboto;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 14px;
+                color: $gray-light;
+
+            }
+        }
+    }
+}

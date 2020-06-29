@@ -1,0 +1,54 @@
+  @font-face {
+    font-family: 'AcuminVariableConcept';
+    src: url('/assets/fonts/AcuminVariableConcept.eot'); /* IE9 Compat Modes */
+    src: url('/assets/fonts/AcuminVariableConcept.woff2') format('woff2'), /* Modern Browsers */
+        url('/assets/fonts/AcuminVariableConcept.ttf') format('truetype'); /* Safari, Android, iOS */
+    font-weight: normal;
+    font-style: normal;
+}
+  
+  @font-face {
+    font-family: "InkFree";
+    src: url("/assets/fonts/Inkfree.eot"); /* IE9 Compat Modes */
+    src: url("/assets/fonts/Inkfree.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+      url("/assets/fonts/Inkfree.otf") format("opentype"), /* Open Type Font */
+      url("/assets/fonts/Inkfree.svg") format("svg"), /* Legacy iOS */
+      url("/assets/fonts/Inkfree.ttf") format("truetype"), /* Safari, Android, iOS */
+      url("/assets/fonts/Inkfree.woff") format("woff"), /* Modern Browsers */
+      url("/assets/fonts/Inkfree.woff2") format("woff2"); /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Roboto-Black";
+    src: url("/assets/fonts/ROBOTO-BLACK.eot"); /* IE9 Compat Modes */
+    src: url("/assets/fonts/ROBOTO-BLACK.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+      url("/assets/fonts/ROBOTO-BLACK.otf") format("opentype"), /* Open Type Font */
+      url("/assets/fonts/ROBOTO-BLACK.svg") format("svg"), /* Legacy iOS */
+      url("/assets/fonts/ROBOTO-BLACK.ttf") format("truetype"), /* Safari, Android, iOS */
+      url("/assets/fonts/ROBOTO-BLACK.woff") format("woff"), /* Modern Browsers */
+      url("/assets/fonts/ROBOTO-BLACK.woff2") format("woff2"); /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Roboto-Regular";
+    src: url("/assets/fonts/ROBOTO-REGULAR.eot"); /* IE9 Compat Modes */
+    src: url("/assets/fonts/ROBOTO-REGULAR.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+      url("/assets/fonts/ROBOTO-REGULAR.otf") format("opentype"), /* Open Type Font */
+      url("/assets/fonts/ROBOTO-REGULAR.svg") format("svg"), /* Legacy iOS */
+      url("/assets/fonts/ROBOTO-REGULAR.ttf") format("truetype"), /* Safari, Android, iOS */
+      url("/assets/fonts/ROBOTO-REGULAR.woff") format("woff"), /* Modern Browsers */
+      url("/assets/fonts/ROBOTO-REGULAR.woff2") format("woff2"); /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+
+  * {
+    box-sizing: border-box;
+    font-family:  'roboto', 'roboto-black', 'Inkfree','AcuminVariableConcept';
+  }
+ 

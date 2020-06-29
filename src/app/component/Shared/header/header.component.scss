@@ -1,0 +1,31 @@
+@import "../../../../assets/scss/general.scss";
+
+.bg-redmedi{
+    background-color: $green;
+}
+.slogan{
+    font-family: 'InkFree';
+    font-size: 21px;
+    color: $white;
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
+
+@media (max-width: 575.98px) { 
+    .slogan{
+        font-size: 14px;
+    }
+ }
+
+@media (max-width: 767.98px) { 
+    
+ }
+
+@media (max-width: 991.98px) { 
+    
+ }
+
+@media (max-width: 1199.98px) {
+    
+ }

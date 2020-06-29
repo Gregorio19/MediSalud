@@ -1,0 +1,94 @@
+<div class="container-agenda">
+    <div class="row  container">
+        <div class="form-group col-12 col-sm-6">
+            <span for="RUT">Rut *</span>
+            <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Nombres *</span>
+            <input class="form-control" type="text" [(ngModel)]="Nombre">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="ApellidoP">Apellido Paterno *</span>
+            <input class="form-control" type="text" [(ngModel)]="ApellidoP">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="ApellidoM">Apellido Materno</span>
+            <input class="form-control" type="text" [(ngModel)]="ApellidoM">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <div class="row mx-0">
+                <span for="fechaN" class="col-12 col-sm-4 px-0">Fecha Nacimiento</span>
+                <div class="col-12 col-sm-8 px-0">
+                    <p-calendar 
+                        [(ngModel)]="fechaN" 
+                        [showIcon]="true" 
+                        [locale]="es" 
+                        dateFormat="dd/mm/yy"
+                        [monthNavigator]="true" 
+                        [yearNavigator]="true" 
+                        yearRange="1915:2030" 
+                        styleClass="medi_calendar"
+                        panelStyleClass="medi_calendar--panel" 
+                    ></p-calendar>
+                </div>
+            </div>
+            
+        </div>
+        <div class="form-group col-12 col-sm-6 ">
+            <div class="row mx-0">
+                <span for="Sexo" class="col-12 col-sm-4 px-0">Sexo</span>
+                <label class="form-check checkbox col-12 col-sm-4">Masculino
+                    <input class="form-check-input" type="radio" name="sexo" id="Masculino" value="option1"
+                        [(ngModel)]="sexo">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="form-check checkbox col-12 col-sm-4">Femenino
+                    <input class="form-check-input" type="radio" name="sexo" id="Femenino" value="option2"
+                        [(ngModel)]="sexo">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Direccion">Direccion</span>
+            <input class="form-control" type="text" [(ngModel)]="Direccion">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="NUmTel">Numero de Telefono</span>
+            <input class="form-control" type="text" [(ngModel)]="NUmTel">
+        </div>
+
+        <div class="form-group col-12 col-sm-6">
+            <span for="Correo">Correo</span>
+            <input class="form-control" type="text" [(ngModel)]="Correo">
+        </div>
+
+        <div class="form-group col-12 col-sm-6">
+            <span for="Prevision">Previsión</span>
+            <p-dropdown styleClass="w-100" [options]="Previciones" [(ngModel)]="Prevision" filter="true"
+                optionLabel="sNombre">
+            </p-dropdown>
+        </div>
+        <div class="form-group col-12 ">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="titular" [(ngModel)]="titular">
+                <label class="custom-control-label" for="titular">Es usted titular del presente</label>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6" *ngIf="titular">
+            <span for="RutTitular">RUT del Titular *</span>
+            <input class="form-control" type="text" [(ngModel)]="RutTitular" (blur)="CompararCliente()">
+        </div>
+        <div class="form-group col-12 col-sm-6" *ngIf="titular">
+            <span for="NombreTitular">Titular*</span>
+            <input class="form-control" type="text" [(ngModel)]="NombreTitular">
+
+        </div>
+
+
+        <button class="btn-siguiente ml-auto" (click)="AgregarCliente()">
+            <i class="pi pi-arrow-right"></i>
+        </button>
+    </div>
+</div>
