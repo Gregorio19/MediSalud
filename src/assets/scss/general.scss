@@ -17,3 +17,37 @@ $gray-hour: #DFE5ED;
 
 $scoll: #d0e1f9;
 $bg-icon: #c8cecd;
+
+
+.btn-medisalud-primary{
+    color: $white;
+    background-color: $green;
+    border-color: $green;  
+    &:hover,
+    &:not(:disabled):not(.disabled):active, 
+    &:not(:disabled):not(.disabled).active, 
+    &.show > .btn-primary.dropdown-toggle
+    &:focus,
+    &.focus{
+        color: $white;
+        background-color: $green-dark;
+        border-color: $green-dark;
+        box-shadow: none
+    }
+}
+.btn-medisalud-light{
+    color: $green-dark;
+    background-color: $white;
+    border-color: $green-dark;  
+    &:hover,
+    &:not(:disabled):not(.disabled):active, 
+    &:not(:disabled):not(.disabled).active, 
+    &.show > .btn-primary.dropdown-toggle
+    &:focus,
+    &.focus{
+        color: $white;
+        background-color: $green-dark;  
+        border-color: $green-dark;   
+        box-shadow: none
+    }
+}

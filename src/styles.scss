@@ -414,4 +414,22 @@ input[type="radio"].full:hover  + .hour_label{
   .ui-inputtext:enabled:focus:not(.ui-state-error){
     border-color: $gray-dark;
   }
+  .ui-chkbox .ui-chkbox-box.ui-state-active,
+  .ui-chkbox .ui-chkbox-box.ui-state-active:not(.ui-state-disabled):hover,
+  .ui-chkbox .ui-chkbox-box.ui-state-active:focus {
+    border-color: #65d4ce;
+    background-color: #65d4ce;
+    color: #ffffff;
+    outline: none;
+    box-sizing: none;
+  }   
+  .ui-column-filter {
+    display: block;
+    min-width: auto;
+    input {
+        width: 100%;
+    }
+  }
+
+
 }
