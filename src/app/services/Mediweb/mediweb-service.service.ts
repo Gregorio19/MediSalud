@@ -10,13 +10,30 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    this.apiUrl = "http://200.104.114.157/APImweb/api/v1";
+    //this.apiUrl = "http://200.104.114.157/APImweb/api/v1";
+    this.apiUrl = "http://localhost:59579/api/v1";
   }
 
   async AgregarSucursal(req) {
     try {
       return await this.http.post(
         this.apiUrl  + "/Cita/AgregarSucursal" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async ActualizarSucursal(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ActualizarSucursal" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -76,6 +93,22 @@ export class MediwebServiceService {
     }
   }
 
+  async ActualizarEspecialidad(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ActualizarEspecialidad" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async AgregarDocotr(req) {
     try {
       return await this.http.post(
@@ -92,10 +125,43 @@ export class MediwebServiceService {
     }
   }
 
+  async ActualizarDoctor(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ActualizarDoctor" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+
   async AgregarHorarioDoctor(req) {
     try {
       return await this.http.post(
         this.apiUrl  + "/Cita/AgrearHorariosDoc" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async ActualizaHorariosDoc(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ActualizaHorariosDoc" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =

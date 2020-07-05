@@ -7,7 +7,46 @@
             </div>
         </div>
         <div class="form-group col-12 col-md-6">
-            <div class="btn btn-medisalud-primary" (click)=" AgregarEspecialidad()">cargar</div>
+            <div class="btn btn-medisalud-primary" *ngIf="Editar == false" (click)=" AgregarEspecialidad()">cargar</div>
+            <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" ActualizarEspecialidad()">Actualizar
+            </div>
+            <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
+            </div>
         </div>
+    </div>
+    <div class="row">
+        <p-table #dt [columns]="cols" [value]="Especialidades" [paginator]="true" [rows]="10" sortMode="multiple"
+            [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+            styleClass="ui-table-customers" currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
+            [filterDelay]="0" [globalFilterFields]="['sNombre']">
+            <ng-template pTemplate="caption">
+                Especialidades
+                <div class="ui-table-globalfilter-container">
+                    <input pInputText class="form-control" type="text"
+                        (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Busqueda" />
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.nombre">
+                        {{col.header}}<p-sortIcon [field]="col.nombre"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns" (click)="Especialidad_seleccionado(rowData)">
+                        <div class="cortar-texto" >
+                            {{rowData[col.nombre]}}
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8" style="text-align:left">No se encontraron Especialidades Agregadas.</td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
 </div>

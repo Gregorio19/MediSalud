@@ -19,6 +19,11 @@ export class SucursalComponent implements OnInit {
   options: any;
   overlays: any[];
 
+  id;
+  Editar;
+  Sucursales;
+  cols;
+
   constructor(private MapaserviceService: MapaserviceService, private MediwebServiceService: MediwebServiceService) { }
 
   ngOnInit(): void {
@@ -26,6 +31,14 @@ export class SucursalComponent implements OnInit {
       center: { lat: -33.44889, lng: -70.69265 },
       zoom: 12
     };
+    this.Editar = false;
+    this.TraerSucursales();
+    this.cols = [
+      { header: 'Nombre', nombre: 'sNombre' },
+      { header: 'Hora Inicio', nombre: 'iHIni' },
+      { header: 'Hora  Fin', nombre: 'iHFin' },
+      { header: 'Direccion', nombre: 'sDirec' }
+    ];
 
 
 
@@ -63,20 +76,78 @@ export class SucursalComponent implements OnInit {
     this.overlays = [new google.maps.Marker({ position: { lat: lat, lng: long }, title: "mapa", draggable: false })];
   }
 
-async CrearSucursal(){
+  async CrearSucursal() {
 
-  var Sucursal = {
-    "nombre": this.Nombre,
-    "direccion": this.Direccion,
-    "horaInicio": this.Horini,
-    "horaFin": this.Horafin,
-    "latitud": this.Latitud.toString(),
-    "longitud": this.Longitud.toString()
-  }
-  console.log(Sucursal);
-  
-  var respuesta = await this.MediwebServiceService.AgregarSucursal(Sucursal);
+    var Sucursal = {
+      "nombre": this.Nombre,
+      "direccion": this.Direccion,
+      "horaInicio": this.Horini,
+      "horaFin": this.Horafin,
+      "latitud": this.Latitud.toString(),
+      "longitud": this.Longitud.toString()
+    }
+    console.log(Sucursal);
+
+    var respuesta = await this.MediwebServiceService.AgregarSucursal(Sucursal);
     console.log(respuesta);
-}
+  }
+
+  async TraerSucursales() {
+    var GetSucursales = { "Tipo": "S" }
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(GetSucursales);
+    var JsonSucursales = JSON.parse(respuesta.toString());
+    console.log(JsonSucursales);
+    this.Sucursales = JsonSucursales;
+  }
+
+  Sucursal_seleccionado(doc) {
+    var horainicio = (parseInt(doc["iHIni"])<10 ?  "0"+doc["iHIni"] : doc["iHIni"]) +":"+  (parseInt(doc["iMFin"])<10 ?  "0"+doc["iMFin"] : doc["iMFin"]);
+    var horaFin = (parseInt(doc["iHFin"])<10 ?  "0"+doc["iHFin"] : doc["iHFin"]) +":"+  (parseInt(doc["iMFin"])<10 ?  "0"+doc["iMFin"] : doc["iMFin"]);
+
+    console.log(doc);
+    this.Editar = true;
+    this.id = doc["iIdSuc"];
+    this.Nombre = doc["sNombre"];
+    this.Direccion = doc["sDirec"];
+    this.Horini = horainicio;
+    this.Horafin = horaFin;
+    this.Latitud =parseFloat(doc["slati"]);
+    this.Longitud = parseFloat(doc["slong"]) ;
+    
+  }
+
+  async ActualizarSucursal() {
+    var Sucursal = {
+      "id": this.id.toString(),
+      "nombre": this.Nombre,
+      "direccion": this.Direccion,
+      "horaInicio": this.Horini,
+      "horaFin": this.Horafin,
+      "latitud": this.Latitud.toString(),
+      "longitud": this.Longitud.toString()
+    }
+    console.log(Sucursal);
+
+    var respuesta = await this.MediwebServiceService.ActualizarSucursal(Sucursal);
+    console.log(respuesta);
+    this.TraerSucursales();
+
+  }
+  Cargar_Nuevamente() {
+    this.Editar = false;
+    this.id = "";
+    this.Nombre = "";
+    this.Direccion = "";
+    this.Horini = "";
+    this.Horafin = "";
+    this.Latitud = "";
+    this.Longitud = "";
+
+  }
+
+  formathora(hora,minutos){
+    var horainicio = (parseInt(hora)<10 ?  "0"+hora : hora) +":"+  (parseInt(minutos)<10 ?  "0"+minutos : minutos);
+  return horainicio;
+  }
 
 }

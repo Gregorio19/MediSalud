@@ -1,0 +1,141 @@
+.cortar-texto{
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@import "../../../../assets/scss/general.scss";
+:host ::ng-deep .ui-table-customers {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+
+    .ui-table-caption{
+        background-color: $white;
+    }
+    .ui-paginator {
+        .ui-dropdown {
+            float: left;
+        }
+
+        .ui-paginator-current {
+            float: right;
+        }
+    }
+    .ui-paginator .ui-dropdown {
+        min-width: 4em;
+    }
+
+    .ui-column-filter {
+        display: block;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    .ui-table-globalfilter-container {
+        float: right;
+
+        input {
+            width: 200px;
+        }
+    }
+
+    .ui-datepicker {
+        min-width: 25em;
+
+        td {
+            font-weight: 400;
+        }
+    }
+
+    .ui-table-caption {
+        border: 0 none;
+        padding: 12px;
+        text-align: left;
+        font-size: 20px;
+    }
+
+    .ui-paginator {
+        border: 0 none;
+        padding: 1em;
+    }
+
+    .ui-table-thead > tr > th {
+        border: 0 none;
+        text-align: left;
+        background-color: $green;
+        color: $white;
+
+        &.ui-filter-column {
+            border-top: 1px solid $gray-dark;
+        }
+
+    }
+    .ui-sortable-column:focus {
+        box-shadow: none;
+    }
+    .ui-sortable-column-icon{
+        color: $white !important;
+
+    }
+    .ui-sortable-column:not(.ui-state-highlight):hover{
+        background-color: $green-dark;
+        color: $white !important;
+    }
+    .ui-paginator 
+    {
+        background-color: $green-light;
+        .ui-paginator-pages .ui-paginator-page.ui-state-active{
+        background-color: $green;
+
+        }
+    }
+    body .ui-table .ui-table-tbody > tr:nth-child(even)
+    {
+        background-color: $green-light;
+
+    }
+    .ui-table-tbody > tr > td {
+        border: 0 none;
+        cursor: auto;
+
+    }
+
+    .ui-dropdown-label:not(.ui-placeholder) {
+        text-transform: uppercase;
+    }
+
+    .ui-table-tbody > tr > td .ui-column-title {
+        display: none;
+    }
+}
+
+/* Responsive */
+@media screen and (max-width: 64em) {
+    :host ::ng-deep .ui-table {
+        &.ui-table-customers {
+            .ui-table-thead > tr > th,
+            .ui-table-tfoot > tr > td {
+                display: none !important;
+            }
+
+            .ui-table-tbody > tr > td {
+                text-align: left;
+                display: block;
+                border: 0 none !important;
+                width: 100% !important;
+                float: left;
+                clear: left;
+                border: 0 none;
+
+                .ui-column-title {
+                    padding: .4em;
+                    min-width: 30%;
+                    display: inline-block;
+                    margin: -.4em 1em -.4em -.4em;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

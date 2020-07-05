@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'Resumen', component: ResumenCitaComponent},
   { path: 'AdmCita', component: AdmCitaComponent},
   { path: 'Login', component: LoginComponent},
-  { path: '', component: DatosAgendaComponent},
+  { path: '', component: PrincipalComponent},
   
 ];
 
