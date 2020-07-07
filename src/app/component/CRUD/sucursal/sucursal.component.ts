@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MapaserviceService } from '../../../services/mapa/mapaservice.service';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-sucursal',
   templateUrl: './sucursal.component.html',
-  styleUrls: ['./sucursal.component.scss']
+  styleUrls: ['./sucursal.component.scss'],
+  providers: [MessageService]
 })
 export class SucursalComponent implements OnInit {
 
@@ -24,9 +26,11 @@ export class SucursalComponent implements OnInit {
   Sucursales;
   cols;
 
-  constructor(private MapaserviceService: MapaserviceService, private MediwebServiceService: MediwebServiceService) { }
+  constructor(private MapaserviceService: MapaserviceService, private MediwebServiceService: MediwebServiceService, private MessageService:MessageService) { }
 
   ngOnInit(): void {
+    this.Nombre = "";
+    this.Direccion = "";
     this.options = {
       center: { lat: -33.44889, lng: -70.69265 },
       zoom: 12
@@ -62,34 +66,65 @@ export class SucursalComponent implements OnInit {
   }
 
   async obtenerlatlon(map) {
-    var respuesta = await this.MapaserviceService.ObtenerLatLong(this.Direccion);
-    var direccion = JSON.parse(respuesta.toString())
-    console.log(direccion);
-    var lat = direccion["results"]["0"]["geometry"]["location"].lat;
-    var long = direccion["results"]["0"]["geometry"]["location"].lng;
-    this.Latitud = lat;
-    this.Longitud = long;
-    console.log(long);
+    if (this.Direccion == "" ) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe ingresar una direccion para ubicar la sucursal en el mapa'});
+    }
+    else{
+      var respuesta = await this.MapaserviceService.ObtenerLatLong(this.Direccion);
+      var direccion = JSON.parse(respuesta.toString())
+      console.log(direccion);
+      var lat = direccion["results"]["0"]["geometry"]["location"].lat;
+      var long = direccion["results"]["0"]["geometry"]["location"].lng;
+      this.Latitud = lat;
+      this.Longitud = long;
+      console.log(long);
+  
+      map.setCenter({ lat: lat, lng: long });
+      map.setZoom(16);
+      this.overlays = [new google.maps.Marker({ position: { lat: lat, lng: long }, title: "mapa", draggable: false })];
+    }
 
-    map.setCenter({ lat: lat, lng: long });
-    map.setZoom(16);
-    this.overlays = [new google.maps.Marker({ position: { lat: lat, lng: long }, title: "mapa", draggable: false })];
   }
 
   async CrearSucursal() {
 
-    var Sucursal = {
-      "nombre": this.Nombre,
-      "direccion": this.Direccion,
-      "horaInicio": this.Horini,
-      "horaFin": this.Horafin,
-      "latitud": this.Latitud.toString(),
-      "longitud": this.Longitud.toString()
+    if (this.Horini == undefined ) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe indicar una hora de Apertura para la sucursal'});
     }
-    console.log(Sucursal);
+    else if (this.Horafin == undefined ) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe indicar una hora de Cierre para la sucursal'});
+    }
+    else if (this.Horafin <  this.Horini ) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Datos Incorrectos', detail:'La Hora de cierre no puede ser menor a la hora de apertura'});
+    }
+    else if (this.Nombre == "" ) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'El nombre no puede estar vacio'});
+    }
+    else if (this.Direccion == "" ) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe ingresar una direccion para ubicar la sucursal en el mapa'});
+    }
+    else {
+      var Sucursal = {
+        "nombre": this.Nombre,
+        "direccion": this.Direccion,
+        "horaInicio": this.Horini,
+        "horaFin": this.Horafin,
+        "latitud": this.Latitud.toString(),
+        "longitud": this.Longitud.toString()
+      }
+      console.log(Sucursal);
+  
+      var respuesta = await this.MediwebServiceService.AgregarSucursal(Sucursal);
+      console.log(respuesta);
+    }
 
-    var respuesta = await this.MediwebServiceService.AgregarSucursal(Sucursal);
-    console.log(respuesta);
+
   }
 
   async TraerSucursales() {

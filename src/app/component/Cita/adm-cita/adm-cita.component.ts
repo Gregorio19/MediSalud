@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
 import { Router } from '@angular/router';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-adm-cita',
   templateUrl: './adm-cita.component.html',
-  styleUrls: ['./adm-cita.component.scss']
+  styleUrls: ['./adm-cita.component.scss'],
+  providers: [MessageService]
 })
 export class AdmCitaComponent implements OnInit {
 
@@ -15,7 +17,6 @@ export class AdmCitaComponent implements OnInit {
   Especialidad;
   Especialidades;
   EstadosCIta;
-
   fechaI: Date
   fechaF: Date
   es;
@@ -26,10 +27,9 @@ export class AdmCitaComponent implements OnInit {
   filtros: string;
   ItemsArray;
 
-  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router) { }
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService:MessageService) { }
 
   ngOnInit(): void {
-
     this.filtros = "";
     this.GetSucursales();
 
@@ -95,18 +95,23 @@ export class AdmCitaComponent implements OnInit {
   }
 
   async GetAllCitas() {
-    var parametro = {
-      "idSuc": this.Sucursal["iIdSuc"],
-      "idDoc": this.Especialidad["iIdEsp"],
-      "fechaI": this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate(),
-      "fechaF": this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate()
+    if (this.fechaI == undefined || this.fechaF == undefined) {
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe inidicar una fecha de inicio y fecha de fin de la cita a consultar'});
     }
-    var respuesta = await this.MediwebServiceService.GetAllCitas(parametro);
-    var citas = JSON.parse(respuesta.toString());
-    console.log(citas);
-    this.CItas = citas;
-    this.ItemsArray = citas;
-
+    else{
+      var parametro = {
+        "idSuc": this.Sucursal["iIdSuc"],
+        "idDoc": this.Especialidad["iIdEsp"],
+        "fechaI": this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate(),
+        "fechaF": this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate()
+      }
+      var respuesta = await this.MediwebServiceService.GetAllCitas(parametro);
+      var citas = JSON.parse(respuesta.toString());
+      console.log(citas);
+      this.CItas = citas;
+      this.ItemsArray = citas;
+    }
   }
 
   filtrar() {

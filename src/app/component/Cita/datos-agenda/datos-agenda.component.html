@@ -5,7 +5,7 @@
                 <div class="title-resumen">
                     <h4>RESUMEN</h4>
                     <p>
-                        Edite los datos a conveniencia
+                        Datos del Cliente y datos seleccionados
                     </p>
                 </div>
                 <div class="datos-paciente">
@@ -14,7 +14,7 @@
                             PACIENTE
                         </label>
                         <span>
-                            Pedro Pablo Perez Gonzalez
+                            {{cliente["nombre"]}}
                         </span>
                     </div>
                     <div class="form-group form-text">
@@ -22,15 +22,15 @@
                             RUT
                         </label>
                         <span>
-                            12.345.678-9
+                            {{formateaRut(cliente["rut"])}}
                         </span>
                     </div>
                     <div class="form-group form-text">
                         <label>
-                            SEDE
+                            Correo
                         </label>
                         <span>
-                            Rigoberto Jara 365
+                            {{cliente["mail"]}}
                         </span>
                     </div>
                     <div class="form-group div-outline mt-2">
@@ -65,6 +65,7 @@
             </div>
         </div>
         <div class="col-12 col-md-9 box-selected">
+            <p-toast position="top-right" key="tc"></p-toast>
             <div class="row mx-0">
                 <div class="col-12 col-md-6 ">
                     <div class="row ">

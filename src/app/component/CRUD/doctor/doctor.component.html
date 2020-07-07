@@ -3,23 +3,26 @@
     <div class="row">
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">Nombre Doctor</label>
+            <label for="especialidades">Nombre Doctor</label> <span class="text-danger"> {{NombreValidotext}}</span>
             <input type="text" class="form-control" [(ngModel)]="nombre" placeholder="Ingrese nombre del Doctor">
         </div>
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">RUT</label>
-            <input type="text" class="form-control" [(ngModel)]="rut" placeholder="Ingrese RUT del doctor">
+            <label for="especialidades">RUT</label> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <input type="text" class="form-control" [(ngModel)]="rut" placeholder="Ingrese RUT del doctor"
+                (blur)="comprobarRut()">
         </div>
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">Telefono</label>
-            <input type="text" class="form-control" [(ngModel)]="tel" placeholder="Ingrese Telefono">
+            <label for="especialidades">Telefono</label> <span class="text-danger"> {{telefonovalidotext}}</span>
+            <input type="text" class="form-control" [(ngModel)]="tel" placeholder="Ingrese Telefono"
+                (blur)="compexreg_tel()">
         </div>
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">Mail</label>
-            <input type="text" class="form-control" [(ngModel)]="mail" placeholder="Ingrese Correo del Doctor">
+            <label for="especialidades">Mail</label> <span class="text-danger"> {{emailvalidotext}}</span>
+            <input type="text" class="form-control" [(ngModel)]="mail" placeholder="Ingrese Correo del Doctor"
+                (blur)="compexreg_email()">
         </div>
 
         <div class="form-group col-12 ">

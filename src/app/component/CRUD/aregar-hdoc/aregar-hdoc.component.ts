@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-aregar-hdoc',
   templateUrl: './aregar-hdoc.component.html',
-  styleUrls: ['./aregar-hdoc.component.scss']
+  styleUrls: ['./aregar-hdoc.component.scss'],
+  providers: [MessageService]
 })
 export class AregarHDocComponent implements OnInit {
 
@@ -32,7 +34,7 @@ export class AregarHDocComponent implements OnInit {
   pressEspecialidad: boolean;
   pressTiempo: boolean;
   pressSucursal: boolean;
-  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router) { }
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
   ngOnInit(): void {
     this.GetDoctores();
@@ -74,24 +76,43 @@ export class AregarHDocComponent implements OnInit {
 
   changePress(presionado) {
     if (presionado == "D") {
+      this.horario = undefined;
+
+      this.Sucursal = undefined;
+      this.Especialidad = undefined;
+
+      this.pressEspecialidad = false;
+      this.pressTiempo = false;
+      this.pressSucursal = false;
       this.pressdoctor = true;
     }
 
     if (presionado == "E") {
       this.pressEspecialidad = true;
+
+      this.Sucursal = undefined;
+      this.horario = undefined;
+      this.Sucursal = undefined;
+
+      this.pressTiempo = false;
+      this.pressSucursal = false;
     }
 
     if (presionado == "T") {
       this.pressTiempo = true;
       this.OrdenarHorarios();
+
+      this.pressSucursal = false;
+      this.Sucursal = undefined;
     }
 
     if (presionado == "S") {
       this.pressSucursal = true;
       this.OrdenarHorarios();
+
     }
 
-    
+
   }
 
   async GetDoctores() {
@@ -100,8 +121,8 @@ export class AregarHDocComponent implements OnInit {
     await this.GetEspecialidad();
     await this.GetSucursales();
     var primeratributo = JSON.parse(respuesta.toString());
-    this.Doctores = [];  
-    this.Doctores.unshift({"sNombre": "Seleccione"});
+    this.Doctores = [];
+    this.Doctores.unshift({ "sNombre": "Seleccione" });
     primeratributo.forEach(element => {
       this.Doctores.push(element);
     });
@@ -116,8 +137,8 @@ export class AregarHDocComponent implements OnInit {
     var getSuc = { "Tipo": "S" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getSuc);
     var primeratributo = JSON.parse(respuesta.toString());
-    this.Sucursusales = [];  
-    this.Sucursusales.unshift({"sNombre": "Seleccione"});
+    this.Sucursusales = [];
+    this.Sucursusales.unshift({ "sNombre": "Seleccione" });
     primeratributo.forEach(element => {
       this.Sucursusales.push(element);
     });
@@ -128,8 +149,8 @@ export class AregarHDocComponent implements OnInit {
     var getEsp = { "Tipo": "E" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
     var primeratributo = JSON.parse(respuesta.toString());
-    this.Especialidades = [];  
-    this.Especialidades.unshift({"sNomEsp": "Seleccione"});
+    this.Especialidades = [];
+    this.Especialidades.unshift({ "sNomEsp": "Seleccione" });
     primeratributo.forEach(element => {
       this.Especialidades.push(element);
     });
@@ -143,12 +164,12 @@ export class AregarHDocComponent implements OnInit {
       this.horas.push({ "Hora": "Seleccione" });
       for (let index = this.Sucursal["iHIni"]; index < (this.Sucursal["iHFin"] + 1); index++) {
         if (index < 10) {
-          this.horas.push({ "Hora": "0"+index.toString() });
+          this.horas.push({ "Hora": "0" + index.toString() });
         }
-        else{
+        else {
           this.horas.push({ "Hora": index.toString() });
         }
-        
+
       }
       this.minutosI = [];
       this.minutosF = [];
@@ -160,19 +181,19 @@ export class AregarHDocComponent implements OnInit {
       for (let index = 0; index < 11; index++) {
         tiempousado += 5;
         if (tiempousado >= this.Sucursal["iMIni"]) {
-          if (tiempousado == 5 ) {
+          if (tiempousado == 5) {
             this.minutosI.push({ "Minuto": "05" });
           }
-          else{
+          else {
             this.minutosI.push({ "Minuto": tiempousado.toString() });
           }
-          
+
         }
         if (tiempousado <= this.Sucursal["iMFin"]) {
-          if (tiempousado == 5 ) {
+          if (tiempousado == 5) {
             this.minutosF.push({ "Minuto": "05" });
           }
-          else{
+          else {
             this.minutosF.push({ "Minuto": tiempousado.toString() });
           }
         }
@@ -180,52 +201,62 @@ export class AregarHDocComponent implements OnInit {
     }, 1000);
   }
 
-  async AgregarHorarioDoc(){
+  async AgregarHorarioDoc() {
+    // if (this.Direccion == "") {
+    //   this.MessageService.clear();
+    //   this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe ingresar una direccion para ubicar la sucursal en el mapa' });
+    // }
+
     var newhorarios = "";
     this.horariosxDia.forEach(element => {
       console.log(element);
-      
+
       if (element.Act == true) {
         if (element.dia == "Lunes") {
-          newhorarios += "lu,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "lu," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
         if (element.dia == "Martes") {
-          newhorarios += "ma,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "ma," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
         if (element.dia == "Miercoles") {
-          newhorarios += "mi,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "mi," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
         if (element.dia == "Jueves") {
-          newhorarios += "ju,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "ju," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
         if (element.dia == "Viernes") {
-          newhorarios += "vi,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "vi," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
         if (element.dia == "Sabado") {
-          newhorarios += "sa,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "sa," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
         if (element.dia == "Domingo") {
-          newhorarios += "do,"+element.horaI.Hora+","+element.minI.Minuto+","+element.horaF.Hora+","+element.minF.Minuto+";"
+          newhorarios += "do," + element.horaI.Hora + "," + element.minI.Minuto + "," + element.horaF.Hora + "," + element.minF.Minuto + ";"
         }
       }
     });
 
-    if (newhorarios != "") {
-      newhorarios = newhorarios.substring(0,newhorarios.length-1)
+    if (newhorarios != "" && !newhorarios.includes("undefined")) {
+      newhorarios = newhorarios.substring(0, newhorarios.length - 1)
+      console.log(newhorarios);
+
+      var newhdco = {
+        "iddoc": this.Doctor["iIdDoc"].toString(),
+        "idSuc": this.Sucursal["iIdSuc"].toString(),
+        "idEsp": this.Especialidad["iIdEsp"].toString(),
+        "tpoAte": this.horario["min"].toString(),
+        "hab": "1",
+        "horarios": newhorarios
+      }
+      // await this.MediwebServiceService.AgregarHorarioDoctor(newhdco);
+      console.log(newhdco);
     }
-    console.log(newhorarios);
-    
-    var newhdco = {
-      "iddoc": this.Doctor["iIdDoc"].toString(),
-      "idSuc": this.Sucursal["iIdSuc"].toString(),
-      "idEsp": this.Especialidad["iIdEsp"].toString(),
-      "tpoAte":this.horario["min"].toString(),
-      "hab": "1",
-      "horarios": newhorarios
+    else {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe ingresar al menos un dia y llenarlo' });
     }
-    await this.MediwebServiceService.AgregarHorarioDoctor(newhdco);
-    console.log(newhdco);
-    
+
+
   }
 
 }

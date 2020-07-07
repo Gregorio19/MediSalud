@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
+import {MessageService} from 'primeng/api';
+import {Router} from '@angular/router';
 interface City {
   name: string;
   code: string;
@@ -8,7 +10,8 @@ interface City {
 @Component({
   selector: 'app-datos-agenda',
   templateUrl: './datos-agenda.component.html',
-  styleUrls: ['./datos-agenda.component.scss']
+  styleUrls: ['./datos-agenda.component.scss'],
+  providers: [MessageService]
 })
 
 export class DatosAgendaComponent implements OnInit {
@@ -22,6 +25,8 @@ export class DatosAgendaComponent implements OnInit {
   calendarHorario: Date;
   invalidDates: Array<Date> = new Array<Date>();
   worksDate: Array<Date> = new Array<Date>();
+
+  cliente
 
   especialidad: string;
   sucursal: string;
@@ -42,21 +47,16 @@ export class DatosAgendaComponent implements OnInit {
   Descripcion;
 
   overlays: any[];
+  Clintes;
 
-  constructor(private MediwebServiceService: MediwebServiceService) {
+  constructor(private MediwebServiceService: MediwebServiceService, private messageService: MessageService, private Router:Router ) {
   }
 
   ngOnInit(): void {
-
-    let invalidDate = moment("10/06/2020", "DD/MM/YYYY").toDate();
-    let workDate = moment("11/06/2020", "DD/MM/YYYY").toDate();
-    let workDate2 = moment("12/06/2020", "DD/MM/YYYY").toDate();
+    this.cliente = JSON.parse(localStorage.getItem('Cliente'));
+    console.log(this.cliente);
     this.traerEspecialidad();
-
-
-    this.invalidDates = [invalidDate];
-    this.worksDate = [workDate, workDate2];
-
+    this.GetClientes();
     this.options = {
       center: { lat: 36.890257, lng: 30.707417 },
       zoom: 12
@@ -85,20 +85,41 @@ export class DatosAgendaComponent implements OnInit {
     setTimeout(() => {
       if (tipo == "E") {
         this.SelecEspecialidad = true;
-        console.log(this.especialidad);
+        this.SelecSucursal = false;
+        this.SelecDoctor = false;
+
+        this.sucursales = undefined;
+        this.medico = undefined;
+        this.worksDate = [];
+        this.Horas = [];
+
+        this.sucursal = undefined;
+        this.Doctor = undefined;
+        this.FechaSelect = undefined;
+        this.HoraSelect = undefined;
+
 
         this.traerSucursales();
       }
       if (tipo == "S") {
         this.SelecSucursal = true;
+        this.SelecDoctor = false;
 
-        var Latitud:number = parseFloat(this.sucursal["slati"]);
-        var Longitud:number = parseFloat(this.sucursal["slong"]);
+        this.medico = undefined;
+        this.worksDate = [];
+        this.Horas = [];
+
+        this.Doctor = undefined;
+        this.FechaSelect = undefined;
+        this.HoraSelect = undefined;
+
+        var Latitud: number = parseFloat(this.sucursal["slati"]);
+        var Longitud: number = parseFloat(this.sucursal["slong"]);
 
         console.log(Latitud);
         console.log(Longitud);
-        
-        
+
+
 
         map.setCenter({ lat: Latitud, lng: Longitud });
         map.setZoom(14);
@@ -110,6 +131,11 @@ export class DatosAgendaComponent implements OnInit {
         console.log(this.Doctor);
 
         this.SelecDoctor = true;
+        this.worksDate = [];
+        this.Horas = [];
+
+        this.FechaSelect = undefined;
+        this.HoraSelect = undefined;
         this.obtenerDiasDetrabajo();
       }
       if (tipo == "F") {
@@ -163,6 +189,17 @@ export class DatosAgendaComponent implements OnInit {
 
     this.medico = doctores;
     console.log(this.medico);
+  }
+
+  async GetClientes() {
+
+    var getcli = {
+      "Tipo": "C"
+    }
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+
+    this.Clintes = JSON.parse(respuesta.toString());
+    console.log(this.Clintes);
   }
 
   obtenerDiasDetrabajo() {
@@ -220,6 +257,8 @@ export class DatosAgendaComponent implements OnInit {
   }
 
   onSelect($event) {
+    this.Horas = [];
+    this.HoraSelect = undefined;
     console.log("entro", $event);
 
     let day = new Date($event).getDate();
@@ -297,21 +336,72 @@ export class DatosAgendaComponent implements OnInit {
 
   async AgregarCita() {
 
-    var req = {
-      "idCita": "1",
-      "idCliente": "1",
-      "idSucursal": this.sucursal["iIdSuc"].toString(),
-      "idDoctor": this.Doctor["iIdDoc"].toString(),
-      "idEsp": this.especialidad["iIdEsp"].toString(),
-      "idPrev": "1",
-      "fecha": this.FechaSelect.toString(),
-      "hora": this.HoraSelect.toString(),
-      "descripcion": this.Descripcion.toString()
+    if (this.especialidad == undefined) {
+      this.messageService.clear();
+      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar una especialidad'});
+    }
+    else if (this.sucursal == undefined) {
+      this.messageService.clear();
+      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar una Sucursal'});
+    }
+    else if (this.Doctor == undefined) {
+      this.messageService.clear();
+      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar un Doctor'});
+    }
+    else if (this.FechaSelect == undefined) {
+      this.messageService.clear();
+      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar un dia para cita'});
+    }
+    else if (this.FechaSelect < moment().format("YYYY-MM-DD")) {
+      this.messageService.clear();
+      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'El dia elegido debe ser mayor a la fecha actual'});
+    }
+    else if (this.HoraSelect == undefined) {
+      this.messageService.clear();
+      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar una hora para cita'});
+    }
+    else{
+
+      var clienteSelect 
+
+      this.Clintes.forEach(element => {
+        if (element["sRutCli"] == this.cliente.rut) {
+          clienteSelect = element;
+          console.log(clienteSelect);
+        }
+      });
+
+      var req = {
+        "idCita": "1",
+        "idCliente": clienteSelect["iIdCli"]+"",
+        "idSucursal": this.sucursal["iIdSuc"].toString(),
+        "idDoctor": this.Doctor["iIdDoc"].toString(),
+        "idEsp": this.especialidad["iIdEsp"].toString(),
+        "idPrev": clienteSelect["iIdPrev"]+"",
+        "fecha": this.FechaSelect.toString(),
+        "hora": this.HoraSelect.toString(),
+        "descripcion": this.Descripcion != undefined ? this.Descripcion:""
+      }
+
+      var Cita = {
+        "Sucursal": this.sucursal["sNombre"].toString(),
+        "Direccion": this.sucursal["sDirec"].toString(),
+        "Doctor": this.Doctor["sNombre"].toString(),
+        "Especialidad": this.especialidad["sNomEsp"].toString(),
+        "fecha": this.FechaSelect.toString(),
+        "hora": this.HoraSelect.toString(),
+        "descripcion": this.Descripcion != undefined ? this.Descripcion:""
+      }
+
+      localStorage.setItem('DatosCita', JSON.stringify(Cita));
+  
+      console.log(req);
+      var respuesta = this.MediwebServiceService.AgregarCita(req);
+      console.log(respuesta);
+      this.Router.navigate(["Resumen"]);
+
     }
 
-    console.log(req);
-    var respuesta = this.MediwebServiceService.AgregarCita(req);
-    console.log(respuesta);
 
   }
   imprimir(alo) {
@@ -319,6 +409,29 @@ export class DatosAgendaComponent implements OnInit {
 
   }
 
+  formateaRut(rut) {
+
+    var actual = rut.replace(/^0+/, "");
+    if (actual != '' && actual.length > 1) {
+      var sinPuntos = actual.replace(/\./g, "");
+      var actualLimpio = sinPuntos.replace(/-/g, "");
+      var inicio = actualLimpio.substring(0, actualLimpio.length - 1);
+      var rutPuntos = "";
+      var i = 0;
+      var j = 1;
+      for (i = inicio.length - 1; i >= 0; i--) {
+        var letra = inicio.charAt(i);
+        rutPuntos = letra + rutPuntos;
+        if (j % 3 == 0 && j <= inicio.length - 1) {
+          rutPuntos = "." + rutPuntos;
+        }
+        j++;
+      }
+      var dv = actualLimpio.substring(actualLimpio.length - 1);
+      rutPuntos = rutPuntos + "-" + dv;
+    }
+    return rutPuntos;
+  }
 
 
 }

@@ -1,5 +1,6 @@
 <div class="container mt-3">
     <div class="row">
+        <p-toast position="top-right" key="tc"></p-toast>
         <div class="form-group col-12 col-md-6">
             <label for="Doctores">Doctores</label>
             <p-dropdown [options]="Doctores" (ngModelChange)="changePress('D')" [(ngModel)]="Doctor" filter="true"

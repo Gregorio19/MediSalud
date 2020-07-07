@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GMapModule} from 'primeng/gmap';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule } from 'primeng/table';
+import {ToastModule} from 'primeng/toast';
 
 
 
@@ -65,6 +66,7 @@ import { LoginComponent } from './component/Shared/login/login.component';
     AppRoutingModule,
     FormsModule,
     CalendarModule,
+    ToastModule,
     CheckboxModule,
     HttpClientModule,
     RadioButtonModule,
