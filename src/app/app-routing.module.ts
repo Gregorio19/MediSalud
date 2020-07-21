@@ -14,6 +14,9 @@ import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.co
 import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
 
 import { LoginComponent } from './component/Shared/login/login.component';
+import { EditClienteComponent } from './component/CRUD/Edit-Cliente/edit-cliente/edit-cliente.component';
+import { DashboardComponent } from './component/CRUD/dashboard/dashboard.component';
+
 
 
 const routes: Routes = [
@@ -27,7 +30,11 @@ const routes: Routes = [
   { path: 'Resumen', component: ResumenCitaComponent},
   { path: 'AdmCita', component: AdmCitaComponent},
   { path: 'Login', component: LoginComponent},
+  { path: 'EditCliente', component: EditClienteComponent},
+  { path: 'DashBoard', component: DashboardComponent},
+  
   { path: '', component: PrincipalComponent},
+  { path: '**', redirectTo: '' }
   
 ];
 

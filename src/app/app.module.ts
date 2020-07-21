@@ -15,6 +15,7 @@ import {GMapModule} from 'primeng/gmap';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule } from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
+import {FileUploadModule} from 'primeng/fileupload';
 
 
 
@@ -26,19 +27,24 @@ import { MediwebServiceService } from './services/Mediweb/mediweb-service.servic
 import { DatosClienteComponent } from './component/Cita/datos-cliente/datos-cliente.component';
 import { DatosAgendaComponent } from './component/Cita/datos-agenda/datos-agenda.component';
 import { HeaderComponent } from './component/Shared/header/header.component';
+import { PrincipalComponent } from './component/Cita/principal/principal.component';
+import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
+
+
 
 //CRUD
 import { SucursalComponent } from './component/CRUD/sucursal/sucursal.component';
 import { EspecialidadComponent } from './component/CRUD/especialidad/especialidad.component';
 import { DoctorComponent } from './component/CRUD/doctor/doctor.component';
 import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.component';
+import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
+import { LoginComponent } from './component/Shared/login/login.component';
+import { EditClienteComponent } from './component/CRUD/Edit-Cliente/edit-cliente/edit-cliente.component';
+import { DashboardComponent } from './component/CRUD/dashboard/dashboard.component';
 
 // Google Maps de Angular 9 
 import {GoogleMapsModule} from '@angular/google-maps';
-import { PrincipalComponent } from './component/Cita/principal/principal.component';
-import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
-import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
-import { LoginComponent } from './component/Shared/login/login.component';
+
 
 
 
@@ -57,7 +63,9 @@ import { LoginComponent } from './component/Shared/login/login.component';
     PrincipalComponent,
     ResumenCitaComponent,
     AdmCitaComponent,
-    LoginComponent
+    LoginComponent,
+    EditClienteComponent,
+    DashboardComponent
 
   ],
   imports: [
@@ -67,6 +75,7 @@ import { LoginComponent } from './component/Shared/login/login.component';
     FormsModule,
     CalendarModule,
     ToastModule,
+    FileUploadModule,
     CheckboxModule,
     HttpClientModule,
     RadioButtonModule,

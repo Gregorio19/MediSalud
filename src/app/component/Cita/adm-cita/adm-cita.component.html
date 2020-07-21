@@ -2,29 +2,29 @@
     <div class="row">
         <p-toast position="top-right" key="tc"></p-toast>
         <div class="form-group col-12 col-md-6">
-            <label for="Especialidades">Especialidad</label>
-            <p-dropdown [options]="Especialidades" [(ngModel)]="Especialidad" filter="true" optionLabel="sNomEsp" styleClass="w-100"></p-dropdown>
+            <label for="Especialidades">Doctores</label>
+            <p-dropdown [options]="Doctores" [(ngModel)]="Doctor" filter="true" optionLabel="sNombre"
+                styleClass="w-100"></p-dropdown>
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="Sucursusales">Sucursusales</label>
-            <p-dropdown [options]="Sucursusales" [(ngModel)]="Sucursal" filter="true" optionLabel="sNombre" styleClass="w-100"></p-dropdown>
+            <p-dropdown [options]="Sucursusales" [(ngModel)]="Sucursal" filter="true" optionLabel="sNombre"
+                styleClass="w-100"></p-dropdown>
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="fechaI">Fecha Inicio Busqueda</label>
-            <p-calendar [(ngModel)]="fechaI" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy" [monthNavigator]="true"
-                [yearNavigator]="true" yearRange="1915:2030" 
-                        styleClass="medi_calendar"
-                        panelStyleClass="medi_calendar--panel"></p-calendar>
+            <p-calendar [(ngModel)]="fechaI" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                [monthNavigator]="true" [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                panelStyleClass="medi_calendar--panel"></p-calendar>
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="fechaF">Fecha Fin de busqueda</label>
-            <p-calendar [(ngModel)]="fechaF" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy" [monthNavigator]="true"
-                [yearNavigator]="true" yearRange="1915:2030" 
-                        styleClass="medi_calendar"
-                        panelStyleClass="medi_calendar--panel"></p-calendar>
+            <p-calendar [(ngModel)]="fechaF" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                [monthNavigator]="true" [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                panelStyleClass="medi_calendar--panel"></p-calendar>
         </div>
 
         <div class="form-group col-12">
@@ -32,7 +32,7 @@
                 Traer citas
             </button>
         </div>
-        
+
 
         <div *ngIf="CItas">
             <!-- <div style="text-align: right">
@@ -40,14 +40,16 @@
                 <input type="text" placeholder="Global Filter" [(ngModel)]="filtros" (ngModelChange)="filtrar()"
                     style="width:auto">
             </div> -->
-            <p-table #dt [columns]="cols" [value]="CItas" [paginator]="true" [rows]="10" sortMode="multiple" [rowHover]="true"
-                dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" styleClass="ui-table-customers"
-                currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
-                [filterDelay]="0" [globalFilterFields]="['Fecha', 'Hora', 'NomCli', 'RutCli', 'NomDoc', 'RutDoc', 'Prevision', 'Estado']">
+            <p-table #dt [columns]="cols" [value]="CItas" [paginator]="true" [rows]="10" sortMode="multiple"
+                [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+                styleClass="ui-table-customers" currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
+                [filterDelay]="0"
+                [globalFilterFields]="['Fecha', 'Hora', 'NomCli', 'RutCli', 'NomDoc', 'RutDoc', 'Prevision', 'Estado']">
                 <ng-template pTemplate="caption">
                     Citas
                     <div class="ui-table-globalfilter-container">
-                        <input pInputText class="form-control" type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Busqueda" />
+                        <input pInputText class="form-control" type="text"
+                            (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Busqueda" />
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>
@@ -62,14 +64,17 @@
                         <td *ngFor="let col of columns">
                             <div *ngIf="col.nombre == 'Estado'">
                                 <p-dropdown [options]="EstadosCIta" [(ngModel)]="rowData['agendas']"
-                                    (ngModelChange)="cambiotipoagenda()" filter="true" optionLabel="nombre" styleClass="ui-column-filter">
+                                    (ngModelChange)="cambiotipoagenda()" filter="true" optionLabel="nombre"
+                                    styleClass="ui-column-filter">
                                     <ng-template let-item pTemplate="selectedItem">
                                         {{rowData[col.nombre]}}
                                     </ng-template>
                                 </p-dropdown>
                             </div>
                             <div *ngIf="col.nombre != 'Estado'">
-                                {{rowData[col.nombre]}}
+                                <div> <span>{{rowData[col.nombre]}}</span><i class="pi pi-user-edit verde"
+                                        *ngIf="col.header == 'Cliente' && rowData['Cambio'] == 'S'"
+                                        routerLink="/EditCliente"></i></div>
                             </div>
 
                         </td>

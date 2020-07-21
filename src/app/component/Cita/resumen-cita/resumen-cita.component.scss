@@ -10,9 +10,9 @@
         background-color: $white;
         padding: 20px 30px;
         border: 1px solid $gray-dark;
-        -webkit-box-shadow: 2px 2px 5px 0px  $gray-dark;
-        -moz-box-shadow: 2px 2px 5px 0px  $gray-dark;
-        box-shadow: 2px 2px 5px 0px  $gray-dark;
+        // -webkit-box-shadow: 2px 2px 5px 0px  $gray-dark;
+        // -moz-box-shadow: 2px 2px 5px 0px  $gray-dark;
+        // box-shadow: 2px 2px 5px 0px  $gray-dark;
 
         .datos-paciente {
             padding: 20px 30px;
@@ -119,4 +119,8 @@
             }
         }
     }
+}
+
+.img-tama{
+  width: 25%;
 }

@@ -20,13 +20,13 @@
 
         <div class="form-group col-12 col-md-6">
             <label for="Horini">Hora de Inicio de servicio</label>
-            <div><p-calendar  [(ngModel)]="Horini" [timeOnly]="true" placeholder="Apertura de atencion">
+            <div><p-calendar  [(ngModel)]="Horini" [timeOnly]="true" placeholder="Apertura de atencion" readonly>
             </p-calendar></div>
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="Horafin">Hora de Fin de servicio</label>
-            <div><p-calendar  [(ngModel)]="Horafin" [timeOnly]="true" placeholder="Cierre de atencion">
+            <div><p-calendar  [(ngModel)]="Horafin" [timeOnly]="true" placeholder="Cierre de atencion" readonly>
             </p-calendar></div>
         </div>
 
@@ -36,11 +36,11 @@
                 (onOverlayClick)="handleOverlayClick($event)" [style]="{'width':'100%','height':'150px'}"></p-gmap>
         </div>
 
-        <div class="btn btn-medisalud-primary" *ngIf="Editar == false" (click)=" CrearSucursal()">cargar</div>
-        <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" ActualizarSucursal()">Actualizar
+        <div class="btn btn-medisalud-primary"  (click)=" CrearSucursal()">cargar</div>
+        <div class="btn btn-medisalud-primary ml-3" *ngIf="Editar == true" (click)=" ActualizarSucursal()">Actualizar
         </div>
-        <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
-        </div>
+        <!-- <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
+        </div> -->
     </div>
 
     <div class="row">

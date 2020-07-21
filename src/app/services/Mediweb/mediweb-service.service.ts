@@ -10,8 +10,8 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    //this.apiUrl = "http://200.104.114.157/APImweb/api/v1";
-    this.apiUrl = "http://localhost:59579/api/v1";
+    this.apiUrl = "http://200.104.114.157/APImweb/api/v1";
+    //this.apiUrl = "http://localhost:59510/api/v1";
   }
 
   async AgregarSucursal(req) {
@@ -158,6 +158,22 @@ export class MediwebServiceService {
     }
   }
 
+  async ObtenerHorario(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ObtenerHorario" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async ActualizaHorariosDoc(req) {
     try {
       return await this.http.post(
@@ -286,5 +302,36 @@ export class MediwebServiceService {
     }
   }
 
+  async GuardarImagen(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/GuardarImagen" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
 
+  async EnviarCorreo(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/EnviarCorreo" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+  
 }

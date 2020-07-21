@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
+import { MessageService } from 'primeng/api';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-doctor',
   templateUrl: './doctor.component.html',
-  styleUrls: ['./doctor.component.scss']
+  styleUrls: ['./doctor.component.scss'],
+  providers: [MessageService]
 })
 export class DoctorComponent implements OnInit {
 
@@ -32,22 +36,37 @@ export class DoctorComponent implements OnInit {
   Rutvalidotext;
   NombreValidotext;
 
-  constructor(private MediwebServiceService: MediwebServiceService) { }
+  uploadedFiles: any[] = [];
+  uplo: File;
+  imagenurl;
+
+  constructor(private Router:Router, private MediwebServiceService: MediwebServiceService, private MessageService: MessageService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    var usu = JSON.parse(localStorage.getItem('tipou'));
+    if (usu.toString() != "1") {
+      this.Router.navigate([""]);
+    }
     this.Editar = false;
+    this.id = "";
+    this.rut = "";
+    this.nombre = "";
+    this.tel = "";
+    this.mail = "";
+    this.nomImagen = "";
+    this.inforDoc = "";
     this.TraerDoctor();
     this.cols = [
       { header: 'Nombre', nombre: 'sNombre' },
       { header: 'Rut', nombre: 'sRutDoc' },
       { header: 'Telefono', nombre: 'sNumTel' },
-      { header: 'Correo', nombre: 'sMail' },
-      { header: 'Informacion', nombre: 'sInfoDoc' },
-      { header: 'Nombre foto', nombre: 'sNomIma' }
+      { header: 'Correo', nombre: 'sMail' }
     ];
   }
 
   async AgregarDosctor() {
+    console.log(this.uploadedFiles);
+
     if (this.rut == "") {
       this.Rutvalido = false;
       this.Rutvalidotext = "El Rut no puede estar vacio";
@@ -56,6 +75,10 @@ export class DoctorComponent implements OnInit {
     if (this.nombre == "") {
       this.NombreValido = false;
       this.NombreValidotext = "El Nombre no puede estar vacio";
+    }
+    if (this.nombre.length < 4) {
+      this.NombreValido = false;
+      this.NombreValidotext = "El Nombre no puede tener menos de 3 caracteres";
     }
     if (this.tel == "") {
       this.telefonovalido = false;
@@ -67,22 +90,44 @@ export class DoctorComponent implements OnInit {
       this.emailvalidotext = "El email no puede estar vacio";
     }
 
-    if (this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false) {
-      return;
-    }
     else {
-      var Doctor = {
-        "rut": this.rut,
-        "nombre": this.nombre,
-        "tel": this.tel,
-        "mail": this.mail,
-        "nomImagen": "string.png",
-        "inforDoc": this.inforDoc
-      }
-      console.log(Doctor);
+      var rutadd = this.rut.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
+      rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
+      this.Doctores.forEach(element => {
 
-      var respuesta = await this.MediwebServiceService.AgregarDocotr(Doctor);
-      console.log(respuesta);
+        if (element["sRutDoc"] == rutadd) {
+          this.Rutvalido = false;
+          this.Rutvalidotext = "El Rut ya se encuentra usado por otros doctor";
+        }
+      });
+      if (this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false) {
+        return;
+      }
+      else {
+        var Doctor = {
+          "rut": rutadd,
+          "nombre": this.nombre,
+          "tel": this.tel,
+          "mail": this.mail,
+          "nomImagen": rutadd,
+          "inforDoc": this.inforDoc
+        }
+        console.log(Doctor);
+
+        var respuesta = await this.MediwebServiceService.AgregarDocotr(Doctor);
+        console.log(respuesta);
+        if (respuesta[0][""] == "OK") {
+          this.MessageService.clear();
+          this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Ingreso Correcto', detail: 'Los datos del doctor se han Agregado correctamente' });
+        }
+        else {
+          this.MessageService.clear();
+          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al agregar los datos: ' + respuesta[0][""] });
+        }
+        this.TraerDoctor();
+      }
+
+
     }
 
   }
@@ -124,6 +169,10 @@ export class DoctorComponent implements OnInit {
       this.NombreValido = false;
       this.NombreValidotext = "El Nombre no puede estar vacio";
     }
+    if (this.nombre.length < 4) {
+      this.NombreValido = false;
+      this.NombreValidotext = "El Nombre no puede tener menos de 3 letras";
+    }
     if (this.tel == "") {
       this.telefonovalido = false;
       this.telefonovalidotext = "El telefono no puede estar vacio";
@@ -138,19 +187,30 @@ export class DoctorComponent implements OnInit {
       return;
     }
     else {
+      var rutadd = this.rut.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
+      rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length)
       var Doctor = {
         "id": this.id.toString(),
-        "rut": this.rut,
+        "rut": rutadd,
         "nombre": this.nombre,
         "tel": this.tel,
         "mail": this.mail,
-        "nomImagen": "string.png",
+        "nomImagen": rutadd,
         "inforDoc": this.inforDoc
       }
       console.log(Doctor);
 
       var respuesta = await this.MediwebServiceService.ActualizarDoctor(Doctor);
+      this.uploadedFiles = [];
       console.log(respuesta);
+      if (respuesta[0][""] == "OK") {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Actualizacion Correcta', detail: 'Los datos del doctor se han actulizado correctamente' });
+      }
+      else {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al actualizar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta[0][""] });
+      }
       this.TraerDoctor();
     }
   }
@@ -204,7 +264,7 @@ export class DoctorComponent implements OnInit {
   compexreg_tel() {
 
     if (this.tel != "") {
-      if (!/^\+{1}([0-9]){11}$|^([0-9]){9}$/.test(this.tel)) {
+      if (!/^\+{1}([0-9]){11}$/.test(this.tel)) {
         this.telefonovalido = false;
         this.telefonovalidotext = "El formato de telefono es invalido";
       }
@@ -232,5 +292,51 @@ export class DoctorComponent implements OnInit {
       this.Rutvalidotext = "";
     }
   }
+
+  async uploadFile(event, fileUpload) {
+    if (this.rut != undefined && this.rut !="") {
+      this.MessageService.clear();
+    this.MessageService.add({ key: 'tc', severity: 'info', summary: 'Cargando Archivo', detail: 'La foto de perfil se esta guardando' });
+    for (let file of event.files) {
+      this.uplo = file;
+    }
+    this.imagenurl = this.domSanitizer.bypassSecurityTrustUrl(this.uplo["objectURL"]["changingThisBreaksApplicationSecurity"]);
+    await this.delay(2000);
+    this.MessageService.clear();
+    this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Foto guardada Correctamente', detail: 'La foto de perfil se ha guardado correctamente' });
+    var base64 = await this.getBase64Image(document.getElementById("img"));
+    console.log(base64);
+    base64 = base64.split("data:image/png;base64,")[1];
+
+    var req =   {
+      "imagen": base64,
+      "rut": this.rut
+    }
+    var imagenservice = await this.MediwebServiceService.GuardarImagen(req);
+    console.log(imagenservice);
+    fileUpload.clear();
+    //console.log(this.imagenurl);
+    }
+    else{
+      this.MessageService.clear();
+    this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error', detail: 'Primero debe ingresar el rut del Doctor' });
+    }
+    
+  }
+
+  delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL();
+    return dataURL;
+  }
+
 
 }

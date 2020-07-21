@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
-import {MessageService} from 'primeng/api';
-import {Router} from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 interface City {
   name: string;
   code: string;
@@ -36,6 +36,8 @@ export class DatosAgendaComponent implements OnInit {
   es: any;
   Horas: any;
 
+  ImagenUrl: string;
+
   SelecEspecialidad: boolean;
   SelecSucursal: boolean;
   SelecDoctor: boolean;
@@ -49,7 +51,7 @@ export class DatosAgendaComponent implements OnInit {
   overlays: any[];
   Clintes;
 
-  constructor(private MediwebServiceService: MediwebServiceService, private messageService: MessageService, private Router:Router ) {
+  constructor(private MediwebServiceService: MediwebServiceService, private messageService: MessageService, private Router: Router) {
   }
 
   ngOnInit(): void {
@@ -129,7 +131,7 @@ export class DatosAgendaComponent implements OnInit {
       }
       if (tipo == "D") {
         console.log(this.Doctor);
-
+        this.ImagenUrl = "http://200.104.114.157/ImgenesDoctor/" + this.Doctor["sRutDoc"]+".jpg";
         this.SelecDoctor = true;
         this.worksDate = [];
         this.Horas = [];
@@ -188,6 +190,9 @@ export class DatosAgendaComponent implements OnInit {
     var doctores = JSON.parse(respuesta.toString());
 
     this.medico = doctores;
+    this.medico.forEach(element => {
+      element["sNomIma"] = "http://200.104.114.157/ImgenesDoctor/" + element["sRutDoc"] + ".jpg"
+    });
     console.log(this.medico);
   }
 
@@ -304,13 +309,48 @@ export class DatosAgendaComponent implements OnInit {
         var minI = parseInt(element.split(";")[2]);
         var horaF = parseInt(element.split(";")[3]);
         var minF = parseInt(element.split(";")[4]);
-        var mintot = ((horaF - horaI) * 60) + (minI - minF)
+        console.log("horas tomasdas");
+
+        console.log(horaI);
+        console.log(minI);
+        console.log(horaF);
+        console.log(minF);
+        var horaFinal = horaF+":"+minF;
+        var Mmin = minI - minF;
+        if (Mmin < 0) {
+          Mmin = Mmin * -1;
+        }
+        Mmin = Mmin - parseInt(this.Doctor["sHoraAte"]);
+        var mintot = ((horaF - horaI) * 60) + Mmin;
+        console.log(mintot);
+
         var CantHoras = mintot / parseInt(this.Doctor["sHoraAte"]);
-        var HoraS = horaI + ":" + minI + ":" + ":00";
+        console.log(CantHoras);
+
+        var HoraS = horaI + ":" + minI + ":" + "00";
         for (let index = 0; index < CantHoras; index++) {
+
+          if (index == 0) {
+            var primerminuto = (moment(HoraS, 'HH:mm:ss').format('HH:mm'));
+            let Fbusqueda = fecha + " " + primerminuto;
+            console.log(Fbusqueda);
+            if (this.Doctor["sHoraOcu"]) {
+              if (this.Doctor["sHoraOcu"].includes(Fbusqueda)) {
+                this.Horas.push({ "Hora": primerminuto, "disp": false })
+              }
+              else {
+                this.Horas.push({ "Hora": primerminuto, "disp": true })
+              }
+            }
+            else {
+              this.Horas.push({ "Hora": primerminuto, "disp": true })
+            }
+          }
+
           let minutos = (moment(HoraS, 'HH:mm:ss').add(parseInt(this.Doctor["sHoraAte"]), 'minutes').format('HH:mm'));
           let Fbusqueda = fecha + " " + minutos;
           console.log(Fbusqueda);
+          if (minutos < horaFinal ) {
           if (this.Doctor["sHoraOcu"]) {
             if (this.Doctor["sHoraOcu"].includes(Fbusqueda)) {
               this.Horas.push({ "Hora": minutos, "disp": false })
@@ -322,6 +362,7 @@ export class DatosAgendaComponent implements OnInit {
           else {
             this.Horas.push({ "Hora": minutos, "disp": true })
           }
+        }
 
           HoraS = minutos;
         }
@@ -338,31 +379,31 @@ export class DatosAgendaComponent implements OnInit {
 
     if (this.especialidad == undefined) {
       this.messageService.clear();
-      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar una especialidad'});
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe Seleccionar una especialidad' });
     }
     else if (this.sucursal == undefined) {
       this.messageService.clear();
-      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar una Sucursal'});
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe Seleccionar una Sucursal' });
     }
     else if (this.Doctor == undefined) {
       this.messageService.clear();
-      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar un Doctor'});
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe Seleccionar un Doctor' });
     }
     else if (this.FechaSelect == undefined) {
       this.messageService.clear();
-      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar un dia para cita'});
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe Seleccionar un dia para cita' });
     }
     else if (this.FechaSelect < moment().format("YYYY-MM-DD")) {
       this.messageService.clear();
-      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'El dia elegido debe ser mayor a la fecha actual'});
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'El dia elegido debe ser mayor a la fecha actual' });
     }
     else if (this.HoraSelect == undefined) {
       this.messageService.clear();
-      this.messageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe Seleccionar una hora para cita'});
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe Seleccionar una hora para cita' });
     }
-    else{
+    else {
 
-      var clienteSelect 
+      var clienteSelect
 
       this.Clintes.forEach(element => {
         if (element["sRutCli"] == this.cliente.rut) {
@@ -373,14 +414,15 @@ export class DatosAgendaComponent implements OnInit {
 
       var req = {
         "idCita": "1",
-        "idCliente": clienteSelect["iIdCli"]+"",
+        "idCliente": clienteSelect["iIdCli"] + "",
         "idSucursal": this.sucursal["iIdSuc"].toString(),
         "idDoctor": this.Doctor["iIdDoc"].toString(),
         "idEsp": this.especialidad["iIdEsp"].toString(),
-        "idPrev": clienteSelect["iIdPrev"]+"",
+        "idPrev": clienteSelect["iIdPrev"] + "",
         "fecha": this.FechaSelect.toString(),
         "hora": this.HoraSelect.toString(),
-        "descripcion": this.Descripcion != undefined ? this.Descripcion:""
+        "descripcion": this.Descripcion != undefined ? this.Descripcion : "",
+        "cambioDatos":this.cliente.CambioDato == true ? "1":"0"
       }
 
       var Cita = {
@@ -390,11 +432,11 @@ export class DatosAgendaComponent implements OnInit {
         "Especialidad": this.especialidad["sNomEsp"].toString(),
         "fecha": this.FechaSelect.toString(),
         "hora": this.HoraSelect.toString(),
-        "descripcion": this.Descripcion != undefined ? this.Descripcion:""
+        "descripcion": this.Descripcion != undefined ? this.Descripcion : ""
       }
 
       localStorage.setItem('DatosCita', JSON.stringify(Cita));
-  
+
       console.log(req);
       var respuesta = this.MediwebServiceService.AgregarCita(req);
       console.log(respuesta);

@@ -1,38 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-especialidad',
   templateUrl: './especialidad.component.html',
-  styleUrls: ['./especialidad.component.scss']
+  styleUrls: ['./especialidad.component.scss'],
+  providers: [MessageService]
 })
 export class EspecialidadComponent implements OnInit {
 
-  Nombre;
+  Nombre:string;
 
   id;
   Editar;
   Especialidades;
   cols
-  constructor(private MediwebServiceService: MediwebServiceService) { }
+  constructor(private Router:Router, private MediwebServiceService: MediwebServiceService, private MessageService: MessageService) { }
 
   ngOnInit(): void {
+
+    var usu = JSON.parse(localStorage.getItem('tipou'));
+    if (usu.toString() != "1") {
+      this.Router.navigate([""]);
+    }
+
     this.Editar = false;
+    this.Nombre = "";
     this.TraerEspecialidad();
     this.cols = [
       { header: 'Nombre', nombre: 'sNomEsp' },
+      
     ];
   }
 
-  async AgregarEspecialidad(){
+  async AgregarEspecialidad() {
 
-    var Especialidad = {
-      "nombre": this.Nombre
+    if (this.Nombre.length < 3 ) {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Nombre invalido', detail: 'El nombre de la sucursal no puede tener menos de 3 caracteres' });
     }
-    console.log(Especialidad);
-    
-    var respuesta = await this.MediwebServiceService.AgregarEspecialidad(Especialidad);
+    else{
+      var Especialidad = {
+        "nombre": this.Nombre
+      }
+      console.log(Especialidad);
+  
+      var respuesta = await this.MediwebServiceService.AgregarEspecialidad(Especialidad);
       console.log(respuesta);
+      if (respuesta[0][""] == "OK") {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Ingreso Correcto', detail: 'Los datos de la Especialidad se han Agregado correctamente' });
+      }
+      else {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al agregar los datos: ' + respuesta[0][""] });
+      }
+      this.TraerEspecialidad();
+    }
+
   }
 
 
@@ -51,17 +78,31 @@ export class EspecialidadComponent implements OnInit {
     this.Nombre = doc["sNomEsp"];
   }
 
- async ActualizarEspecialidad(){
-    var Doctor = {
-      "id": this.id.toString(), 
-      "nombre": this.Nombre
+  async ActualizarEspecialidad() {
+    if (this.Nombre.length < 3 ) {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Nombre invalido', detail: 'El nombre de la sucursal no puede tener menos de 3 caracteres' });
     }
-    console.log(Doctor);
-
-    var respuesta = await this.MediwebServiceService.ActualizarEspecialidad(Doctor);
-    console.log(respuesta);
-    this.TraerEspecialidad();
-
+    else{
+      var Doctor = {
+        "id": this.id.toString(),
+        "nombre": this.Nombre
+      }
+      console.log(Doctor);
+  
+      var respuesta = await this.MediwebServiceService.ActualizarEspecialidad(Doctor);
+      console.log(respuesta);
+      if (respuesta[0][""] == "OK") {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Actualizacion Correcta', detail: 'Los datos de la Especialidad se han actualizado correctamente' });
+      }
+      else {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta[0][""] });
+      }
+      this.TraerEspecialidad();  
+    }
+    
   }
   Cargar_Nuevamente() {
     this.Editar = false;

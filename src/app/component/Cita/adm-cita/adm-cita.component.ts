@@ -14,8 +14,8 @@ export class AdmCitaComponent implements OnInit {
 
   Sucursusales;
   Sucursal;
-  Especialidad;
-  Especialidades;
+  Doctores;
+  Doctor;
   EstadosCIta;
   fechaI: Date
   fechaF: Date
@@ -30,6 +30,10 @@ export class AdmCitaComponent implements OnInit {
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService:MessageService) { }
 
   ngOnInit(): void {
+    var usu = JSON.parse(localStorage.getItem('tipou'));
+    if (usu.toString() != "1" && usu.toString() != "2") {
+      this.Router.navigate([""]);
+    }
     this.filtros = "";
     this.GetSucursales();
 
@@ -51,7 +55,7 @@ export class AdmCitaComponent implements OnInit {
       { header: 'Rut', nombre: 'RutCli' },
       { header: 'Doctor', nombre: 'NomDoc' },
       { header: 'Rut', nombre: 'RutDoc' },
-      { header: 'Previcsion', nombre: 'Prevision' },
+      { header: 'Prevision', nombre: 'Prevision' },
       { header: 'Estado', nombre: 'Estado' }
     ];
 
@@ -75,34 +79,47 @@ export class AdmCitaComponent implements OnInit {
     primeratributo.forEach(element => {
       this.Sucursusales.push(element);
     });
-    await this.GetEspecialidad();
+    await this.GetDoctor();
     console.log(this.Sucursusales);
     this.Sucursal = this.Sucursusales[0];
-    this.Especialidad = this.Especialidades[0];
+    this.Doctor = this.Doctores[0];
   }
 
-  async GetEspecialidad() {
-    var getEsp = { "Tipo": "E" }
+  async GetDoctor() {
+    var getEsp = { "Tipo": "D" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
     var primeratributo = JSON.parse(respuesta.toString());
-    this.Especialidades = [];
-    this.Especialidades.unshift({ "sNomEsp": "Todas", "iIdEsp": "0" });
+    this.Doctores = [];
+    this.Doctores.unshift({ "sNombre": "Todas", "iIdDoc": "0" });
     primeratributo.forEach(element => {
-      this.Especialidades.push(element);
+      this.Doctores.push(element);
     });
-    console.log(this.Especialidades);
+    console.log(this.Doctores);
 
   }
 
   async GetAllCitas() {
+    var fechas = true;
+    var fechaI = this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate();
+    var fechaF =this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate();
     if (this.fechaI == undefined || this.fechaF == undefined) {
+      fechas =false;
       this.MessageService.clear();
       this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe inidicar una fecha de inicio y fecha de fin de la cita a consultar'});
     }
-    else{
+    else if(this.fechaI > this.fechaF){
+      fechas =false;
+      this.MessageService.clear();
+      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Error en fechas', detail:'La fecha final no puede ser menor a la inicial'});
+    }
+    else {
+      console.log(this.Doctor["iIdDoc"]);
+      console.log(this.Sucursal["iIdSuc"]);
+      
+      
       var parametro = {
-        "idSuc": this.Sucursal["iIdSuc"],
-        "idDoc": this.Especialidad["iIdEsp"],
+        "idSuc": this.Sucursal["iIdSuc"].toString(),
+        "idDoc": this.Doctor["iIdDoc"].toString(),
         "fechaI": this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate(),
         "fechaF": this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate()
       }

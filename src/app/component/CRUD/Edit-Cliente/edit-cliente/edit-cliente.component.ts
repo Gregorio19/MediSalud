@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
+import { MediwebServiceService } from '../../../../services/Mediweb/mediweb-service.service';
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 
 @Component({
-  selector: 'app-datos-cliente',
-  templateUrl: './datos-cliente.component.html',
-  styleUrls: ['./datos-cliente.component.scss'],
+  selector: 'app-edit-cliente',
+  templateUrl: './edit-cliente.component.html',
+  styleUrls: ['./edit-cliente.component.scss'],
   providers: [MessageService]
 })
-export class DatosClienteComponent implements OnInit {
+export class EditClienteComponent implements OnInit {
 
   RUT: string;
   RutTitular: string;
@@ -52,10 +52,16 @@ export class DatosClienteComponent implements OnInit {
 
   ClienteAntiguo;
   CambioDatos;
+  ClienteACT;
 
-  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService:MessageService) { }
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
   ngOnInit(): void {
+
+    var usu = JSON.parse(localStorage.getItem('tipou'));
+    if (usu.toString() != "1" && usu.toString() != "2") {
+      this.Router.navigate([""]);
+    }
 
     this.RUT = "";
     this.Correo = "";
@@ -110,7 +116,7 @@ export class DatosClienteComponent implements OnInit {
     this.maxDate = new Date();
     this.maxDate.setMonth(nextMonth);
     this.maxDate.setFullYear(nextYear);
-    
+
   }
 
   cambiosexo() {
@@ -142,14 +148,14 @@ export class DatosClienteComponent implements OnInit {
   }
 
   async AgregarCliente() {
-    var  fechaelegida;
+    var fechaelegida;
     if (this.fechaN) {
       fechaelegida = this.fechaN.getUTCFullYear() + "-" + (this.fechaN.getUTCMonth() + 1) + "-" + this.fechaN.getUTCDate();
     }
     let today = new Date();
-    var hoy = today.getUTCFullYear()  + "-" + (today.getUTCMonth() + 1) + "-" + today.getUTCDate()
+    var hoy = today.getUTCFullYear() + "-" + (today.getUTCMonth() + 1) + "-" + today.getUTCDate()
     console.log(hoy);
-    
+
     this.telefonovalido = true;
     this.emailvalido = true;
     this.Rutvalido = true;
@@ -172,7 +178,7 @@ export class DatosClienteComponent implements OnInit {
       this.NombreValidotext = "El Nombre no puede estar vacio";
     }
 
-    if (this.Nombre.length <= 3 ) {
+    if (this.Nombre.length <= 3) {
       this.NombreValido = false;
       this.NombreValidotext = "El Nombre no puede tener menos de 3 letras";
     }
@@ -207,38 +213,34 @@ export class DatosClienteComponent implements OnInit {
       rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
       console.log(this.fechaN);
 
-      var Addcli = {
-        "id": "0",
-        "rut": rutadd,
-        "nombre": this.Nombre,
-        "tel": this.NUmTel,
-        "mail": this.Correo,
-        "direccion": this.Direccion,
-        "cumpleaños": this.fechaN.getUTCFullYear() + "-" + (this.fechaN.getUTCMonth() + 1) + "-" + this.fechaN.getUTCDate(),
-        "idprev": this.Prevision["iIdPrev"],
-        "titular": estitu,
-        "sexo": susexo,
-        "CambioDato":this.CambioDatos
-      }
-
-      console.log(Addcli);
-
-      var exitcli = this.Clintes.filter(function (array) {
-        if (array.sRutCli.replace(".", "").replace("-", "") == rutadd.replace(".", "").replace("-", "")) {
-          return array;
+      if (this.ClienteAntiguo == true) {
+        var Addcli = {
+          "id": this.ClienteACT['iIdCli'].toString(),
+          "rut": rutadd,
+          "nombre": this.Nombre,
+          "tel": this.NUmTel,
+          "mail": this.Correo,
+          "direccion": this.Direccion,
+          "cumpleaños": this.fechaN.getUTCFullYear() + "-" + (this.fechaN.getUTCMonth() + 1) + "-" + this.fechaN.getUTCDate(),
+          "idprev": this.Prevision["iIdPrev"],
+          "titular": estitu,
+          "sexo": susexo,
+          "CambioDato": "0"
         }
-      });
-      if (exitcli.length == 0) {
-        localStorage.setItem('Cliente', JSON.stringify(Addcli));
-        var respuesta = await this.MediwebServiceService.AgregarCliente(Addcli);
-        console.log(respuesta);
-        
-        this.Router.navigate(["Agendar"]);
+
+        console.log(Addcli);
+
+        var exitcli = this.Clintes.filter(function (array) {
+          if (array.sRutCli.replace(".", "").replace("-", "") == rutadd.replace(".", "").replace("-", "")) {
+            return array;
+          }
+        });
+          localStorage.setItem('Cliente', JSON.stringify(Addcli));
+          var respuesta = await this.MediwebServiceService.ActualizarCliente(Addcli);
+          console.log(respuesta);
+          this.Router.navigate(["AdmCita"]);
       }
-      else {
-        localStorage.setItem('Cliente', JSON.stringify(Addcli));
-        this.Router.navigate(["Agendar"]);
-      }
+
 
     }
   }
@@ -272,6 +274,7 @@ export class DatosClienteComponent implements OnInit {
         }
         this.Rutvalidotext = "";
         this.Rutvalido = true;
+        this.ClienteACT = element;
       }
     });
 
@@ -280,13 +283,13 @@ export class DatosClienteComponent implements OnInit {
       this.CambioDatos = false;
       var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
       console.log(rutadd);
-      
+
       rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
       this.Rutvalido = this.ValidarRut(rutadd);
       if (this.Rutvalido == false) {
         this.Rutvalidotext = " EL Rut ingresado es invalido";
       }
-      else{
+      else {
         this.Rutvalidotext = "";
       }
 
@@ -347,7 +350,7 @@ export class DatosClienteComponent implements OnInit {
     }
   }
 
-  UsuarioAntiguo(){
+  UsuarioAntiguo() {
     this.CambioDatos = true;
     this.MessageService.clear();
     this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio BLoqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });

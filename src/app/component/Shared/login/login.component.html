@@ -1,5 +1,6 @@
 <div class="container-agenda">
     <div class="row  container">
+        <p-toast position="top-right" key="tc"></p-toast>
         <div class="form-group col-12">
             <span for="Usuario">Usuario *</span>
             <input class="form-control" type="text" [(ngModel)]="Usuario" >
@@ -9,7 +10,7 @@
             <input class="form-control" type="password" [(ngModel)]="Contrasena" >
         </div>
         <div class="col-12 text-center">
-            <button class="btn btn-medisalud-primary">
+            <button class="btn btn-medisalud-primary" (click)="logueaer()">
                 Ingresar
             </button>
         </div>

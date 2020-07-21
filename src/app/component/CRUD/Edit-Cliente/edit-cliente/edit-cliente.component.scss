@@ -1,0 +1,31 @@
+@import "../../../../../assets/scss/general.scss";
+.container-agenda{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $green-light;
+    height: calc(100% - 76px);
+    width: 100%;
+    .container{
+        background-color: $white;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 575.98px) { 
+    .container-agenda{
+        align-items: flex-start;
+    }
+ }
+
+@media (max-width: 767.98px) { 
+    
+ }
+
+@media (max-width: 991.98px) { 
+    
+ }
+
+@media (max-width: 1199.98px) {
+    
+ }

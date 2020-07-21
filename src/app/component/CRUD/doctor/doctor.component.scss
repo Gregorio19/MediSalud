@@ -4,6 +4,8 @@
   text-overflow: ellipsis;
 }
 
+
+
 @import "../../../../assets/scss/general.scss";
 :host ::ng-deep .ui-table-customers {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
@@ -108,6 +110,12 @@
     .ui-table-tbody > tr > td .ui-column-title {
         display: none;
     }
+}
+
+
+:host ::ng-deep .ui-button {
+    background-color: #65d4ce !important;
+    border: 1px solid #65d4ce;
 }
 
 /* Responsive */

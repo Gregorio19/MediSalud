@@ -1,5 +1,5 @@
 <div class="container-fluid agenda">
-    <div class="row ">
+    <div class="row">
         <div class="col-12 col-md-3 box-data">
             <div class="resumen">
                 <div class="title-resumen">
@@ -89,7 +89,7 @@
                                 <ng-template let-car pTemplate="item">
                                     <div class="ui-helper-clearfix"
                                         style="position: relative;height:50px;padding-left: 60px;">
-                                        <img src="assets/images/user.png" class="user_icon" />
+                                        <img [src]="car['value']['sNomIma']" class="user_icon" />
                                         <div class="inf-User">
                                             <div class="nombre">{{car.label}}</div>
                                         </div>
@@ -113,7 +113,7 @@
                             <div class="row">
                                 <div class="col-3">
                                     <div>
-                                        <img src="assets/images/user.png" class="user_icon w-100" />
+                                        <img [src]="ImagenUrl" class="user_icon w-100" />
                                     </div>
                                 </div>
                                 <div class="col-9 user_selected">
