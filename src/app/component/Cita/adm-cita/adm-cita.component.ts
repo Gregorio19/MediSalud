@@ -27,7 +27,10 @@ export class AdmCitaComponent implements OnInit {
   filtros: string;
   ItemsArray;
 
-  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService:MessageService) { }
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService:MessageService) { 
+    this.es = undefined;
+    this.es = {};
+  }
 
   ngOnInit(): void {
     var usu = JSON.parse(localStorage.getItem('tipou'));
@@ -39,13 +42,32 @@ export class AdmCitaComponent implements OnInit {
 
     this.es = {
       firstDayOfWeek: 1,
-      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
-      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
       today: 'Hoy',
-      clear: 'Borrar'
+      clear: 'Borrar',
+      closeText: "Cerrar",
+      prevText: "Anterior",
+      nextText: "Siguiente",
+      monthNames: ["Enero","Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+      dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+      weekHeader: "Semana",
+      firstDay: 0,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: "",
+      timeOnlyTitle: "Solo hora",
+      timeText: "Tiempo",
+      hourText: "Hora",
+      minuteText: "Minuto",
+      secondText: "Segundo",
+      currentText: "Fecha actual",
+      ampm: false,
+      month: "Mes",
+      week: "Semana",
+      day: "Día",
+      allDayText : "Todo el día"
     }
 
     this.cols = [

@@ -84,15 +84,33 @@ export class DatosClienteComponent implements OnInit {
     this.titular = false;
     this.es = {
       firstDayOfWeek: 1,
-      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
-      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
       today: 'Hoy',
       clear: 'Borrar',
+      closeText: "Cerrar",
+      prevText: "Anterior",
+      nextText: "Siguiente",
+      monthNames: ["Enero","Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+      dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+      weekHeader: "Semana",
+      firstDay: 0,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: "",
+      timeOnlyTitle: "Solo hora",
+      timeText: "Tiempo",
+      hourText: "Hora",
+      minuteText: "Minuto",
+      secondText: "Segundo",
+      currentText: "Fecha actual",
+      ampm: false,
+      month: "Mes",
+      week: "Semana",
+      day: "Día",
+      allDayText : "Todo el día",
       dateFormat: 'mm/dd/yy',
-
     }
     let today = new Date();
     let month = today.getMonth();
@@ -203,7 +221,7 @@ export class DatosClienteComponent implements OnInit {
       console.log(this.sexo);
 
       var susexo = this.sexo == "Masculino" ? 'M' : 'F';
-      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
+      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
       rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
       console.log(this.fechaN);
 
@@ -224,7 +242,7 @@ export class DatosClienteComponent implements OnInit {
       console.log(Addcli);
 
       var exitcli = this.Clintes.filter(function (array) {
-        if (array.sRutCli.replace(".", "").replace("-", "") == rutadd.replace(".", "").replace("-", "")) {
+        if (array.sRutCli.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == rutadd.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
           return array;
         }
       });
@@ -246,9 +264,9 @@ export class DatosClienteComponent implements OnInit {
   CompararCliente() {
     var clienteEncontrado = false;
     console.log(this.Prevision);
-    var nrut = this.RUT.replace(".", "").replace(".", "").replace(".", "");
+    var nrut = this.RUT.replace(".", "").replace(".", "").replace(".", "").trim();
     this.Clintes.forEach(element => {
-      if (element["sRutCli"].replace(".", "").replace("-", "") == nrut.replace(".", "").replace("-", "")) {
+      if (element["sRutCli"].replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == nrut.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
         clienteEncontrado = true;
         this.ClienteAntiguo = true;
         this.Nombre = element["sNombre"];
@@ -272,13 +290,14 @@ export class DatosClienteComponent implements OnInit {
         }
         this.Rutvalidotext = "";
         this.Rutvalido = true;
+        this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
       }
     });
 
     if (clienteEncontrado == false) {
       this.ClienteAntiguo = false;
       this.CambioDatos = false;
-      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
+      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
       console.log(rutadd);
       
       rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
@@ -352,4 +371,30 @@ export class DatosClienteComponent implements OnInit {
     this.MessageService.clear();
     this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio BLoqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
   }
+
+  formateaRut(rut) {
+
+    var actual = rut.replace(/^0+/, "");
+    if (actual != '' && actual.length > 1) {
+      var sinPuntos = actual.replace(/\./g, "");
+      var actualLimpio = sinPuntos.replace(/-/g, "");
+      var inicio = actualLimpio.substring(0, actualLimpio.length - 1);
+      var rutPuntos = "";
+      var i = 0;
+      var j = 1;
+      for (i = inicio.length - 1; i >= 0; i--) {
+        var letra = inicio.charAt(i);
+        rutPuntos = letra + rutPuntos;
+        if (j % 3 == 0 && j <= inicio.length - 1) {
+          rutPuntos = "." + rutPuntos;
+        }
+        j++;
+      }
+      var dv = actualLimpio.substring(actualLimpio.length - 1);
+      rutPuntos = rutPuntos + "-" + dv;
+    }
+    return rutPuntos;
+  }
 }
+
+

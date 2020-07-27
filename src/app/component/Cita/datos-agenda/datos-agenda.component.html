@@ -113,7 +113,7 @@
                             <div class="row">
                                 <div class="col-3">
                                     <div>
-                                        <img [src]="ImagenUrl" class="user_icon w-100" />
+                                        <img [src]="ImagenUrl" class="selectuser user_icon w-100" />
                                     </div>
                                 </div>
                                 <div class="col-9 user_selected">
@@ -153,6 +153,7 @@
                             </p-calendar>
 
                             <div class="InputGroup row mx-0 mt-2" *ngIf="Horas">
+                                <div *ngIf="Horas.length == 0 && horaselect == true">Lo sentimos no hay mas horas disponibles para hoy</div>
                                 <div class="px-2" *ngFor="let hora of Horas let index = index">
                                     <input type="radio" name="size" id="{{index}}" value="small" *ngIf="hora.disp == true" />
                                     <input type="radio" name="size" id="{{index}}" value="small" *ngIf="hora.disp == false" class="full" disabled/>

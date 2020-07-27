@@ -12,6 +12,7 @@ import { DoctorComponent } from './component/CRUD/doctor/doctor.component';
 import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.component';
 
 import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
+import { CitaRotatoriaComponent } from './component/Cita/cita-rotatoria/cita-rotatoria.component';
 
 import { LoginComponent } from './component/Shared/login/login.component';
 import { EditClienteComponent } from './component/CRUD/Edit-Cliente/edit-cliente/edit-cliente.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'Login', component: LoginComponent},
   { path: 'EditCliente', component: EditClienteComponent},
   { path: 'DashBoard', component: DashboardComponent},
+  { path: 'CitaRotatoria', component: CitaRotatoriaComponent},
   
   { path: '', component: PrincipalComponent},
   { path: '**', redirectTo: '' }

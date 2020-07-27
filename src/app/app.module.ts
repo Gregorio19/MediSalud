@@ -29,6 +29,7 @@ import { DatosAgendaComponent } from './component/Cita/datos-agenda/datos-agenda
 import { HeaderComponent } from './component/Shared/header/header.component';
 import { PrincipalComponent } from './component/Cita/principal/principal.component';
 import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
+import { CitaRotatoriaComponent } from './component/Cita/cita-rotatoria/cita-rotatoria.component';
 
 
 
@@ -50,6 +51,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +67,8 @@ import {GoogleMapsModule} from '@angular/google-maps';
     AdmCitaComponent,
     LoginComponent,
     EditClienteComponent,
-    DashboardComponent
+    DashboardComponent,
+    CitaRotatoriaComponent
 
   ],
   imports: [

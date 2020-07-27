@@ -209,7 +209,7 @@ export class EditClienteComponent implements OnInit {
       console.log(this.sexo);
 
       var susexo = this.sexo == "Masculino" ? 'M' : 'F';
-      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
+      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
       rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
       console.log(this.fechaN);
 
@@ -231,7 +231,7 @@ export class EditClienteComponent implements OnInit {
         console.log(Addcli);
 
         var exitcli = this.Clintes.filter(function (array) {
-          if (array.sRutCli.replace(".", "").replace("-", "") == rutadd.replace(".", "").replace("-", "")) {
+          if (array.sRutCli.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == rutadd.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
             return array;
           }
         });
@@ -248,9 +248,9 @@ export class EditClienteComponent implements OnInit {
   CompararCliente() {
     var clienteEncontrado = false;
     console.log(this.Prevision);
-    var nrut = this.RUT.replace(".", "").replace(".", "").replace(".", "");
+    var nrut = this.RUT.replace(".", "").replace(".", "").replace(".", "").trim();
     this.Clintes.forEach(element => {
-      if (element["sRutCli"].replace(".", "").replace("-", "") == nrut.replace(".", "").replace("-", "")) {
+      if (element["sRutCli"].replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == nrut.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
         clienteEncontrado = true;
         this.ClienteAntiguo = true;
         this.Nombre = element["sNombre"];
@@ -281,7 +281,7 @@ export class EditClienteComponent implements OnInit {
     if (clienteEncontrado == false) {
       this.ClienteAntiguo = false;
       this.CambioDatos = false;
-      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "");
+      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
       console.log(rutadd);
 
       rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
