@@ -31,6 +31,21 @@
     
  }
 
+ @media (max-width: 1800px) {
+  .selectuser{
+    max-height: 110px !important;
+  }
+  
+    
+}
+
+ 
+ @media (min-width: 1800px) {
+  .selectuser{
+    max-width: 80% !important;
+  }
+}
+
 
  // Datos Agenda
 
@@ -60,7 +75,12 @@
             color: $gray-light;
           }
         }
+        .fecharota{
+          margin-bottom: 4px !important;
+          margin-top: -7px !important;
+        }
         .datos-paciente {
+          margin-top: -4%;
           .form-group {
             margin-bottom: 0.8rem;
             &.form-text {
@@ -113,6 +133,9 @@
             -moz-box-shadow: 1px 1px 1px 0px $gray-dark;
             box-shadow: 1px 1px 1px 0px $gray-dark;
             border: none;
+          }
+          .fecharotadiv{
+            height: 25px !important;
           }
           .div-outline {
             background: $white;
@@ -181,6 +204,7 @@
         }
       }
       .user_selected{
+        max-width: 50%;
         h3{
           font-family: Roboto;
           font-style: normal;

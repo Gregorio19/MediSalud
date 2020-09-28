@@ -16,12 +16,15 @@ import {DropdownModule} from 'primeng/dropdown';
 import {TableModule } from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
 import {FileUploadModule} from 'primeng/fileupload';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+
 
 
 
 //SERVICE
 import { MapaserviceService } from './services/mapa/mapaservice.service';
 import { MediwebServiceService } from './services/Mediweb/mediweb-service.service';
+import { FichaMedicaService } from './services/FichaMedica/ficha-medica.service';
 
 //Crear Agendamiento
 import { DatosClienteComponent } from './component/Cita/datos-cliente/datos-cliente.component';
@@ -46,11 +49,8 @@ import { DashboardComponent } from './component/CRUD/dashboard/dashboard.compone
 // Google Maps de Angular 9 
 import {GoogleMapsModule} from '@angular/google-maps';
 
-
-
-
-
-
+//FcihaTecnica
+import { CrearFichaComponent } from './component/FichaClinica/crear-ficha/crear-ficha.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +68,8 @@ import {GoogleMapsModule} from '@angular/google-maps';
     LoginComponent,
     EditClienteComponent,
     DashboardComponent,
-    CitaRotatoriaComponent
+    CitaRotatoriaComponent,
+    CrearFichaComponent
 
   ],
   imports: [
@@ -79,6 +80,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
     CalendarModule,
     ToastModule,
     FileUploadModule,
+    AutoCompleteModule,
     CheckboxModule,
     HttpClientModule,
     RadioButtonModule,
@@ -87,7 +89,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
     DropdownModule,
     TableModule,
   ],
-  providers: [MediwebServiceService,MapaserviceService],
+  providers: [MediwebServiceService,MapaserviceService,FichaMedicaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

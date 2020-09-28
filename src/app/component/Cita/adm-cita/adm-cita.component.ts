@@ -112,7 +112,7 @@ export class AdmCitaComponent implements OnInit {
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
     var primeratributo = JSON.parse(respuesta.toString());
     this.Doctores = [];
-    this.Doctores.unshift({ "sNombre": "Todas", "iIdDoc": "0" });
+    this.Doctores.unshift({ "sNombre": "Todos", "iIdDoc": "0" });
     primeratributo.forEach(element => {
       this.Doctores.push(element);
     });

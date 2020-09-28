@@ -1,0 +1,208 @@
+<p-toast position="center" key="tc"></p-toast>
+<!-- Datos Cliente  -->
+<div class="container-agenda">
+    <div class="row  container " id="ficha">
+        <div class="col-12">
+            <img src="./assets/images/logoCorreo.png" class="img-tama">
+        </div>
+
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Datos del paciente</span> <span class="text-danger"> </span></h3>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()"
+                placeholder="Ingrese su RUT">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Nombre *</span> <span class="text-danger"> {{NombreValidotext}}</span>
+            <input class="form-control text-capitalize" type="text" [(ngModel)]="Nombre"
+                placeholder="Ingrese su nombre">
+        </div>
+        <div class="form-group col-12 col-sm-12">
+            <span class="text-danger"> {{fechaValidatext}}</span>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <div class="row mx-0">
+                <span for="fechaN" class="col-12 col-sm-4 px-0">Fecha Nacimiento</span>
+                <input class="form-control" type="text" [(ngModel)]="fechaN" placeholder="Dia/Mes/Año">
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6 ">
+            <div class="row mx-0">
+                <span for="Sexo" class="col-12 col-sm-4 px-0">Sexo</span>
+                <input class="form-control" type="text" [(ngModel)]="sexo" placeholder="Sexo">
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Direccion">Dirección</span>
+            <span class="text-danger"> {{DireccionValidatext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="Direccion" placeholder="Ingrese su direccion">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="NUmTel">Número de Teléfono</span>
+            <span class="text-danger"> {{telefonovalidotext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="NUmTel" (blur)="compexreg_tel()"
+                placeholder="ingrese su telefono +56912345678">
+        </div>
+
+        <div class="form-group col-12 col-sm-6">
+            <span for="Correo">Correo</span>
+            <span class="text-danger"> {{emailvalidotext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="Correo" (blur)="compexreg_email()"
+                placeholder="Ingrese su correo">
+        </div>
+
+        <div class="form-group col-12 col-sm-6">
+            <span for="Prevision">Previsión</span>
+            <input class="form-control" type="text" [(ngModel)]="Prevision" placeholder="Prevision">
+        </div>
+        <!-- Datos Cliente  -->
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Motivo de consulta *</span> <span class="text-danger"> </span></h3>
+            <input class="form-control" type="text" [(ngModel)]="MotivoConsulta"
+                placeholder="Ingrese razon por la cual ha venido el paciente">
+        </div>
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Examen Fisico General *</span> <span class="text-danger"> </span></h3>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Frecuencia Cardiaca (FC)</span> <span class="text-danger"> </span>
+            <input class="form-control" type="number" [(ngModel)]="FrecuenciaCar"
+                placeholder="Ingrese frecuencia Cardiaca obtenida en el Examen">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Frecuencia Respiratoria (FR)</span> <span class="text-danger"> </span>
+            <input class="form-control" type="number" [(ngModel)]="FrecuenciaRes"
+                placeholder="Ingrese frecuencia Respiratoria obtenida en el Examen">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Tension Arterial (TA)</span> <span class="text-danger"> </span>
+            <input class="form-control" type="text" [(ngModel)]="TensionArterial"
+                placeholder="Ingrese Tension Arterial obtenida en el Examen">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Temperatura (T)</span> <span class="text-danger"> </span>
+            <input class="form-control" type="number" [(ngModel)]="Temperatura"
+                placeholder="Ingrese Temperatura obtenida en el Examen">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Peso</span> <span class="text-danger"> </span>
+            <input class="form-control" type="number" [(ngModel)]="Peso" placeholder="Ingrese el peso del paciente">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Altura</span> <span class="text-danger"> </span>
+            <input class="form-control" type="number" [(ngModel)]="Altura" placeholder="Ingrese la altura del paciente">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">IMC</span> <span class="text-danger"> </span>
+            <input class="form-control" type="number" [(ngModel)]="IMC" placeholder="Ingrese el IMC del paciente">
+        </div>
+
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Enfermedad Actual</span> <span class="text-danger"> </span></h3>
+            <input class="form-control" type="text" [(ngModel)]="EnfermedadAct"
+                placeholder="Ingrese la enfermedad del paciente">
+        </div>
+    </div>
+    <div class="row  container" id="ficha2">
+        <!-- <div class="form-group col-12 col-sm-12 text-center row justify-content-center align-items-center">
+            <h3><span for="Nombre">Sintomas: </span> <span class="text-danger"> </span></h3>
+            <p-autoComplete class="ml-2" [(ngModel)]="SintomaSelect" [suggestions]="resultadofilter"
+                (keydown)="AgregarSintoma($event)" (completeMethod)="DevolverListaSintomas($event)">
+            </p-autoComplete>
+            <i (click)="AgregarSintoma(undefined)" class=" mashora pi pi-plus"></i>
+        </div> -->
+        <!-- <div class="form-group col-12 col-sm-3" *ngFor="let sintoma of SintomasAgregadas let index = index">
+            <input class="form-control text-center" type="text" [(ngModel)]="sintoma.Nombre" readonly>
+        </div> -->
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Antecedentes</span> <span class="text-danger"> </span></h3>
+            <input class="form-control" type="text" [(ngModel)]="Antecedentes"
+                placeholder="Ingrese los antecedentes del paciente">
+        </div>
+        <div class="form-group col-12 col-sm-12 text-center row justify-content-center align-items-center">
+            <h3><span for="Nombre">Revision Sistematica: </span> <span class="text-danger"> </span></h3>
+            <p-autoComplete class="ml-2" [(ngModel)]="RevisionSelect" [suggestions]="resultadofilter"
+                (keydown)="AgregarRevision($event)" (completeMethod)="DevolverListaRevision($event)"
+                *ngIf="Imprimiendo == false">
+            </p-autoComplete>
+            <i (click)="AgregarRevision(undefined)" *ngIf="Imprimiendo == false" class=" mashora pi pi-plus"></i>
+        </div>
+        <div class="form-group col-12 col-sm-6" *ngFor="let revision of RevisionesAgregadas let index = index">
+            <br *ngIf="index <= 5">
+            <span for="Nombre">{{revision.Nombre}}</span> <span class="text-danger"> </span>
+            <input class="form-control" type="text" [(ngModel)]="revision.Valor"
+                placeholder="Ingrese resultdo de {{revision.Nombre}} de revision">
+        </div>
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Diagnostico</span> <span class="text-danger"> </span></h3>
+            <input class="form-control" type="text" [(ngModel)]="Diacnostico"
+                placeholder="Ingrese Diacnostico del paciente">
+        </div>
+        <div class="form-group col-12 col-sm-12 text-center">
+            <h3><span for="Nombre">Metodos Complementarios</span> <span class="text-danger"> </span></h3>
+            <input class="form-control" type="text" [(ngModel)]="MetodoComple"
+                placeholder="Ingrese metodos complementarios para el paciente">
+        </div>
+        <div class="form-group col-12 col-sm-12 text-center row justify-content-center align-items-center">
+            <h3><span for="Nombre">Tratamiento</span> <span class="text-danger"> </span></h3>
+            <p-autoComplete class="ml-2" [(ngModel)]="MedicamentoSelec" [suggestions]="resultadoMedfilter"
+                (keydown)="AgregarTratamiento($event)" (completeMethod)="DevolverListaMedicamento($event)"
+                placeholder="Farmaco" *ngIf="Imprimiendo == false">
+            </p-autoComplete>
+            <i (click)="AgregarTratamiento(undefined)" *ngIf="Imprimiendo == false" class=" mashora pi pi-plus"></i>
+        </div>
+        <div class="form-group col-12  text-center row" *ngFor="let trata of Tratamiento let index = index">
+            <br *ngIf="index >= 8 && Imprimiendo == true">
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
+
+            <div *ngIf="RevisionesAgregadas.length == 9 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 10 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 9 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 10 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-2 col-12"></div>
+
+            <div *ngIf="RevisionesAgregadas.length == 6 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 5 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 6 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 5 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            
+            <div *ngIf="RevisionesAgregadas.length == 3 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 4 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 3 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 4 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
+
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
+
+            <br *ngIf="RevisionesAgregadas.length >= 7 && Tratamiento.length >= 8">
+            <div class="form-group col-12 col-sm-4 text-center">
+                <h3><span for="Nombre">Farmaco</span> <span class="text-danger"> </span></h3>
+                <input class="form-control" type="text" [(ngModel)]="trata.Farmaco"
+                    placeholder="Ingrese nombre del farmaco para el paciente">
+            </div>
+            <div class="form-group col-12 col-sm-4 text-center">
+                <h3><span for="Nombre">Gramaje</span> <span class="text-danger"> </span></h3>
+                <input class="form-control" type="text" [(ngModel)]="trata.Gramaje"
+                    placeholder="Ingrese gramaje del farmaco">
+            </div>
+            <div class="form-group col-12 col-sm-4 text-center">
+                <h3><span for="Nombre">Posologia</span> <span class="text-danger"> </span></h3>
+                <input class="form-control" type="text" [(ngModel)]="trata.Posologia"
+                    placeholder="Indique forma de uso del farmaco">
+            </div>
+        </div>
+    </div>
+
+    <div class="btn btn-danger" (click)="printDiv()" *ngIf="Imprimiendo == false">
+        agregar pdf
+    </div>
+    <div class="btn btn-danger" (click)="AgregarFicha()" *ngIf="Imprimiendo == false">
+        Agregar Ficha
+    </div>
+</div>

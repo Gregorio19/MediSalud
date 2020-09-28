@@ -18,6 +18,8 @@ import { LoginComponent } from './component/Shared/login/login.component';
 import { EditClienteComponent } from './component/CRUD/Edit-Cliente/edit-cliente/edit-cliente.component';
 import { DashboardComponent } from './component/CRUD/dashboard/dashboard.component';
 
+//Fichatecnica
+import { CrearFichaComponent } from './component/FichaClinica/crear-ficha/crear-ficha.component';
 
 
 const routes: Routes = [
@@ -34,6 +36,7 @@ const routes: Routes = [
   { path: 'EditCliente', component: EditClienteComponent},
   { path: 'DashBoard', component: DashboardComponent},
   { path: 'CitaRotatoria', component: CitaRotatoriaComponent},
+  { path: 'FichaTenica', component: CrearFichaComponent},
   
   { path: '', component: PrincipalComponent},
   { path: '**', redirectTo: '' }

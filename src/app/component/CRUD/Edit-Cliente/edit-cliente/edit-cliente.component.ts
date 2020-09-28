@@ -353,6 +353,6 @@ export class EditClienteComponent implements OnInit {
   UsuarioAntiguo() {
     this.CambioDatos = true;
     this.MessageService.clear();
-    this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio BLoqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
+    this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio Bloqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
   }
 }

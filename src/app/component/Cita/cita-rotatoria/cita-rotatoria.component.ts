@@ -320,12 +320,12 @@ export class CitaRotatoriaComponent implements OnInit {
         localStorage.setItem('Cliente', JSON.stringify(Addcli));
         var respuesta = await this.MediwebServiceService.AgregarCliente(Addcli);
         console.log(respuesta);
-
-        this.Router.navigate(["Agendar"]);
+        await this.GetClientes();
+        this.CompararCliente();
+        this.ClienteAntiguo = true;
       }
       else {
         localStorage.setItem('Cliente', JSON.stringify(Addcli));
-        this.Router.navigate(["Agendar"]);
       }
 
     }
@@ -403,7 +403,7 @@ export class CitaRotatoriaComponent implements OnInit {
     this.Direccion = "";
     this.NUmTel = "";
     this.Correo = "";
-    this.Prevision = undefined;
+    this.Prevision = this.Previciones[0];
   }
 
   ValidarRut(rutCompleto) {
@@ -463,7 +463,7 @@ export class CitaRotatoriaComponent implements OnInit {
   UsuarioAntiguo() {
     this.CambioDatos = true;
     this.MessageService.clear();
-    this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio BLoqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
+    this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio Bloqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
   }
 
   formateaRut(rut) {
@@ -834,9 +834,30 @@ export class CitaRotatoriaComponent implements OnInit {
         "cambioDatos": "0"
       }
       console.log(req);
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'info', summary: 'Cita Ingresada', detail: 'La Cita se esta ingresando al sistema por favor espere' });
       var respuesta = await this.MediwebServiceService.AgregarCita(req);
       var respok = JSON.parse(respuesta.toString());
       if (respok[0][""] == "OK") {
+        var req2 = {
+          "idCita": "1",
+          "idCliente": this.cliente["id"] + "",
+          "idSucursal": this.sucursal["iIdSuc"].toString(),
+          "idDoctor": this.Doctor["iIdDoc"].toString(),
+          "idEsp": this.especialidad["iIdEsp"].toString(),
+          "idPrev": this.cliente["idprev"] + "",
+          "fecha": this.FechaSelect.toString() + " " + moment(this.HoraSelect.toString()).format('HH:mm'),
+          "hora": "",
+          "descripcion": "",
+          "cambioDatos": "",
+          "nDoctor":  this.Doctor["sNombre"],
+          "nSucursal": this.sucursal["sNombre"],
+          "nEspecialidad": this.especialidad["sNomEsp"],
+          "clienteEmail": this.cliente["mail"]
+        }
+        console.log(req2);
+        var respuesta2 = await this.MediwebServiceService.EnviarCorreoSobrecupo(req2);
+        console.log(respuesta2);
         this.MessageService.clear();
         this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Cita Ingresada Correctamente', detail: 'La Cita ingresa ha sido regristrada correctamente' });
       }
@@ -964,15 +985,36 @@ export class CitaRotatoriaComponent implements OnInit {
         "fecha": horasrotatorias,
         "hora": "",
         "descripcion": "",
-        "cambioDatos": ""
+        "cambioDatos": "",
+        "nDoctor":  this.Doctor["sNombre"],
+        "nSucursal": this.sucursal["sNombre"],
+        "nEspecialidad": this.especialidad["sNomEsp"],
+        "clienteEmail": this.cliente["mail"]
       }
       console.log(req);
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'info', summary: 'Citas Ingresadas', detail: 'Las Citas se estan ingresando al sistema por favor espere' });
       var respuesta = await this.MediwebServiceService.CrearCitasRotatoria(req);
       console.log(respuesta);
       var respok = JSON.parse(respuesta.toString());
       if (respok[0][""] == "OK") {
         this.MessageService.clear();
         this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Citas Ingresadas Correctamente', detail: 'Las Citas ingresas han sidos regristradas correctamente' });
+        this.SelecEspecialidad = false;
+        this.SelecSucursal = false;
+        this.SelecDoctor = false;
+  
+        this.sucursales = undefined;
+        this.medico = undefined;
+        this.worksDate = [];
+        this.Horas = [];
+        this.ListaHoras = [];
+  
+        this.sucursal = undefined;
+        this.Doctor = undefined;
+        this.FechaSelect = undefined;
+        this.HoraSelect = undefined;
+        this.especialidad = undefined;
       }
       else{
         this.MessageService.clear();

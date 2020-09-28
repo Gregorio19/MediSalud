@@ -173,6 +173,12 @@
                         <span *ngIf="Doctor">{{Doctor["sNombre"]}}</span>
                         <i class="pi pi-times "></i>
                     </div>
+                    <div class="form-group  row mx-0 fecharota" *ngIf="RotatorioCita">
+                        <label class="col-sm-3 col-form-label">Fecha:</label>
+                        <div class="div-outline col-sm-9 fecharotadiv">
+                            <span *ngIf="FechaSelect">{{FechaSelect}}</span>
+                        </div>
+                    </div>
                     <div class="form-group row" *ngIf="RotatorioCita">
                         <div class="col-6" *ngFor="let hora of ListaHoras let index = index">
                             <div class="form-group div-outline letratama">
@@ -230,8 +236,8 @@
                                 </ng-template>
                             </p-dropdown>
                         </div>
-                        <div class="col-12" *ngIf="SelecDoctor">
-                            <div class="row">
+                        <div class="col-9 d-flex" *ngIf="SelecDoctor">
+                            <div class="row col-12">
                                 <div class="col-3">
                                     <div>
                                         <img [src]="ImagenUrl" class="selectuser user_icon w-100" />
@@ -245,8 +251,20 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="row col-12">
+                                <div class="col-12" *ngIf="RotatorioCita == false">
+                                    <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita= true">
+                                        Rotatorio
+                                    </button>
+                                </div>
+                                <div class="col-12" *ngIf="RotatorioCita == true">
+                                    <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita = false">
+                                        Sobrecupo
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 mt-5" *ngIf="SelecDoctor">
+                        <!-- <div class="col-12 mt-5" *ngIf="SelecDoctor">
                             <div class="row">
                                 <div class="col-3">
                                     <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita= true">
@@ -259,7 +277,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
