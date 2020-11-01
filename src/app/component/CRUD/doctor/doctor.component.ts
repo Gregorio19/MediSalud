@@ -19,6 +19,7 @@ export class DoctorComponent implements OnInit {
   mail;
   nomImagen;
   inforDoc;
+  pass
 
   Doctores;
   cols

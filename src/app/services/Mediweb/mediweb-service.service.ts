@@ -10,8 +10,8 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    this.apiUrl = "http://localhost/APImweb/api/v1";
-    //this.apiUrl = "http://localhost:59510/api/v1";
+    //this.apiUrl = "http://localhost/APImweb/api/v1";
+    this.apiUrl = "http://localhost:59510/api/v1";
   }
 
   async AgregarSucursal(req) {
@@ -222,6 +222,22 @@ export class MediwebServiceService {
     }
   }
 
+  async ObtenerCitasMedicas(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/FichaTecnica/ObtenerCitasMedicas" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async ObtenerDocXSucursalXEspecialidades(req) {
     try {
       return await this.http.post(
@@ -274,6 +290,22 @@ export class MediwebServiceService {
     try {
       return await this.http.post(
         this.apiUrl  + "/Cita/ActuCita" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async ActuNBonoCita(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Cita/ActuNBonoCita" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =

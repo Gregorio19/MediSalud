@@ -25,6 +25,10 @@
             <input type="text" class="form-control" [(ngModel)]="mail" placeholder="Ingrese Correo del Doctor"
                 (blur)="compexreg_email()">
         </div>
+        <div class="form-group col-12 col-md-6">
+            <label for="especialidades">Contraseña</label> <span class="text-danger"> {{emailvalidotext}}</span>
+            <input type="text" class="form-control" [(ngModel)]="pass" placeholder="Ingrese Contraseña del Doctor">
+        </div>
 
         <div class="form-group col-12">
             <label for="especialidades">Foto de Doctor</label>

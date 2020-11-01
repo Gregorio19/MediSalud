@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
 import { Router } from '@angular/router';
-import {MessageService} from 'primeng/api';
-
+import { MessageService } from 'primeng/api';
 @Component({
-  selector: 'app-adm-cita',
-  templateUrl: './adm-cita.component.html',
-  styleUrls: ['./adm-cita.component.scss'],
+  selector: 'app-traer-ficha',
+  templateUrl: './traer-ficha.component.html',
+  styleUrls: ['./traer-ficha.component.scss'],
   providers: [MessageService]
 })
-export class AdmCitaComponent implements OnInit {
-
+export class TraerFichaComponent implements OnInit {
 
   Sucursusales;
   Sucursal;
@@ -20,19 +18,27 @@ export class AdmCitaComponent implements OnInit {
   fechaI: Date
   fechaF: Date
   es;
+  Clintes;
+  Cliente;
+  Bono;
 
   CItas;
   cols;
 
+  // Inputs
+  ModoVista;
+  IdFichaT;
+  imprimir
+
   filtros: string;
   ItemsArray;
-
-  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService:MessageService) { 
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) {
     this.es = undefined;
     this.es = {};
   }
 
   ngOnInit(): void {
+    this.ModoVista = true;
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
@@ -47,7 +53,7 @@ export class AdmCitaComponent implements OnInit {
       closeText: "Cerrar",
       prevText: "Anterior",
       nextText: "Siguiente",
-      monthNames: ["Enero","Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
       monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
       dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
       dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
@@ -67,29 +73,19 @@ export class AdmCitaComponent implements OnInit {
       month: "Mes",
       week: "Semana",
       day: "Día",
-      allDayText : "Todo el día"
+      allDayText: "Todo el día"
     }
 
     this.cols = [
-      { header: 'Fecha', nombre: 'Fecha' },
-      { header: 'Hora', nombre: 'Hora' },
-      { header: 'Cliente', nombre: 'NomCli' },
+      { header: 'Id', nombre: 'IdFicha' },
+      { header: 'Cliente', nombre: 'NombreCli' },
       { header: 'Rut', nombre: 'RutCli' },
-      { header: 'Doctor', nombre: 'NomDoc' },
-      // { header: 'Rut', nombre: 'RutDoc' },
-      { header: 'Prevision', nombre: 'Prevision' },
-      { header: 'Estado', nombre: 'Estado' },
-      { header: 'N Bono', nombre: 'NBono' }
+      { header: 'Doctor', nombre: 'NombreDoc' },
+      { header: 'Sucursal', nombre: 'NombreSuc' },
+      { header: 'N° Bono', nombre: 'NroBono' },
+      { header: 'Fecha', nombre: 'FechaFicha' },
+      { header: 'Hora', nombre: 'HoraFicha' }
     ];
-
-    this.EstadosCIta = [
-      { id: '0', nombre: 'Agendado' },
-      { id: '1', nombre: 'Anulado' },
-      { id: '2', nombre: 'Atendido' },
-      { id: '3', nombre: 'En Espera' },
-      { id: '4', nombre: 'No AtendidomDoc' },
-    ];
-
   }
 
 
@@ -98,14 +94,27 @@ export class AdmCitaComponent implements OnInit {
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getSuc);
     var primeratributo = JSON.parse(respuesta.toString());
     this.Sucursusales = [];
-    this.Sucursusales.unshift({ "sNombre": "Todas", "iIdSuc": "0" });
+    this.Sucursusales.unshift({ "sNombre": "Todas", "iIdSuc": 0 });
     primeratributo.forEach(element => {
       this.Sucursusales.push(element);
     });
     await this.GetDoctor();
+    await this.GetClientes();
     console.log(this.Sucursusales);
     this.Sucursal = this.Sucursusales[0];
     this.Doctor = this.Doctores[0];
+    this.Cliente = this.Clintes[0];
+
+  }
+
+  async GetClientes() {
+    var getcli = {
+      "Tipo": "C"
+    }
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.Clintes = JSON.parse(respuesta.toString());
+    this.Clintes.splice(0, 0, { "iIdCli": 0, "sRutCli": "Todos" });
+    console.log(this.Clintes);
   }
 
   async GetDoctor() {
@@ -113,7 +122,7 @@ export class AdmCitaComponent implements OnInit {
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
     var primeratributo = JSON.parse(respuesta.toString());
     this.Doctores = [];
-    this.Doctores.unshift({ "sNombre": "Todos", "iIdDoc": "0" });
+    this.Doctores.unshift({ "sNombre": "Todos", "iIdDoc": 0 });
     primeratributo.forEach(element => {
       this.Doctores.push(element);
     });
@@ -123,30 +132,42 @@ export class AdmCitaComponent implements OnInit {
 
   async GetAllCitas() {
     var fechas = true;
-    var fechaI = this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate();
-    var fechaF =this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate();
-    if (this.fechaI == undefined || this.fechaF == undefined) {
-      fechas =false;
+    if (!this.fechaI || !this.fechaF) {
+      fechas = false;
       this.MessageService.clear();
-      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Faltan datos por llenar', detail:'Debe inidicar una fecha de inicio y fecha de fin de la cita a consultar'});
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe inidicar una fecha de inicio y fecha de fin de la cita a consultar' });
     }
-    else if(this.fechaI > this.fechaF){
-      fechas =false;
+    else {
+      var fechaI = this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate();
+      var fechaF = this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate();
+    }
+
+    if (this.fechaI == undefined || this.fechaF == undefined) {
+      fechas = false;
       this.MessageService.clear();
-      this.MessageService.add({key: 'tc', severity:'warn', summary: 'Error en fechas', detail:'La fecha final no puede ser menor a la inicial'});
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe inidicar una fecha de inicio y fecha de fin de la cita a consultar' });
+    }
+    else if (this.fechaI > this.fechaF) {
+      fechas = false;
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Error en fechas', detail: 'La fecha final no puede ser menor a la inicial' });
     }
     else {
       console.log(this.Doctor["iIdDoc"]);
       console.log(this.Sucursal["iIdSuc"]);
-      
-      
+
+
       var parametro = {
-        "idSuc": this.Sucursal["iIdSuc"].toString(),
-        "idDoc": this.Doctor["iIdDoc"].toString(),
-        "fechaI": this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate(),
-        "fechaF": this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate()
+        "iIdSuc": this.Sucursal["iIdSuc"],
+        "iIdDoc": this.Doctor["iIdDoc"],
+        "iNumBono": !this.Bono ? 0 : this.Bono,
+        "sFecIni": fechaI,
+        "sFecFin": fechaF,
+        "sRutCli": this.Cliente["iIdCli"]
       }
-      var respuesta = await this.MediwebServiceService.GetAllCitas(parametro);
+      console.log(parametro);
+
+      var respuesta = await this.MediwebServiceService.ObtenerCitasMedicas(parametro);
       var citas = JSON.parse(respuesta.toString());
       console.log(citas);
       this.CItas = citas;
@@ -187,47 +208,15 @@ export class AdmCitaComponent implements OnInit {
     });
   }
 
-  async cambiotipoagenda(){
-    setTimeout(() => {
-      console.log(this.CItas);
-      this.CItas.forEach(element => {
-        if (element.agendas === undefined) {
-          
-        }
-        else{
-          element.Estado = element.agendas.nombre;
-          var actcita ={
-            "id": element["iIdCita"].toString(),
-            "idestado": element.agendas.id.toString()
-          }
-          this.MediwebServiceService.ActCita(actcita);
-          element.agendas =undefined;
-        }
-      });
-    }, 200);
+  GetDatosImpresion(e: any) {
+    this.imprimir = e;
+    console.log(this.imprimir);
+
   }
 
-  async ActNBono(Nbono){
-    setTimeout(() => {
-      console.log(Nbono);
-      this.CItas.forEach(element => {
-          if (element["NBono"] == Nbono) {
-          console.log("entro a bono",Nbono);
-          var actcita ={
-            "id": element["iIdCita"].toString(),
-            "idestado": Nbono.toString()
-          }
-          console.log(actcita);
-          
-          this.MediwebServiceService.ActuNBonoCita(actcita);
-        }
-      });
-    }, 300);
-  }
-
-  irFicha(Nbono){
+  irFicha(Nbono) {
     console.log(Nbono);
-    
+
     localStorage.setItem('NBono', Nbono);
     this.Router.navigate(["/FichaTenica"]);
   }

@@ -51,6 +51,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
 
 //FcihaTecnica
 import { CrearFichaComponent } from './component/FichaClinica/crear-ficha/crear-ficha.component';
+import { TraerFichaComponent } from './component/FichaClinica/traer-ficha/traer-ficha.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { CrearFichaComponent } from './component/FichaClinica/crear-ficha/crear-
     EditClienteComponent,
     DashboardComponent,
     CitaRotatoriaComponent,
-    CrearFichaComponent
+    CrearFichaComponent,
+    TraerFichaComponent
 
   ],
   imports: [

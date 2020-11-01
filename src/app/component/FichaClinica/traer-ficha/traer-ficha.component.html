@@ -1,5 +1,5 @@
 <div class="container mt-3">
-    <div class="row">
+    <div class="row" *ngIf="!imprimir">
         <p-toast position="top-right" key="tc"></p-toast>
         <div class="form-group col-12 col-md-6">
             <label for="Especialidades">Doctores</label>
@@ -13,6 +13,16 @@
                 styleClass="w-100"></p-dropdown>
         </div>
 
+        <div class="form-group col-12 col-md-6">
+            <label for="Especialidades">Paciente</label>
+            <p-dropdown [options]="Clintes" [(ngModel)]="Cliente" filter="true" optionLabel="sRutCli"
+                styleClass="w-100"></p-dropdown>
+        </div>
+
+        <div class="form-group col-12 col-md-6">
+            <label for="Bono">Numero de Bono</label>
+            <input type="text" class="form-control" placeholder="Introduzca el Numero de bono" [(ngModel)]="Bono" >
+        </div>
         <div class="form-group col-12 col-md-6">
             <label for="fechaI">Fecha Inicio Busqueda</label>
             <p-calendar [(ngModel)]="fechaI" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
@@ -44,9 +54,9 @@
                 [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
                 styleClass="ui-table-customers" currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
                 [filterDelay]="0"
-                [globalFilterFields]="['Fecha', 'Hora', 'NomCli', 'RutCli', 'NomDoc', 'RutDoc', 'Prevision', 'Estado']">
+                [globalFilterFields]="['IdFicha', 'NombreCli', 'RutCli', 'NombreDoc', 'NombreSuc', 'NroBono', 'FechaFicha', 'HoraFicha']">
                 <ng-template pTemplate="caption">
-                    Citas
+                    Fichas Medicas
                     <div class="ui-table-globalfilter-container">
                         <input pInputText class="form-control" type="text"
                             (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Busqueda" />
@@ -62,7 +72,7 @@
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr [pSelectableRow]="rowData">
                         <td *ngFor="let col of columns">
-                            <div *ngIf="col.nombre == 'Estado'">
+                            <!-- <div *ngIf="col.nombre == 'Estado'">
                                 <p-dropdown [options]="EstadosCIta" [(ngModel)]="rowData['agendas']"
                                     (ngModelChange)="cambiotipoagenda()" filter="true" optionLabel="nombre"
                                     styleClass="ui-column-filter">
@@ -74,13 +84,10 @@
                             <div *ngIf="col.nombre == 'NBono'">
                                 <input class="form-control" type="text" [(ngModel)]="rowData['NBono']"
                                 (blur)="ActNBono(rowData['NBono'])" placeholder="N° Bono">
-                            </div>
+                            </div> -->
 
-                            <div *ngIf="col.nombre != 'Estado' && col.nombre != 'NBono'">
-                                <div> <span>{{rowData[col.nombre]}}</span><i class="pi pi-user-edit verde"
-                                        *ngIf="col.header == 'Cliente' && rowData['Cambio'] == 'S'"
-                                        routerLink="/EditCliente"></i>
-                                        <i class="pi pi-list verde ml-2" *ngIf="col.header == 'Hora' && rowData['NBono']" (click)="irFicha(rowData['NBono'])"></i></div>
+                            <div>
+                                <div> <span>{{rowData[col.nombre]}}</span></div>
                             </div>
 
                         </td>
@@ -88,10 +95,13 @@
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="8" style="text-align:left">Citas no encontradas para esa fecha.</td>
+                        <td colspan="8" style="text-align:left">Fichas no encontradas para esa fecha.</td>
                     </tr>
                 </ng-template>
             </p-table>
-        </div>
+        </div>      
+    </div>
+    <div>
+        <app-crear-ficha [ModoVista]="ModoVista" [IdFichaT]="IdFichaT" (Impresion)="GetDatosImpresion($event)"></app-crear-ficha>
     </div>
 </div>

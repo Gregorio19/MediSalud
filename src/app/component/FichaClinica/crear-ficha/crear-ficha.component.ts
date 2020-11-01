@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef,Input,Output,EventEmitter } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
 import { FichaMedicaService } from '../../../services/FichaMedica/ficha-medica.service';
 import { SelectItem } from 'primeng/api';
@@ -16,6 +16,11 @@ import { jsPDF } from 'jspdf';
 })
 
 export class CrearFichaComponent implements OnInit {
+
+//emits 
+@Input() ModoVista: Boolean;
+@Input() IdFichaT: number;
+@Output() Impresion = new EventEmitter<any>();
 
   //Cliente
   IDcli: string;
@@ -90,11 +95,14 @@ export class CrearFichaComponent implements OnInit {
   Medicamentos;
   MedicamentoSelec;
   resultadoMedfilter;
+
+  Nbono;
   
 
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService, private FichaMedicaService: FichaMedicaService) { }
 
   ngOnInit(): void {
+    this.Nbono = localStorage.getItem('NBono');
     this.ActualizarDatosCalendario();
     this.GetClientes();
     this.GetPreviciones();
@@ -160,6 +168,7 @@ export class CrearFichaComponent implements OnInit {
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
     this.Clintes = JSON.parse(respuesta.toString());
     console.log(this.Clintes);
+    this.ObtenerDatosBono();
   }
 
   async GetPreviciones() {
@@ -459,9 +468,11 @@ export class CrearFichaComponent implements OnInit {
 
   async printDiv() {
     this.Imprimiendo = true;
+    this.Impresion.emit(true);
     await this.delay(300);
     var _ = await window.print();
     this.Imprimiendo = false;
+    this.Impresion.emit(false);
   }
 
   //crearPDF
@@ -531,8 +542,8 @@ export class CrearFichaComponent implements OnInit {
     });
     var fichaenvida = {
       "idCliente": this.IDcli,
-      "idCita": 1,
-      "idDoc": 1,
+      "idCita": this.IDCita,
+      "idDoc": this.IdDoctor,
       "motCons": this.MotivoConsulta,
       "enferAct": this.EnfermedadAct,
       "antecedentes": this.Antecedentes,
@@ -570,6 +581,26 @@ export class CrearFichaComponent implements OnInit {
       "gramaje": medicamento.Gramaje
     }
      this.FichaMedicaService.AgregarMedicamento(medicamentoenv);
+   }
+
+   async ObtenerDatosBono(){
+
+    var actcita ={
+      "id": "e",
+      "idestado": this.Nbono.toString()
+    }
+    var respuesta = await  this.FichaMedicaService.obtenerDatosCitaFicha(actcita);
+    var datos = JSON.parse(respuesta.toString());
+    var esto = this;
+    this.Clintes.filter(function (array) {
+      if (array["iIdCli"] == datos[0]["Idcli"]) {
+        esto.RUT = array["sRutCli"];
+        esto.CompararCliente();
+      }
+    });
+    this.IdDoctor = datos[0]["IdDoc"];
+    this.IDCita = datos[0]["IdCita"];
+    console.log(this.IDCita);
    }
 
 }

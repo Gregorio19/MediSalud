@@ -94,6 +94,22 @@ async AgregarFichaTecnica(req) {
   }
 }
 
+async obtenerDatosCitaFicha(req) {
+  try {
+    return await this.http.post(
+      this.apiUrl  + "/obtenerDatosCitaFicha" ,req, { headers: this.headers }
+    ).toPromise();
+  } catch (error) {
+    let resultado =
+    {
+      'status': false,
+      'data': 'error al ejeceutar petición',
+      'codeStatus': error.status
+    };
+    return resultado;
+  }
+}
+
 
 
 }

@@ -122,12 +122,12 @@
                 placeholder="Ingrese los antecedentes del paciente">
         </div>
         <div class="form-group col-12 col-sm-12 text-center row justify-content-center align-items-center">
-            <h3><span for="Nombre">Revision Sistematica: </span> <span class="text-danger"> </span></h3>
+            <h3><span for="Nombre">Revision Sistematica </span> <span class="text-danger"> </span></h3>
             <p-autoComplete class="ml-2" [(ngModel)]="RevisionSelect" [suggestions]="resultadofilter"
                 (keydown)="AgregarRevision($event)" (completeMethod)="DevolverListaRevision($event)"
-                *ngIf="Imprimiendo == false">
+                *ngIf="Imprimiendo == false && !ModoVista ">
             </p-autoComplete>
-            <i (click)="AgregarRevision(undefined)" *ngIf="Imprimiendo == false" class=" mashora pi pi-plus"></i>
+            <i (click)="AgregarRevision(undefined)" *ngIf="Imprimiendo == false && !ModoVista" class=" mashora pi pi-plus"></i>
         </div>
         <div class="form-group col-12 col-sm-6" *ngFor="let revision of RevisionesAgregadas let index = index">
             <br *ngIf="index <= 5">
@@ -149,36 +149,56 @@
             <h3><span for="Nombre">Tratamiento</span> <span class="text-danger"> </span></h3>
             <p-autoComplete class="ml-2" [(ngModel)]="MedicamentoSelec" [suggestions]="resultadoMedfilter"
                 (keydown)="AgregarTratamiento($event)" (completeMethod)="DevolverListaMedicamento($event)"
-                placeholder="Farmaco" *ngIf="Imprimiendo == false">
+                placeholder="Farmaco" *ngIf="Imprimiendo == false  && !ModoVista">
             </p-autoComplete>
-            <i (click)="AgregarTratamiento(undefined)" *ngIf="Imprimiendo == false" class=" mashora pi pi-plus"></i>
+            <i (click)="AgregarTratamiento(undefined)" *ngIf="Imprimiendo == false && !ModoVista" class=" mashora pi pi-plus"></i>
         </div>
         <div class="form-group col-12  text-center row" *ngFor="let trata of Tratamiento let index = index">
             <br *ngIf="index >= 8 && Imprimiendo == true">
-            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true"
+                class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 9 && index == 8 && Imprimiendo == true"
+                class="mb-2 col-12"></div>
 
-            <div *ngIf="RevisionesAgregadas.length == 9 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 10 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 9 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-2 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 10 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true" class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 9 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 10 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 9 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true"
+                class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 10 && Tratamiento.length >= 9 && index == 7 && Imprimiendo == true"
+                class="mb-2 col-12"></div>
 
-            <div *ngIf="RevisionesAgregadas.length == 6 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 5 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 6 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 5 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            
-            <div *ngIf="RevisionesAgregadas.length == 3 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 4 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 3 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 4 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true" class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 6 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 5 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 6 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 5 && Tratamiento.length >= 9 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
 
-            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-5 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
-            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true" class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 3 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 4 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 3 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 4 && Tratamiento.length >= 9 && index == 9 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true"
+                class="mb-5 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 7 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true"
+                class="mb-2 col-12"></div>
+            <div *ngIf="RevisionesAgregadas.length == 8 && Tratamiento.length == 10 && index == 8 && Imprimiendo == true"
+                class="mb-2 col-12"></div>
 
             <br *ngIf="RevisionesAgregadas.length >= 7 && Tratamiento.length >= 8">
             <div class="form-group col-12 col-sm-4 text-center">
@@ -197,12 +217,17 @@
                     placeholder="Indique forma de uso del farmaco">
             </div>
         </div>
-    </div>
-
-    <div class="btn btn-danger" (click)="printDiv()" *ngIf="Imprimiendo == false">
-        agregar pdf
-    </div>
-    <div class="btn btn-danger" (click)="AgregarFicha()" *ngIf="Imprimiendo == false">
-        Agregar Ficha
+        <div class="row mt-5 col-12 justify-content-sm-around" *ngIf="Imprimiendo == false">
+            <div>
+                <button class="btn btn-medisalud-primary ml-auto" (click)="printDiv()">
+                    Imprimir PDF
+                </button>
+            </div>
+            <div *ngIf="!ModoVista">
+                <button class="btn btn-medisalud-primary ml-auto" (click)="AgregarFicha()">
+                    Guardar Ficha Tecnica
+                </button>
+            </div>
+        </div>
     </div>
 </div>

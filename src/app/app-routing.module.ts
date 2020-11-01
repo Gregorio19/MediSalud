@@ -20,6 +20,7 @@ import { DashboardComponent } from './component/CRUD/dashboard/dashboard.compone
 
 //Fichatecnica
 import { CrearFichaComponent } from './component/FichaClinica/crear-ficha/crear-ficha.component';
+import { TraerFichaComponent } from './component/FichaClinica/traer-ficha/traer-ficha.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'DashBoard', component: DashboardComponent},
   { path: 'CitaRotatoria', component: CitaRotatoriaComponent},
   { path: 'FichaTenica', component: CrearFichaComponent},
+  { path: 'TraerFichaTenica', component: TraerFichaComponent},
   
   { path: '', component: PrincipalComponent},
   { path: '**', redirectTo: '' }
