@@ -1,12 +1,12 @@
 <div class="container-agenda">
-    <div class="row  container">
+    <div class="row  container" id="ficha">
         <div class="col-12">
-            <img src="./assets/images/RMS_Logo-fondo claros.svg"  height="50" alt="" loading="lazy">
+            <img src="./assets/images/logoCorreo.png" class="img-tama">
         </div>
-        
+
         <div class="datos-paciente">
             <div class="col-12 estimado">
-                <span>Estimado Pedro Alberto Perez Toloso</span>
+                <span>Estimado {{cliente.nombre}}</span>
                 <p>Su cita ha sido programada.</p>
             </div>
             <div class=" form-text col-12">
@@ -14,15 +14,15 @@
                     PACIENTE
                 </label>
                 <span>
-                    Pedro Pablo Perez Gonzalez
+                    {{cliente.nombre}}
                 </span>
             </div>
             <div class=" form-text col-12">
                 <label>
-                    RUT
+                    Doctor
                 </label>
                 <span>
-                    12.345.678-9
+                    {{Cita.Doctor}}
                 </span>
             </div>
             <div class=" form-text col-12">
@@ -30,57 +30,57 @@
                     SEDE
                 </label>
                 <span>
-                    Rigoberto Jara 365
+                    {{Cita.Sucursal}}
                 </span>
             </div>
             <div class=" form-text col-12">
                 <label>
-                    Área de 
+                    Ubicada en
                 </label>
                 <span>
-                    Psiquiatría
+                    {{Cita.Direccion}}
                 </span>
             </div>
             <div class=" form-text col-12">
                 <label>
-                    Especialidad de 
+                    Área de
                 </label>
                 <span>
-                    Timidez       
+                    {{Cita.Especialidad}}
                 </span>
             </div>
             <div class="col-12 my-3">
                 <span>
-                    Por favor presentarse el día 27 de Mayo del 2020 a las 13:30h
+                    Por favor presentarse 10 min antes de la hora agendada el día {{Cita.fecha}} a las {{Cita.hora}}h
                 </span>
             </div>
             <div class="col-12 px-4">
                 <span>
-                    Nota del médico
+                    Nota al médico
                 </span>
                 <label>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortiummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis 
+                    {{Cita.descripcion}}
                 </label>
             </div>
-            
-        </div>
-            
-        <div class="col-12 datos-contacto">
-        <div class="row">
 
-            <span class="col-12">
-                Teléfono :  +562 28097078
-            </span>
-            <span class="col-12">
-                Whatsapp:  +569 49004442
-            </span>
-            <span class="col-12">
-                Dirección : Rigoberto Jara 0365, Quilicura
-            </span>
+        </div>
+
+        <div class="col-12 datos-contacto">
+            <div class="row">
+
+                <span class="col-12">
+                    Teléfono : +562 28097078
+                </span>
+                <span class="col-12">
+                    Whatsapp: +569 49004442
+                </span>
+                <span class="col-12">
+                    Dirección : Rigoberto Jara 0365, Quilicura
+                </span>
+            </div>
         </div>
     </div>
-    </div>
-    <button class="btn-siguiente ml-auto" >
+    <button class="btn-siguiente ml-auto" routerLink="">
         <i class="pi pi-plus"></i>
     </button>
 </div>

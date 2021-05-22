@@ -1,5 +1,6 @@
 <div class="container mt-3">
     <div class="row">
+        <p-toast position="top-right" key="tc"></p-toast>
         <div class="form-group col-12 col-md-6">
             <label for="Doctores">Doctores</label>
             <p-dropdown [options]="Doctores" (ngModelChange)="changePress('D')" [(ngModel)]="Doctor" filter="true"
@@ -13,46 +14,51 @@
         </div>
 
         <div [hidden]="!pressEspecialidad" class="form-group col-12 col-md-6">
+            <label for="Sucursusales">Sucursusales</label>
+            <p-dropdown [options]="Sucursusales" (ngModelChange)="changePress('S')" [(ngModel)]="Sucursal" filter="true"
+                optionLabel="sNombre" styleClass="w-100"></p-dropdown>
+        </div>
+
+        <div [hidden]="!pressSucursal" class="form-group col-12 col-md-6">
             <label for="horarios">Minutos de consulta</label>
             <p-dropdown [options]="horarios" (ngModelChange)="changePress('T')" [(ngModel)]="horario" optionLabel="min" styleClass="w-100">
             </p-dropdown>
             <!-- //<input type="number" min="9" max="15">:<input type="number" min="0" max="59"> -->
         </div>
 
-        <div [hidden]="!pressTiempo" class="form-group col-12 col-md-6">
-            <label for="Sucursusales">Sucursusales</label>
-            <p-dropdown [options]="Sucursusales" (ngModelChange)="changePress('S')" [(ngModel)]="Sucursal" filter="true"
-                optionLabel="sNombre" styleClass="w-100"></p-dropdown>
-        </div>
+        
 
-        <div [hidden]="!pressSucursal" class="form-group col-12 ">
+        <div *ngIf="pressTiempo" class="form-group col-12 ">
             <label for="Horarios">Horarios</label><br>
             <div *ngFor="let item of horariosxDia;let i=index" class="col-12">
                 <div class="ui-fluid p-formgrid p-grid">
-                    <div class="p-field p-col-2">
-                        <p-checkbox name="groupname" value="val1" (click)="vercheck(i)" label="{{item.dia}}"></p-checkbox>
+                    <div class="p-field p-col-2 d-flex">
+                        <p-checkbox name="groupname"  [binary]="true" [(ngModel)]="item.Act" (click)="vercheck(i)" label="{{item.dia}}"></p-checkbox>
+                        
+                        <div class="mashora" (click)="agregardiahoras(item.dia,i)"><i class="pi pi-plus"></i></div>
+                        <div *ngIf="item.del == true" class="mashora borrar" (click)="eliminardiahoras(i)"><i class="pi pi-times"></i></div>
                     </div>
                     <div class="p-field p-grid p-col">
                         <label for="horas" class="p-col-fixed">Hora Inicio: </label> 
                         <div class="p-col">
-                            <p-dropdown [options]="horas" [(ngModel)]="item.horaI" optionLabel="Hora" [disabled]="item.Act == false">
+                            <p-dropdown [options]="horas" [(ngModel)]="item.horaI" placeholder="Seleccione" optionLabel="Hora" [disabled]="item.Act == false">
                             </p-dropdown>
                         </div>
-                        <label for="minutosI" class="p-col-fixed">:</label> 
+                        <label for="horariosI" class="p-col-fixed">:</label> 
                         <div class="p-col">
-                            <p-dropdown [options]="minutosI" [(ngModel)]="item.minI" optionLabel="Minuto" [disabled]="item.Act == false">
+                            <p-dropdown [options]="horariosI" [(ngModel)]="item.minI" placeholder="Seleccione" optionLabel="Minuto" [disabled]="item.Act == false">
                             </p-dropdown>
                         </div>
                     </div>
                     <div class="p-field p-grid p-col">
                         <label for="horas" class="p-col-fixed">Hora Fin: </label>
                         <div class="p-col">
-                            <p-dropdown [options]="horas" [(ngModel)]="item.horaF" optionLabel="Hora" [disabled]="item.Act == false">
+                            <p-dropdown [options]="horas" [(ngModel)]="item.horaF" placeholder="Seleccione" optionLabel="Hora" [disabled]="item.Act == false">
                             </p-dropdown>
                         </div>
-                        <label for="minutosF" class="p-col-fixed">:</label>
+                        <label for="horariosF" class="p-col-fixed">:</label>
                         <div class="p-col">
-                            <p-dropdown [options]="minutosF" [(ngModel)]="item.minF" optionLabel="Minuto" [disabled]="item.Act == false">
+                            <p-dropdown [options]="horariosF" [(ngModel)]="item.minF" placeholder="Seleccione" optionLabel="Minuto" [disabled]="item.Act == false">
                             </p-dropdown>
                         </div>
                     </div>
@@ -60,7 +66,7 @@
             </div>
         </div>
 
-        <div class="btn btn-medisalud-primary" (click)="AgregarHorarioDoc()" [hidden]="!pressSucursal">
+        <div class="btn btn-medisalud-primary" (click)="AgregarHorarioDoc()" [hidden]="!pressTiempo">
         Agregar
         </div>
     </div>

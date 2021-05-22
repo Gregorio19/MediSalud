@@ -166,3 +166,27 @@
     }
   }
 }
+@media (max-width: 575.98px) { 
+  .user_selected{
+    height: max-content;
+  }
+  .selectuser{
+    position: relative !important;
+    height: auto;
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 480px) {
+
+  .agenda {
+    > .row {
+      height: auto;
+      flex-direction: column-reverse;
+      .box-data {
+        border-right: none;
+        border-top: 11px solid $green-dark;
+      }
+    }
+  }
+
+}

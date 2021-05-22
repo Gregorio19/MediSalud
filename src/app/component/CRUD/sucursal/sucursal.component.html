@@ -1,33 +1,33 @@
 <div class="container mt-3">
     <div class="row">
-
+        <p-toast position="top-right" key="tc"></p-toast>
         <div class="form-group col-12 col-md-6">
             <label for="Nombre">Nombre Sucursal</label>
-            <input type="text" class="form-control" [(ngModel)]="Nombre" placeholder="Ingrese nombre de Sucursal">
+            <input maxlength="20" type="text" class="form-control" [(ngModel)]="Nombre" placeholder="Ingrese nombre de Sucursal">
         </div>
 
         <div class="form-group col-12 col-md-6 row mx-0">
-            <label for="Direccion" class="col-12 px-0">Direccion</label>
+            <label for="Direccion" class="col-12 px-0">Dirección</label>
             <div class="col-sm-10 px-0 ">
-                <input type="text" class="form-control " [(ngModel)]="Direccion"
-                    placeholder="Ingrese dreccion de sucursal">
+                <input  maxlength="50" type="text" class="form-control " [(ngModel)]="Direccion"
+                    placeholder="Ingrese dreccion de sucursal" (blur)=" obtenerlatlon(gmap.getMap())">
             </div>
             <div class="col-sm-2 text-right px-0">
-                <button class="btn btn-medisalud-primary" (click)=" obtenerlatlon(gmap.getMap())">buscar</button>
+                <button class="btn btn-medisalud-primary"  (click)=" obtenerlatlon(gmap.getMap())">buscar</button>
             </div>
 
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="Horini">Hora de Inicio de servicio</label>
-            <input type="text" class="form-control" [(ngModel)]="Horini"
-                placeholder="Ingrese hora de apertura de atencion">
+            <div><p-calendar  [(ngModel)]="Horini" [timeOnly]="true" placeholder="Apertura de atencion" readonly>
+            </p-calendar></div>
         </div>
 
         <div class="form-group col-12 col-md-6">
             <label for="Horafin">Hora de Fin de servicio</label>
-            <input type="text" class="form-control" [(ngModel)]="Horafin"
-                placeholder="Ingrese nombre de cierre de atencion">
+            <div><p-calendar  [(ngModel)]="Horafin" [timeOnly]="true" placeholder="Cierre de atencion" readonly>
+            </p-calendar></div>
         </div>
 
 
@@ -36,11 +36,11 @@
                 (onOverlayClick)="handleOverlayClick($event)" [style]="{'width':'100%','height':'150px'}"></p-gmap>
         </div>
 
-        <div class="btn btn-medisalud-primary" *ngIf="Editar == false" (click)=" CrearSucursal()">cargar</div>
-        <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" ActualizarSucursal()">Actualizar
+        <div class="btn btn-medisalud-primary"  (click)=" CrearSucursal()">cargar</div>
+        <div class="btn btn-medisalud-primary ml-3" *ngIf="Editar == true" (click)=" ActualizarSucursal()">Actualizar
         </div>
-        <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
-        </div>
+        <!-- <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
+        </div> -->
     </div>
 
     <div class="row">
@@ -65,13 +65,13 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [pSelectableRow]="rowData">
                     <td *ngFor="let col of columns" (click)="Sucursal_seleccionado(rowData)">
-                        <div class="cortar-texto" *ngIf="col.nombre == 'iHIni'">
-                            {{formathora(rowData["iHIni"],rowData["iMIni"])}}
+                        <div class="cortar-texto" *ngIf="col.nombre == 'iHini'">
+                            {{formathora(rowData["iHini"],rowData["iMini"])}}
                         </div>
-                        <div class="cortar-texto" *ngIf="col.nombre == 'iHFin'">
-                            {{formathora(rowData["iHFin"],rowData["iMFin"])}}
+                        <div class="cortar-texto" *ngIf="col.nombre == 'iHfin'">
+                            {{formathora(rowData["iHfin"],rowData["iMfin"])}}
                         </div>
-                        <div class="cortar-texto" *ngIf="col.nombre != 'iHFin' && col.nombre != 'iHIni'">
+                        <div class="cortar-texto" *ngIf="col.nombre != 'iHfin' && col.nombre != 'iHini'">
                             {{rowData[col.nombre]}}
                         </div>
                     </td>

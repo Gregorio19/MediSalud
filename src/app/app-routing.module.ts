@@ -12,9 +12,18 @@ import { DoctorComponent } from './component/CRUD/doctor/doctor.component';
 import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.component';
 
 import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
+import { CitaRotatoriaComponent } from './component/Cita/cita-rotatoria/cita-rotatoria.component';
 
 import { LoginComponent } from './component/Shared/login/login.component';
+import { LoginDComponent } from './component/Shared/login-d/login-d.component';
+import { EditClienteComponent } from './component/CRUD/Edit-Cliente/edit-cliente/edit-cliente.component';
+import { DashboardComponent } from './component/CRUD/dashboard/dashboard.component';
 
+//Fichatecnica
+import { CrearFichaComponent } from './component/FichaClinica/crear-ficha/crear-ficha.component';
+import { TraerFichaComponent } from './component/FichaClinica/traer-ficha/traer-ficha.component';
+import { PacienteComponent } from './component/Videollamada/paciente/paciente.component';
+import { ObtnerCitaComponent } from './component/FichaClinica/obtner-cita/obtner-cita.component';
 
 const routes: Routes = [
   { path: 'Cliente-Agenda', component: DatosClienteComponent},
@@ -27,7 +36,17 @@ const routes: Routes = [
   { path: 'Resumen', component: ResumenCitaComponent},
   { path: 'AdmCita', component: AdmCitaComponent},
   { path: 'Login', component: LoginComponent},
+  { path: 'LoginD', component: LoginDComponent},
+  { path: 'EditCliente', component: EditClienteComponent},
+  { path: 'DashBoard', component: DashboardComponent},
+  { path: 'CitaRotatoria', component: CitaRotatoriaComponent},
+  { path: 'FichaTenica', component: CrearFichaComponent},
+  { path: 'TraerFichaTenica', component: TraerFichaComponent},
+  { path: 'PacienteComponent', component: PacienteComponent},
+  { path: 'CitaFicha', component: ObtnerCitaComponent},
+  
   { path: '', component: PrincipalComponent},
+  { path: '**', redirectTo: '' }
   
 ];
 

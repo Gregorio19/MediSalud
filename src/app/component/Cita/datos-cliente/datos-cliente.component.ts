@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
-import {SelectItem} from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-datos-cliente',
   templateUrl: './datos-cliente.component.html',
-  styleUrls: ['./datos-cliente.component.scss']
+  styleUrls: ['./datos-cliente.component.scss'],
+  providers: [MessageService]
 })
 export class DatosClienteComponent implements OnInit {
 
@@ -31,27 +33,84 @@ export class DatosClienteComponent implements OnInit {
   añoactual;
   es: any;
 
+  //validaciones
+  telefonovalido;
+  emailvalido;
+  Rutvalido;
+  NombreValido;
+  DireccionValida;
+
+  telefonovalidotext;
+  emailvalidotext;
+  Rutvalidotext;
+  NombreValidotext;
+  DireccionValidatext;
+  fechaValidatext;
+
   Clintes: any;
   Previciones: SelectItem[];
 
-  constructor(private MediwebServiceService: MediwebServiceService,private Router:Router) { }
+  ClienteAntiguo;
+  CambioDatos;
+
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
   ngOnInit(): void {
+
+    this.RUT = "";
+    this.Correo = "";
+    this.Direccion = "";
+    this.NUmTel = "";
+    this.Nombre = "";
+
+    this.telefonovalido = true;
+    this.emailvalido = true;
+    this.Rutvalido = true;
+    this.NombreValido = true;
+    this.DireccionValida = true;
+
+    this.telefonovalidotext = "";
+    this.emailvalidotext = "";
+    this.Rutvalidotext = "";
+    this.NombreValidotext = "";
+    this.DireccionValidatext = "";
+    this.fechaValidatext = "";
+    this.ClienteAntiguo = false;
+    this.CambioDatos = false;
+
     this.GetPreviciones();
     this.GetClientes();
     this.sexo = "Masculino";
     this.titular = false;
     this.es = {
       firstDayOfWeek: 1,
-      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
-      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
       today: 'Hoy',
       clear: 'Borrar',
+      closeText: "Cerrar",
+      prevText: "Anterior",
+      nextText: "Siguiente",
+      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+      dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+      weekHeader: "Semana",
+      firstDay: 0,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: "",
+      timeOnlyTitle: "Solo hora",
+      timeText: "Tiempo",
+      hourText: "Hora",
+      minuteText: "Minuto",
+      secondText: "Segundo",
+      currentText: "Fecha actual",
+      ampm: false,
+      month: "Mes",
+      week: "Semana",
+      day: "Día",
+      allDayText: "Todo el día",
       dateFormat: 'mm/dd/yy',
-
     }
     let today = new Date();
     let month = today.getMonth();
@@ -69,6 +128,7 @@ export class DatosClienteComponent implements OnInit {
     this.maxDate = new Date();
     this.maxDate.setMonth(nextMonth);
     this.maxDate.setFullYear(nextYear);
+
   }
 
   cambiosexo() {
@@ -77,89 +137,314 @@ export class DatosClienteComponent implements OnInit {
   }
 
   async GetClientes() {
-
     var getcli = {
-      "Tipo": "C"
+      "acc": "C"
     }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
-
-    this.Clintes = JSON.parse(respuesta.toString());
-    console.log(this.Clintes);
+    console.log(respuesta);
+    if (respuesta["status"]) {
+      this.Clintes = respuesta["dataCli"];
+      console.log(this.Clintes);
+    }
   }
 
   async GetPreviciones() {
 
     var getcli = {
-      "Tipo": "P"
+      "acc": "P"
     }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
-
-    this.Previciones = JSON.parse(respuesta.toString());
-    console.log(this.Previciones);
+    if (respuesta["status"]) {
+      this.Previciones = respuesta["dataPre"];
+      console.log(this.Previciones);
+      this.Prevision = this.Previciones[0];
+    }
   }
 
   async AgregarCliente() {
-    var estitu = this.titular == true ? 1:0;
-    var susexo = this.sexo == "Masculino" ? 'M':'F';
-    var rutadd = this.RUT.replace(".","").replace("-","");
-    rutadd =  rutadd.substring(0,rutadd.length-1)+"-"+ rutadd.substring(rutadd.length-1,rutadd.length);
-    console.log(this.fechaN);
-    
-    var Addcli = {
-      "id": "0",
-      "rut": rutadd,
-      "nombre": this.Nombre,
-      "tel": this.NUmTel,
-      "mail": this.Correo,
-      "direccion": this.Direccion,
-      "cumpleaños": this.fechaN.getUTCFullYear()+"-"+(this.fechaN.getUTCMonth()+1)+"-"+this.fechaN.getUTCDate()+"T00:00:00",
-      "idprev": this.Prevision["iIdPrev"],
-      "titular": estitu,
-      "sexo": susexo
+    var fechaelegida;
+    if (this.fechaN) {
+      fechaelegida = this.getfechas(this.fechaN);
     }
-    
-    console.log(Addcli);
-    
-    var exitcli = this.Clintes.filter(function(array) {
-      if (array.sRutCli.replace(".","").replace("-","") == rutadd.replace(".","").replace("-","") ) {
-        return array;
-      } 
-    });
-    if (exitcli.length ==0){
-      await this.MediwebServiceService.AgregarCliente(Addcli);
-      this.Router.navigate(["Agendar"]);
+    let today = new Date();
+    var hoy = this.getfechas(today);
+    console.log(hoy);
+
+    this.telefonovalido = true;
+    this.emailvalido = true;
+    this.Rutvalido = true;
+    this.NombreValido = true;
+    this.DireccionValida = true;
+
+    this.telefonovalidotext = "";
+    this.emailvalidotext = "";
+    this.Rutvalidotext = "";
+    this.NombreValidotext = "";
+    this.DireccionValidatext = "";
+    this.fechaValidatext = "";
+    if (this.RUT == "") {
+      this.Rutvalido = false;
+      this.Rutvalidotext = "El Rut no puede estar vacio";
     }
-    else{
-     // this.Router.navigate(["Agendar"]);
+
+    if (this.Nombre == "") {
+      this.NombreValido = false;
+      this.NombreValidotext = "El Nombre no puede estar vacio";
     }
-    
+
+    if (this.Nombre.length <= 3) {
+      this.NombreValido = false;
+      this.NombreValidotext = "El Nombre no puede tener menos de 3 letras";
+    }
+
+    if (this.fechaN == undefined) {
+      this.fechaValidatext = "La fecha no puede estar vacia";
+    }
+
+    if (this.NUmTel == "") {
+      this.telefonovalido = false;
+      this.telefonovalidotext = "El telefono no puede estar vacio";
+    }
+
+    if (this.Correo == "") {
+      this.emailvalido = false;
+      this.emailvalidotext = "El email no puede estar vacio";
+    }
+    if (fechaelegida > hoy) {
+      this.emailvalido = false;
+      this.fechaValidatext = "La fecha no puede ser mayor al dia actual";
+    }
+
+    if (this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false) {
+      return;
+    }
+    else {
+      var estitu = this.titular == true ? 0 : 1;
+      console.log(this.sexo);
+
+      var susexo = this.sexo == "Masculino" ? 'M' : 'F';
+      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
+      rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
+      console.log(this.fechaN);
+
+      var Addcli = {
+        "acc": "N",
+        "idcli": 0,
+        "rutCli": rutadd,
+        "nom": this.Nombre,
+        "fono": this.NUmTel,
+        "direc": this.Direccion,
+        "mail": this.Correo,
+        "nac": this.getfechas(this.fechaN),
+        "idPrev": this.Prevision["iIdPrev"],
+        "tit": estitu == 1 ? true : false,
+        "sex": susexo
+      }
+
+
+      var Addcli2 = {
+        "acc": "N",
+        "idcli": 0,
+        "rutCli": rutadd,
+        "nom": this.Nombre,
+        "fono": this.NUmTel,
+        "direc": this.Direccion,
+        "mail": this.Correo,
+        "nac": this.getfechas(this.fechaN),
+        "idPrev": this.Prevision["iIdPrev"],
+        "tit": estitu == 1 ? true : false,
+        "sex": susexo,
+        "camCli": this.CambioDatos
+      }
+
+
+
+      console.log(Addcli2);
+
+      var exitcli = this.Clintes.filter(function (array) {
+        if (array.sRutCli.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == rutadd.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
+          return array;
+        }
+      });
+      if (exitcli.length == 0) {
+        localStorage.setItem('Cliente', JSON.stringify(Addcli2));
+        var respuesta = await this.MediwebServiceService.AgregarCliente(Addcli);
+        console.log(respuesta);
+
+        this.Router.navigate(["Agendar"]);
+      }
+      else {
+        localStorage.setItem('Cliente', JSON.stringify(Addcli2));
+        this.Router.navigate(["Agendar"]);
+      }
+
+    }
   }
 
   CompararCliente() {
+    var clienteEncontrado = false;
+    var esto = this;
     console.log(this.Prevision);
-    var nrut = this.RUT.replace(".", "");
+    var nrut = this.RUT.replace(".", "").replace(".", "").replace(".", "").trim();
     this.Clintes.forEach(element => {
-      if (element["sRutCli"].replace(".","").replace("-","") == nrut.replace(".","").replace("-","")) {
+      if (element["sRutCli"].replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == nrut.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
+        clienteEncontrado = true;
+        this.ClienteAntiguo = true;
         this.Nombre = element["sNombre"];
         this.Correo = element["sMail"];
-        this.fechaN = new Date(element["dfechNac"].toString()) ;
+        this.fechaN = new Date(element["dfechNac"].toString());
         this.NUmTel = element["sNumTel"];
         this.Direccion = element["sDirec"];
-        this.Prevision = this.Previciones[element["iIdPrev"]];
+
+        this.Previciones.filter(function (array) {
+          if (element["iIdPrev"] == array["iIdPrev"]) {
+            esto.Prevision = array;
+          }
+        });
         if (element["btit"] == true) {
-          this.titular = true;
-        }
-        else{
           this.titular = false;
         }
-        
+        else {
+          this.titular = true;
+        }
+
         if (element["sSexo"] == "F") {
           this.sexo = "Femenino";
         }
         else {
           this.sexo = "Masculino";
         }
+        this.Rutvalidotext = "";
+        this.Rutvalido = true;
+        this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
+        console.log(this.Prevision);
+
       }
     });
+
+    if (clienteEncontrado == false) {
+      this.ClienteAntiguo = false;
+      this.CambioDatos = false;
+      var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
+      console.log(rutadd);
+
+      rutadd = rutadd.substring(0, rutadd.length - 1) + "-" + rutadd.substring(rutadd.length - 1, rutadd.length);
+      this.Rutvalido = this.ValidarRut(rutadd);
+      if (this.Rutvalido == false) {
+        this.Rutvalidotext = " EL Rut ingresado es invalido";
+      }
+      else {
+        this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
+        this.Rutvalidotext = "";
+      }
+
+    }
+  }
+
+  ValidarRut(rutCompleto) {
+    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto))
+      return false;
+    var tmp = rutCompleto.split('-');
+    var digv = tmp[1];
+    var rut = tmp[0];
+    if (digv == 'K') digv = 'k';
+    return (this.dv(rut) == digv);
+  }
+
+  dv(T) {
+    var M = 0, S = 1;
+    for (; T; T = Math.floor(T / 10))
+      S = (S + T % 10 * (9 - M++ % 6)) % 11;
+    return S ? S - 1 : 'k';
+  }
+
+  compexreg_email() {
+
+    if (this.Correo != "") {
+      if (!/^([a-zA-Z0-9\._-])+@{1}([a-zA-Z0-9])+\.{1}([a-zA-Z]){2,3}$/.test(this.Correo)) {
+        this.emailvalido = false;
+        this.emailvalidotext = "Formato de correo invalido";
+      }
+      else {
+        this.emailvalido = true;
+        this.emailvalidotext = "";
+      }
+
+    }
+    else {
+      this.emailvalido = false;
+      this.emailvalidotext = "El correo no puede estar vacio";
+    }
+  }
+
+  compexreg_tel() {
+
+    if (this.NUmTel != "") {
+      if (!/^\+{1}([0-9]){11}$/.test(this.NUmTel)) {
+        this.telefonovalido = false;
+        this.telefonovalidotext = "El formato de telefono es invalido";
+      }
+      else {
+        this.telefonovalido = true;
+        this.telefonovalidotext = "";
+      }
+    }
+    else {
+      this.telefonovalido = false;
+      this.telefonovalidotext = "El telefono se encuentra vacio";
+    }
+  }
+
+  UsuarioAntiguo() {
+    this.CambioDatos = true;
+    this.MessageService.clear();
+    this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio Bloqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
+  }
+
+  getfechas(date: Date) {
+    console.log(date);
+    
+    var fecha;
+    date;
+    let day2  = date.getDate();
+    let day = day2 <10 ? "0"+day2: day2;
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let hora = (date.getHours() < 10 ? "0" + date.getHours() : "" + date.getHours())
+      + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : "" + date.getMinutes())
+      + ":" + (date.getSeconds() < 10 ? "0" + date.getSeconds() : "" + date.getSeconds())
+      + "." + date.getUTCMilliseconds();
+    if (month < 10) {
+      fecha = `${year}-0${month}-${day}`;
+    } else {
+      fecha = `${year}-${month}-${day}`;
+    }
+    return fecha;
+  }
+
+  formateaRut(rut) {
+
+    var actual = rut.replace(/^0+/, "");
+    if (actual != '' && actual.length > 1) {
+      var sinPuntos = actual.replace(/\./g, "");
+      var actualLimpio = sinPuntos.replace(/-/g, "");
+      var inicio = actualLimpio.substring(0, actualLimpio.length - 1);
+      var rutPuntos = "";
+      var i = 0;
+      var j = 1;
+      for (i = inicio.length - 1; i >= 0; i--) {
+        var letra = inicio.charAt(i);
+        rutPuntos = letra + rutPuntos;
+        if (j % 3 == 0 && j <= inicio.length - 1) {
+          rutPuntos = "." + rutPuntos;
+        }
+        j++;
+      }
+      var dv = actualLimpio.substring(actualLimpio.length - 1);
+      rutPuntos = rutPuntos + "-" + dv;
+    }
+    return rutPuntos;
   }
 }
+
+

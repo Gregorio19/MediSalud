@@ -1,0 +1,107 @@
+<div class="container mt-3">
+    <div class="row" *ngIf="!imprimir">
+        <p-toast position="top-right" key="tc"></p-toast>
+        <div class="form-group col-12 col-md-6">
+            <label for="Especialidades">Doctores</label>
+            <p-dropdown [options]="Doctores" [(ngModel)]="Doctor" filter="true" optionLabel="sNombre"
+                styleClass="w-100"></p-dropdown>
+        </div>
+
+        <div class="form-group col-12 col-md-6">
+            <label for="Sucursusales">Sucursusales</label>
+            <p-dropdown [options]="Sucursusales" [(ngModel)]="Sucursal" filter="true" optionLabel="sNombre"
+                styleClass="w-100"></p-dropdown>
+        </div>
+
+        <div class="form-group col-12 col-md-6">
+            <label for="Especialidades">Paciente</label>
+            <p-dropdown [options]="Clintes" [(ngModel)]="Cliente" filter="true" optionLabel="sRutCli"
+                styleClass="w-100"></p-dropdown>
+        </div>
+
+        <div class="form-group col-12 col-md-6">
+            <label for="Bono">Numero de Bono</label>
+            <input type="text" class="form-control" placeholder="Introduzca el Numero de bono" [(ngModel)]="Bono" >
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label for="fechaI">Fecha Inicio Busqueda</label>
+            <p-calendar [(ngModel)]="fechaI" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                [monthNavigator]="true" [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                panelStyleClass="medi_calendar--panel"></p-calendar>
+        </div>
+
+        <div class="form-group col-12 col-md-6">
+            <label for="fechaF">Fecha Fin de busqueda</label>
+            <p-calendar [(ngModel)]="fechaF" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                [monthNavigator]="true" [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                panelStyleClass="medi_calendar--panel"></p-calendar>
+        </div>
+
+        <div class="form-group col-12">
+            <button class="btn btn-medisalud-primary" (click)="GetAllCitas()">
+                Traer citas
+            </button>
+        </div>
+
+
+        <div *ngIf="CItas">
+            <!-- <div style="text-align: right">
+                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" placeholder="Global Filter" [(ngModel)]="filtros" (ngModelChange)="filtrar()"
+                    style="width:auto">
+            </div> -->
+            <p-table #dt [columns]="cols" [value]="CItas" [paginator]="true" [rows]="10" sortMode="multiple"
+                [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+                styleClass="ui-table-customers" currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
+                [filterDelay]="0"
+                [globalFilterFields]="['IdFicha', 'NombreCli', 'RutCli', 'NombreDoc', 'NombreSuc', 'NroBono', 'FechaFicha', 'HoraFicha']">
+                <ng-template pTemplate="caption">
+                    Fichas Medicas
+                    <div class="ui-table-globalfilter-container">
+                        <input pInputText class="form-control" type="text"
+                            (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Busqueda" />
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.nombre">
+                            {{col.header}}<p-sortIcon [field]="col.nombre"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                            <!-- <div *ngIf="col.nombre == 'Estado'">
+                                <p-dropdown [options]="EstadosCIta" [(ngModel)]="rowData['agendas']"
+                                    (ngModelChange)="cambiotipoagenda()" filter="true" optionLabel="nombre"
+                                    styleClass="ui-column-filter">
+                                    <ng-template let-item pTemplate="selectedItem">
+                                        {{rowData[col.nombre]}}
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                            <div *ngIf="col.nombre == 'NBono'">
+                                <input class="form-control" type="text" [(ngModel)]="rowData['NBono']"
+                                (blur)="ActNBono(rowData['NBono'])" placeholder="N° Bono">
+                            </div> -->
+
+                            <div>
+                                <div> <span>{{rowData[col.nombre]}}</span></div>
+                            </div>
+
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align:left">Fichas no encontradas para esa fecha.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>      
+    </div>
+    <div>
+        <app-crear-ficha [ModoVista]="ModoVista" [IdFichaT]="IdFichaT" (Impresion)="GetDatosImpresion($event)"></app-crear-ficha>
+    </div>
+</div>

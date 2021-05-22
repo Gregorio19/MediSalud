@@ -10,14 +10,15 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    //this.apiUrl = "http://200.104.114.157/APImweb/api/v1";
-    this.apiUrl = "http://localhost:59579/api/v1";
+    //this.apiUrl = "https://localhost:44393/api/v1";
+    //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1";
+    this.apiUrl = "http://localhost/ApiAgenda/api/v1";
   }
 
   async AgregarSucursal(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/AgregarSucursal" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionSucursales" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -33,7 +34,7 @@ export class MediwebServiceService {
   async ActualizarSucursal(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ActualizarSucursal" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionSucursales" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -49,7 +50,7 @@ export class MediwebServiceService {
   async AgregarCliente(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/AgrearCliente" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionClientes" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -64,7 +65,7 @@ export class MediwebServiceService {
   async ActualizarCliente(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ActualizarCliente" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/ActualizarCliente" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -80,7 +81,7 @@ export class MediwebServiceService {
   async AgregarEspecialidad(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/AgrearEspecialidad" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionEspecialidades" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -96,7 +97,7 @@ export class MediwebServiceService {
   async ActualizarEspecialidad(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ActualizarEspecialidad" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionEspecialidades" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -112,7 +113,7 @@ export class MediwebServiceService {
   async AgregarDocotr(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/AgrearDoctor" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionDoctores" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -128,7 +129,7 @@ export class MediwebServiceService {
   async ActualizarDoctor(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ActualizarDoctor" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/AdministracionDoctores" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -145,7 +146,23 @@ export class MediwebServiceService {
   async AgregarHorarioDoctor(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/AgrearHorariosDoc" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/InsertarHorasMedicos" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async ObtenerHorario(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetHorarios" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -161,7 +178,7 @@ export class MediwebServiceService {
   async ActualizaHorariosDoc(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ActualizaHorariosDoc" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/InsertarHorasMedicos" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -174,10 +191,41 @@ export class MediwebServiceService {
     }
   }
 
+  async GetDatosCliente(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetDatosCliente" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
   async GetDataGeneral(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ConsultaGeneral" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/GetDatos" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async LogDoctor(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetCredencialesDoc" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -193,7 +241,23 @@ export class MediwebServiceService {
   async GetAllCitas(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/TraerCitas" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/GetCitas" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async ObtenerCitasMedicas(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/ObtenerCitasMedicas" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -209,7 +273,7 @@ export class MediwebServiceService {
   async ObtenerDocXSucursalXEspecialidades(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ObtenerDocXSucursalXEspecialidades" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/ObtenerDocXSucursalXEspecialidades" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -222,10 +286,10 @@ export class MediwebServiceService {
     }
   }
 
-  async SucursalsxEspecialiad(req) {
+  async ConsDetCitDoc(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ObtenerSucursalXEspecialidades" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/GetDetalleCitasDoc" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -241,7 +305,7 @@ export class MediwebServiceService {
   async Traerespecialidad() {
     try {
       return await this.http.get(
-        this.apiUrl  + "/Cita/ObtenerEspecialidades" , { headers: this.headers }
+        this.apiUrl  + "/Listar/ObtenerEspecialidades" , { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -257,7 +321,7 @@ export class MediwebServiceService {
   async ActCita(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ActuCita" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/updateCitas" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -269,11 +333,77 @@ export class MediwebServiceService {
       return resultado;
     }
   }
+
+  async ActuNBonoCita(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/ActuNBonoCita" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async CrearCitasRotatoria(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/InsertarCitasVarias" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async EnviarCorreoSobrecupo(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/EnviarCorreoSobrecupo" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async EnviarCorreorotatorio(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/EnviarCorreorotatorio" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  
 
   async AgregarCita(req) {
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/AgrearCitas" ,req, { headers: this.headers }
+        this.apiUrl  + "/Listar/InsertarCitas" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -286,5 +416,36 @@ export class MediwebServiceService {
     }
   }
 
+  async GuardarImagen(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GuardarImagen" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
 
+  async EnviarCorreo(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/EnviarCorreo" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+  
 }

@@ -1,40 +1,55 @@
 <div class="container mt-3">
-
+    <p-toast position="center" key="tc"></p-toast>
+    <p-toast [style]="{marginTop: '80px'}"></p-toast>
     <div class="row">
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">Nombre Doctor</label>
-            <input type="text" class="form-control" [(ngModel)]="nombre" placeholder="Ingrese nombre del Doctor">
+            <label for="especialidades">Nombre Doctor</label> <span class="text-danger"> {{NombreValidotext}}</span>
+            <input  maxlength="50" type="text" class="form-control" [(ngModel)]="nombre" placeholder="Ingrese nombre del Doctor" (blur)="ComprobarNombre()">
         </div>
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">RUT</label>
-            <input type="text" class="form-control" [(ngModel)]="rut" placeholder="Ingrese RUT del doctor">
+            <label for="especialidades">RUT</label> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <input type="text" class="form-control" [(ngModel)]="rut" placeholder="Ingrese RUT del doctor"
+                (blur)="comprobarRut()">
         </div>
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">Telefono</label>
-            <input type="text" class="form-control" [(ngModel)]="tel" placeholder="Ingrese Telefono">
+            <label for="especialidades">Telefono</label> <span class="text-danger"> {{telefonovalidotext}}</span>
+            <input type="text" class="form-control" [(ngModel)]="tel" placeholder="Ingrese Telefono +56912345678"
+                (blur)="compexreg_tel()">
         </div>
 
         <div class="form-group col-12 col-md-6">
-            <label for="especialidades">Mail</label>
-            <input type="text" class="form-control" [(ngModel)]="mail" placeholder="Ingrese Correo del Doctor">
+            <label for="especialidades">Mail</label> <span class="text-danger"> {{emailvalidotext}}</span>
+            <input maxlength="50" type="text" class="form-control" [(ngModel)]="mail" placeholder="Ingrese Correo del Doctor"
+                (blur)="compexreg_email()">
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label for="especialidades">Contraseña</label> <span class="text-danger"> {{pasvalidotext}}</span>
+            <input maxlength="20" type="text" class="form-control" [(ngModel)]="pass" placeholder="Ingrese Contraseña del Doctor" (blur)="Comprobarpass()">
+        </div>
+
+        <div class="form-group col-12">
+            <label for="especialidades">Foto de Doctor</label>
+            <p-fileUpload maxlength="2000" cancelLabel="Cancelar" #fileUpload  chooseLabel="Elegir" uploadLabel="Guardar Foto"  name="myfile[]" customUpload="true"  (uploadHandler)="uploadFile($event,fileUpload)"
+                accept="image/*"></p-fileUpload>
         </div>
 
         <div class="form-group col-12 ">
             <label for="especialidades">Info Dctor</label>
             <textarea type="text" class="form-control" [(ngModel)]="inforDoc"
-                placeholder="Ingrese descripción relevante y cosiza del doctor">
+                placeholder="Ingrese descripción profesional del doctor.">
                 </textarea>
         </div>
+        <img id="img" [src]="imagenurl" [hidden]="true">
 
         <div class="form-group col-12 col-md-6">
-            <div class="btn btn-medisalud-primary" *ngIf="Editar == false" (click)=" AgregarDosctor()">cargar</div>
-            <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" ActualizarDosctor()">Actualizar
+            <div class="btn btn-medisalud-primary" (click)=" AgregarDosctor()">Cargar</div>
+            <div class="btn btn-medisalud-primary ml-3" *ngIf="Editar == true" (click)=" ActualizarDosctor()">Actualizar
             </div>
-            <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
-            </div>
+            <!-- <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
+            </div> -->
         </div>
     </div>
 </div>
@@ -43,7 +58,7 @@
         <p-table #dt [columns]="cols" [value]="Doctores" [paginator]="true" [rows]="10" sortMode="multiple"
             [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
             styleClass="ui-table-customers" currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
-            [filterDelay]="0" [globalFilterFields]="['sInfoDoc', 'sNomIma', 'sNombre', 'sMail', 'sNumTel', 'sRutDoc']">
+            [filterDelay]="0" [globalFilterFields]="['sNombre', 'sMail', 'sNumTel', 'sRutDoc']">
             <ng-template pTemplate="caption">
                 Doctores
                 <div class="ui-table-globalfilter-container">

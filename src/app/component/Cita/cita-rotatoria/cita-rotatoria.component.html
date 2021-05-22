@@ -1,0 +1,354 @@
+<!-- Crear CLiente -->
+<div class="container-agenda" *ngIf="ClienteAntiguo==false">
+    <p-toast position="center" key="tc"></p-toast>
+    <div class="row  container" *ngIf="CrearCliente == false">
+        <div class="form-group col-12 col-sm-12"><h3>Para comenzar ingrese el Rut del cliente</h3></div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()"
+                placeholder="Ingrese su RUT">
+        </div>
+        <div class="form-group col-12 col-sm-6 mt-auto mb-4" *ngIf="ClienteAntiguo==true">
+            Cliente encontrado: <span class="text-capitalize">{{Nombre}}</span>
+        </div>
+    </div>
+    <div class="row  container" *ngIf="CrearCliente == true">
+        <div class="form-group col-12 col-sm-6">
+            <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()"
+                placeholder="Ingrese su RUT">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Nombre">Nombre *</span> <span class="text-danger"> {{NombreValidotext}}</span>
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Nombre"
+                placeholder="Ingrese su nombre">
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [(ngModel)]="Nombre" placeholder="Ingrese su nombre">
+        </div>
+        <div class="form-group col-12 col-sm-12">
+            <span class="text-danger"> {{fechaValidatext}}</span>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <div class="row mx-0">
+                <span for="fechaN" class="col-12 col-sm-4 px-0">Fecha Nacimiento</span>
+                <div class="col-12 col-sm-8 px-0">
+                    <p-calendar [(ngModel)]="fechaN" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                        [monthNavigator]="true" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                        [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                        panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año"></p-calendar>
+                    <p-calendar [(ngModel)]="fechaN" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                        [monthNavigator]="true" *ngIf="ClienteAntiguo==false" [yearNavigator]="true"
+                        yearRange="1915:2030" styleClass="medi_calendar" panelStyleClass="medi_calendar--panel"
+                        placeholder="Dia/Mes/año"></p-calendar>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6 " *ngIf="ClienteAntiguo==true" (click)="UsuarioAntiguo()">
+            <div class="row mx-0">
+                <span for="Sexo" class="col-12 col-sm-4 px-0">Sexo</span>
+                <label class="form-check checkbox col-12 col-sm-4">Masculino
+                    <input class="form-check-input" type="radio" name="sexo" id="Masculino" value="Masculino"
+                        [(ngModel)]="sexo">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="form-check checkbox col-12 col-sm-4">Femenino
+                    <input class="form-check-input" type="radio" name="sexo" id="Femenino" value="Femenino"
+                        [(ngModel)]="sexo">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6 " *ngIf="ClienteAntiguo==false">
+            <div class="row mx-0">
+                <span for="Sexo" class="col-12 col-sm-4 px-0">Sexo</span>
+                <label class="form-check checkbox col-12 col-sm-4">Masculino
+                    <input class="form-check-input" type="radio" name="sexo" id="Masculino" value="Masculino"
+                        [(ngModel)]="sexo">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="form-check checkbox col-12 col-sm-4">Femenino
+                    <input class="form-check-input" type="radio" name="sexo" id="Femenino" value="Femenino"
+                        [(ngModel)]="sexo">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Direccion">Dirección</span>
+            <span class="text-danger"> {{DireccionValidatext}}</span>
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [(ngModel)]="Direccion" placeholder="Ingrese su direccion">
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Direccion"
+                placeholder="Ingrese su direccion">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="NUmTel">Número de Teléfono</span>
+            <span class="text-danger"> {{telefonovalidotext}}</span>
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [(ngModel)]="NUmTel" (blur)="compexreg_tel()" placeholder="ingrese su telefono +56912345678">
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="NUmTel"
+                (blur)="compexreg_tel()" placeholder="ingrese su telefono +56912345678">
+        </div>
+
+        <div class="form-group col-12 col-sm-6">
+            <span for="Correo">Correo</span>
+            <span class="text-danger"> {{emailvalidotext}}</span>
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [(ngModel)]="Correo" (blur)="compexreg_email()" placeholder="Ingrese su correo">
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Correo"
+                (blur)="compexreg_email()" placeholder="Ingrese su correo">
+        </div>
+
+        <div class="form-group col-12 col-sm-6">
+            <span for="Prevision">Previsión</span>
+            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [options]="Previciones" [(ngModel)]="Prevision" filter="true" optionLabel="sNombre">
+            </p-dropdown>
+            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==false" [options]="Previciones" [(ngModel)]="Prevision"
+                filter="true" optionLabel="sNombre">
+            </p-dropdown>
+        </div>
+        <div class="form-group col-12 ">
+            <div class="custom-control custom-switch" *ngIf="ClienteAntiguo==false">
+                <input type="checkbox" class="custom-control-input" id="titular" [(ngModel)]="titular">
+                <label class="custom-control-label" for="titular">¿Es usted carga?</label>
+            </div>
+            <div class="custom-control custom-switch" *ngIf="ClienteAntiguo==true" (click)="UsuarioAntiguo()">
+                <input type="checkbox" class="custom-control-input" id="titular" [(ngModel)]="titular">
+                <label class="custom-control-label" for="titular">¿Es usted carga?</label>
+            </div>
+        </div>
+        <button class="btn btn-medisalud-primary ml-auto" (click)="AgregarCliente()">
+            Agregar
+        </button>
+    </div>
+</div>
+
+
+<!-- Crear Agenda -->
+<div class="container-fluid agenda" *ngIf="ClienteAntiguo==true">
+    <div class="row">
+        <div class="col-12 col-md-3 box-data">
+            <div class="resumen">
+                <div class="title-resumen">
+                    <h4>RESUMEN</h4>
+                    <p>
+                        Datos del Cliente y datos seleccionados
+                    </p>
+                </div>
+                <div class="datos-paciente">
+                    <div class="form-group form-text">
+                        <label>
+                            PACIENTE
+                        </label>
+                        <span>
+                            {{cliente["nombre"]}}
+                        </span>
+                    </div>
+                    <div class="form-group form-text">
+                        <label>
+                            RUT
+                        </label>
+                        <span>
+                            {{formateaRut(cliente["rut"])}}
+                        </span>
+                    </div>
+                    <div class="form-group form-text">
+                        <label>
+                            Correo
+                        </label>
+                        <span>
+                            {{cliente["mail"]}}
+                        </span>
+                    </div>
+                    <div class="form-group div-outline mt-2">
+                        <span  *ngIf="especialidad">{{especialidad["sNomEsp"]}}</span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group div-outline">
+                        <span  *ngIf="sucursal">{{sucursal["sNombre"]}}</span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group div-outline">
+                        <span  *ngIf="Doctor">{{Doctor["nomDoc"]}}</span>
+                        <i class="pi pi-times "></i>
+                    </div>
+                    <div class="form-group  row mx-0 fecharota" *ngIf="RotatorioCita">
+                        <label class="col-sm-3 col-form-label">Fecha:</label>
+                        <div class="div-outline col-sm-9 fecharotadiv">
+                            <span *ngIf="FechaSelect">{{FechaSelect}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="RotatorioCita">
+                        <div class="col-6" *ngFor="let hora of ListaHoras let index = index">
+                            <div class="form-group div-outline letratama">
+                                {{hora.Fecha}} {{hora.Hora}} <i class="pi pi-times" (click)="ordernarhoras(index)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  row mx-0" *ngIf="!RotatorioCita">
+                        <label class="col-sm-3 col-form-label">Fecha:</label>
+                        <div class="div-outline col-sm-9">
+                            <span *ngIf="FechaSelect">{{FechaSelect}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group  row mx-0" *ngIf="!RotatorioCita">
+                        <label class="col-sm-3 col-form-label">HORA:</label>
+                        <div class="div-outline col-sm-9">
+                            <span *ngIf="HoraSelect">{{ImprimirHora()}}</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 box-selected">
+            <p-toast position="top-right" key="tc"></p-toast>
+            <div class="row mx-0">
+                <div class="col-12 col-md-6 ">
+                    <div class="row ">
+
+                        <div class="form-group col-12 col-md-6">
+                            <label for="especialidades">Especialidad</label>
+                            <p-dropdown [options]="especialidades" [(ngModel)]="especialidad"
+                                (onChange)="ActivarAtributos('E',gmap.getMap())" [filter]="true"
+                                placeholder="Especialidad" optionLabel="sNomEsp" styleClass="w-100"></p-dropdown>
+                        </div>
+                        <div *ngIf="SelecEspecialidad" class="form-group  col-12 col-md-6">
+                            <label for="sucursales">Sucursales</label>
+                            <p-dropdown [options]="sucursales" [(ngModel)]="sucursal" optionLabel="sNombre"
+                                (onChange)="ActivarAtributos('S',gmap.getMap())" [filter]="true" placeholder="Sucursal"
+                                styleClass="w-100"></p-dropdown>
+                        </div>
+                        <div *ngIf="SelecSucursal" class="form-group col-12">
+                            <label for="Medico">Medico</label>
+                            <p-dropdown [options]="medico" [(ngModel)]="Doctor" optionLabel="nomDoc"
+                             (ngModelChange)="ActivarAtributos('D',gmap.getMap())"  placeholder="Medico"  styleClass="w-100">
+                                <ng-template let-car pTemplate="item">
+                                    <div class="ui-helper-clearfix"
+                                        style="position: relative;height:50px;padding-left: 60px;">
+                                        <img [src]="car['value']['sNomIma']" class="user_icon" />
+                                        <div class="inf-User">
+                                            <div class="nombre">{{car.label}}</div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="col-9 d-flex" *ngIf="SelecDoctor">
+                            <div class="row col-12">
+                                <div class="col-3">
+                                    <div>
+                                        <img [src]="ImagenUrl" class="selectuser user_icon w-100" />
+                                    </div>
+                                </div>
+                                <div class="col-9 user_selected">
+                                    <h3>{{Doctor["nomDoc"]}}</h3>
+                                    <h5>{{especialidad["sNomEsp"]}} </h5>
+                                    <p>
+                                        {{Doctor["infoDoc"]}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row col-12">
+                                <div class="col-12" *ngIf="RotatorioCita == false">
+                                    <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita= true">
+                                        Rotatorio
+                                    </button>
+                                </div>
+                                <div class="col-12" *ngIf="RotatorioCita == true">
+                                    <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita = false">
+                                        Sobrecupo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-12 mt-5" *ngIf="SelecDoctor">
+                            <div class="row">
+                                <div class="col-3">
+                                    <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita= true">
+                                        Rotatorio
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-medisalud-primary ml-auto" (click)="RotatorioCita = false">
+                                        Sobrecupo
+                                    </button>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <p-gmap #gmap id="map" [options]="options" [overlays]="overlays"
+                                [style]="{'width':'100%','height':'150px'}"></p-gmap>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <p-calendar [(ngModel)]="calendarHorario" [locale]="es" [inline]="true"
+                                styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" dateFormat="dd/mm/yy"
+                                [disabledDates]="invalidDates" [monthNavigator]="true" [yearNavigator]="true"
+                                yearRange="2020:2050" (onSelect)="onSelect($event)">
+                                <ng-template pTemplate="date" let-date>
+                                    <div *ngIf="checkDateForWork(date);then workDate else normalDate"></div>
+                                    <ng-template #workDate>
+                                        <span [ngClass]="'workday'" style="display:block">{{date.day}}</span>
+                                    </ng-template>
+                                    <ng-template #normalDate>
+                                        <span [ngClass]="'inherit'" style="display:block">{{date.day}}</span>
+                                    </ng-template>
+
+                                </ng-template>
+                            </p-calendar>
+
+                            <div class="InputGroup row mx-0 mt-2" *ngIf="Horas && RotatorioCita">
+                                <div *ngIf="Horas.length == 0 && horaselect == true">Lo sentimos no hay mas horas
+                                    disponibles para hoy</div>
+                                <div class="px-2" *ngFor="let hora of Horas let index = index">
+                                    <input type="radio" name="size" id="{{index}}" (click)="PushHorarios(hora.Hora)"
+                                        value="small" *ngIf="hora.disp == true" />
+                                    <input type="radio" name="size" id="{{index}}" value="small"
+                                        *ngIf="hora.disp == false" class="full" disabled />
+                                    <label for="{{index}}" class="hour_label">{{hora.Hora}}</label>
+                                </div>
+                            </div>
+
+                            <div class="InputGroup row mx-0 mt-2" *ngIf="Horas && RotatorioCita == false">
+                                <p-calendar [(ngModel)]="HoraSelect" [timeOnly]="true" placeholder="Hora Cita" readonly>
+                                </p-calendar>
+                            </div>
+                            <div class="row mx-0  justify-content-end">
+                                <div class="indicators">
+                                    <div class="circle-indicator libre"></div>
+                                    <span>Libre</span>
+                                </div>
+                                <div class="indicators">
+                                    <div class="circle-indicator seleccionada"></div>
+                                    <span>Seleccionada</span>
+                                </div>
+                                <div class="indicators">
+                                    <div class="circle-indicator ocupada"></div>
+                                    <span>Ocupada</span>
+                                </div>
+                            </div>
+                            <div class="row mx-0 ">
+                                <div class="col-12 px-0">
+                                    <button *ngIf="RotatorioCita == true" class="btn btn-medisalud-primary ml-auto" (click)="AgregarCitaRotatoria()">
+                                       Agregar horario Rotatorio
+                                    </button>
+                                    <button *ngIf="RotatorioCita == false" class="btn btn-medisalud-primary ml-auto" (click)="AgregarCita()">
+                                        Agregar Sobrecupo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

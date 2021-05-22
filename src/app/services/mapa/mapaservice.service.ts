@@ -10,19 +10,15 @@ export class MapaserviceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    this.apiUrl = "http://localhost:59579/api/v1";
+    //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1";
+  //this.apiUrl = "https://localhost:44393/api/v1";
+  this.apiUrl = "http://localhost/ApiAgenda/api/v1";
   }
 
   async ObtenerLatLong(req) {
-
-    var direccion =
-    {
-      "direccion":req
-    } 
-
     try {
       return await this.http.post(
-        this.apiUrl  + "/Cita/ObtenerLatLng" ,direccion, { headers: this.headers }
+        this.apiUrl  + "/Listar/ObtenerLatLng" ,'"'+req+'"', { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =

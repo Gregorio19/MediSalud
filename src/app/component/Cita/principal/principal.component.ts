@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-principal',
@@ -7,9 +8,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrincipalComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private Router: Router) { }
+  derecho = false;
   ngOnInit(): void {
+    localStorage.setItem('tipou', JSON.stringify(3));
   }
+
+  clickderecho() {
+    this.derecho = true
+  }
+
+  clickizquierdo() {
+    if (this.derecho == true) {
+      console.log("hola");
+      
+      this.Router.navigate(["/LoginD"]);
+      //this.Router.navigate(["/Login"]);
+    }
+    else {
+      this.derecho = false;
+    }
+
+  }
+
 
 }

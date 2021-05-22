@@ -1,0 +1,28 @@
+<div class="container mt-3">
+    <p-toast position="top-right" key="tc"></p-toast>
+    <div class="row">
+        <!-- <p-toast position="top-right" key="tc"></p-toast> -->
+        <div class="form-group col-8 col-md-6">
+            <label for="fechaF">Numero de bono</label>
+            <input type="number" [(ngModel)]="NumBono" placeholder="Numero de Bono">
+        </div>
+
+        <div class="form-group col-2">
+            <button class="btn btn-medisalud-primary" (click)="traerCitaBono()" >
+               Crear Ficha
+            </button>
+        </div>
+
+        <!-- <div class="col-12" *ngIf="Clinte['0']">
+            <div class="col-6">Paciente</div> <div class="col-6"></div>
+            <div class="col-6">Nombre: {{Clinte["0"]["sNombre"]}} </div> <div class="col-6">RUT: {{Clinte["0"]["sRutCli"]}} </div>
+            <div class="col-6">Direccion: {{Clinte["0"]["sDirec"]}} </div> <div class="col-6">Telefono: {{Clinte["0"]["sNumTel"]}} </div>
+            <div class="col-6">Correo: {{Clinte["0"]["sMail"]}} </div> <div class="col-6">Sexo: {{Clinte["0"]["sSexo"]}} </div>
+        </div>
+        <div class="form-group col-2">
+            <button class="btn btn-medisalud-primary" (click)="CrearCita()" >
+                Crear Ficha
+            </button>
+        </div> -->
+    </div>
+</div>

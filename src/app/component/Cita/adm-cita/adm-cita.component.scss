@@ -5,6 +5,23 @@
     .ui-table-caption{
         background-color: $white;
     }
+
+    tr th:first-child {
+       display: none;
+      }
+
+    tr td:first-child {
+       display: none;
+    }
+
+    tr th:nth-child(2) {
+        display: none;
+       }
+ 
+     tr td:nth-child(2) {
+        display: none;
+     }
+
     .ui-paginator {
         .ui-dropdown {
             float: left;
@@ -132,4 +149,8 @@
             }
         }
     }
+}
+
+.verde{
+    color: #00a99d;
 }
