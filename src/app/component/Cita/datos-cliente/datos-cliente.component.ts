@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 })
 export class DatosClienteComponent implements OnInit {
 
+  //Variable Cliente
   RUT: string;
   RutTitular: string;
   Nombre: string;
@@ -22,10 +23,33 @@ export class DatosClienteComponent implements OnInit {
   NUmTel: string;
   Direccion: string;
   Correo: string;
-  fechaN: Date
+  fechaN: Date;
   Prevision: SelectItem;
   sexo: string;
   titular: boolean;
+
+
+  //Variables MAscota
+  NombreMascota: string;
+  fechaNMascota: Date;
+  RazaMasc: SelectItem;
+  TamaMasc: SelectItem;
+  Tipomas: SelectItem;
+  ColorMasc: string;
+  IDdueño;
+  
+  RazasMasc;
+  TamanosMasc;
+  TioposMAsc;
+  TodasLasRaza;
+  Mascli;
+  Mascotaselect;
+
+  MascotaEncontrada = false;
+  Masdeunamascota = false;
+  nuevamacota = true;
+
+
 
 
   minDate: Date;
@@ -57,18 +81,23 @@ export class DatosClienteComponent implements OnInit {
 
   ngOnInit(): void {
 
+    //variables inicializacion
+
+    //cliente datos
     this.RUT = "";
     this.Correo = "";
     this.Direccion = "";
     this.NUmTel = "";
     this.Nombre = "";
 
+    //datos validos cliente
     this.telefonovalido = true;
     this.emailvalido = true;
     this.Rutvalido = true;
     this.NombreValido = true;
     this.DireccionValida = true;
 
+    //texto de datos incorrectos
     this.telefonovalidotext = "";
     this.emailvalidotext = "";
     this.Rutvalidotext = "";
@@ -80,6 +109,9 @@ export class DatosClienteComponent implements OnInit {
 
     this.GetPreviciones();
     this.GetClientes();
+    this.GetRazas();
+    this.GetTamaMAsc();
+    this.GetTiposMascotas();
     this.sexo = "Masculino";
     this.titular = false;
     this.es = {
@@ -159,6 +191,69 @@ export class DatosClienteComponent implements OnInit {
       console.log(this.Previciones);
       this.Prevision = this.Previciones[0];
     }
+  }
+
+  async GetRazas() {
+
+    var getcli = {
+      "acc": "R"
+    }
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    if (respuesta["status"]) {
+      this.RazasMasc = respuesta["dataRaz"];
+      this.TodasLasRaza = respuesta["dataRaz"];
+      this.RazaMasc = this.RazasMasc[0];
+    }
+  }
+
+  async GetRazasXtipo() {
+    var gettipomas = {
+      "idTipMas": this.Tipomas["iIdTipoMascota"]
+    }
+    var respuesta = await this.MediwebServiceService.GetDataRazaxtipo(gettipomas);
+    if (respuesta["status"]) {
+      this.RazasMasc = respuesta["data"];
+      this.RazaMasc = this.RazasMasc[0];
+    }
+  }
+
+  async GetTiposMascotas() {
+
+    var getcli = {
+      "acc": "T"
+    }
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    if (respuesta["status"]) {
+      this.TioposMAsc = respuesta["dataTMa"];
+      this.Tipomas = this.TioposMAsc[0];
+    }
+  }
+
+   GetTamaMAsc() {
+     this.TamanosMasc = [
+      {
+        "iDTama": 1,
+        "sNomRaza": "Pequeño",
+        "cTama": "P"
+      },
+      {
+        "iDTama": 2,
+        "sNomRaza": "Mediano",
+        "cTama": "M"
+      },
+      {
+        "iDTama": 3,
+        "sNomRaza": "Grande",
+        "cTama": "L"
+      },
+      {
+        "iDTama": 4,
+        "sNomRaza": "Extra Grande",
+        "cTama": "XL"
+      }
+    ];
+
+    this.TamaMasc = this.TamanosMasc[0];
   }
 
   async AgregarCliente() {
@@ -241,6 +336,8 @@ export class DatosClienteComponent implements OnInit {
         "sex": susexo
       }
 
+      
+
 
       var Addcli2 = {
         "acc": "N",
@@ -254,7 +351,9 @@ export class DatosClienteComponent implements OnInit {
         "idPrev": this.Prevision["iIdPrev"],
         "tit": estitu == 1 ? true : false,
         "sex": susexo,
-        "camCli": this.CambioDatos
+        "camCli": this.CambioDatos,
+        "NombreMasc": this.NombreMascota,
+        "IdMasc":1
       }
 
 
@@ -270,18 +369,42 @@ export class DatosClienteComponent implements OnInit {
         localStorage.setItem('Cliente', JSON.stringify(Addcli2));
         var respuesta = await this.MediwebServiceService.AgregarCliente(Addcli);
         console.log(respuesta);
-
+        if (respuesta["status"]) {
+          this.IDdueño = respuesta["data"][respuesta["data"].length-1]["iIdCli"];
+        }
+        await this.CrearMascota();
         this.Router.navigate(["Agendar"]);
       }
       else {
         localStorage.setItem('Cliente', JSON.stringify(Addcli2));
+        await this.CrearMascota();
         this.Router.navigate(["Agendar"]);
       }
 
     }
   }
 
-  CompararCliente() {
+  async CrearMascota(){
+    var AssMAsc = {
+      "acc": "N",
+      "idMascota": 0,
+      "nomMascota": this.NombreMascota,
+      "idCli": this.IDdueño,
+      "idRaza": this.RazaMasc["iIdRaza"],
+      "color": this.ColorMasc,
+      "tamaño": this.TamaMasc["cTama"],
+      "fecNac": this.getfechas(this.fechaNMascota),
+    }
+    console.log(AssMAsc);
+    if (this.nuevamacota== true) {
+      var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
+    console.log(respuestamasc);
+    }
+  }
+
+  
+
+  async CompararCliente() {
     var clienteEncontrado = false;
     var esto = this;
     console.log(this.Prevision);
@@ -290,6 +413,7 @@ export class DatosClienteComponent implements OnInit {
       if (element["sRutCli"].replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == nrut.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
         clienteEncontrado = true;
         this.ClienteAntiguo = true;
+        this.IDdueño = element["iIdCli"]
         this.Nombre = element["sNombre"];
         this.Correo = element["sMail"];
         this.fechaN = new Date(element["dfechNac"].toString());
@@ -318,7 +442,6 @@ export class DatosClienteComponent implements OnInit {
         this.Rutvalido = true;
         this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
         console.log(this.Prevision);
-
       }
     });
 
@@ -337,8 +460,73 @@ export class DatosClienteComponent implements OnInit {
         this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
         this.Rutvalidotext = "";
       }
-
+      this.vaciarmascota();
     }
+
+    else{
+      var reqmascli = {
+        "idCli": this.IDdueño
+      }
+      var mascotascliente = await this.MediwebServiceService.GetDataMacotaCliente(reqmascli);
+      if (mascotascliente["status"]) {
+        if (mascotascliente["data"] == null) {
+          this.Mascli = null;
+          this.MascotaEncontrada  = false;
+          this.vaciarmascota();
+        }
+        else{
+          this.MascotaEncontrada =  mascotascliente["data"].length > 0 ? true:false;
+          this.Masdeunamascota = mascotascliente["data"].length > 1 ? true:false;
+          this.Mascli = mascotascliente["data"];
+          this.Mascotaselect = this.Mascli[0]
+          this.Mascli.push({"iIdMascota":99,"sNomMascota":"Nuevo","iIdRaza":9999,"sColor":"","sTamaño":"","dFechNac":null});
+          this.LlenarMascota();
+        }
+      }
+      else{
+        this.Mascli = null;
+        this.MascotaEncontrada  = false;
+        this.vaciarmascota();
+      }
+    }
+  }
+
+  async LlenarMascota(){
+    if (this.Mascotaselect["sNomMascota"] == "Nuevo") {
+      this.vaciarmascota();
+      this.Masdeunamascota = true;
+    }
+    else{
+      // llenado de datos de mascota
+      this.NombreMascota = this.Mascotaselect["sNomMascota"];
+      this.ColorMasc = this.Mascotaselect["sColor"];
+      this.fechaNMascota = new Date(this.Mascotaselect["dFechNac"].toString());
+      this.TamaMasc = await this.TamanosMasc.filter(x => x["cTama"] == this.Mascotaselect["sTamaño"]);
+      this.TamaMasc = this.TamaMasc[0]; 
+
+      // buscar y asignar tipo de raza escogida
+      var buscarraza =  await this.TodasLasRaza.filter(x => x["iIdRaza"] ==this.Mascotaselect["iIdRaza"] );
+      var gettipomas = {
+        "idTipMas": buscarraza[0]["iIdTipoMascota"]
+      }
+      this.RazaMasc  = buscarraza[0];
+      
+      //seleccionar tipo marcota escogida
+      var respuesta = await this.MediwebServiceService.GetDataRazaxtipo(gettipomas);
+      if (respuesta["status"]) {
+        this.RazasMasc = respuesta["data"];
+      }
+      var newtipomas = await this.TioposMAsc.filter(x => x["iIdTipoMascota"] == buscarraza[0]["iIdTipoMascota"] );
+      this.Tipomas = newtipomas[0];
+    }
+  }
+
+  vaciarmascota(){
+        this.nuevamacota = true;
+        this.NombreMascota = "";
+        this.ColorMasc ="";
+        this.fechaNMascota = null;
+        this.Masdeunamascota = false;
   }
 
   ValidarRut(rutCompleto) {

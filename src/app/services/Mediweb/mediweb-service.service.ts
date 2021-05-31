@@ -10,9 +10,9 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    //this.apiUrl = "https://localhost:44393/api/v1";
+    this.apiUrl = "https://localhost:44393/api/v1";
     //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1";
-    this.apiUrl = "http://localhost/ApiAgenda/api/v1";
+    //this.apiUrl = "http://localhost/ApiAgenda/api/v1";
   }
 
   async AgregarSucursal(req) {
@@ -51,6 +51,22 @@ export class MediwebServiceService {
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionClientes" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async AgregarMascota(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/AdministracionMascotas" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
@@ -210,6 +226,38 @@ export class MediwebServiceService {
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetDatos" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async GetDataRazaxtipo(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetRazas" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async GetDataMacotaCliente(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetMascotas" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =

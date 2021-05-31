@@ -1,6 +1,10 @@
-<div class="container-agenda">
+<div class="container-agenda flex-column">
+    <br>
     <p-toast position="center" key="tc"></p-toast>
-    <div class="row  container">
+    <div class="row  container mt-5">
+        <div class="form-group col-12 col">
+            <h2 for="RUT">Datos de CLiente</h2>
+        </div>
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
             <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()"
@@ -31,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group col-12 col-sm-6 "  *ngIf="ClienteAntiguo==true" (click)="UsuarioAntiguo()">
+        <div class="form-group col-12 col-sm-6 " *ngIf="ClienteAntiguo==true" (click)="UsuarioAntiguo()">
             <div class="row mx-0">
                 <span for="Sexo" class="col-12 col-sm-4 px-0">Sexo</span>
                 <label class="form-check checkbox col-12 col-sm-4">Masculino
@@ -46,7 +50,7 @@
                 </label>
             </div>
         </div>
-        <div class="form-group col-12 col-sm-6 "  *ngIf="ClienteAntiguo==false">
+        <div class="form-group col-12 col-sm-6 " *ngIf="ClienteAntiguo==false">
             <div class="row mx-0">
                 <span for="Sexo" class="col-12 col-sm-4 px-0">Sexo</span>
                 <label class="form-check checkbox col-12 col-sm-4">Masculino
@@ -87,7 +91,7 @@
                 (blur)="compexreg_email()" placeholder="Ingrese su correo">
         </div>
 
-        <div class="form-group col-12 col-sm-6">
+        <!-- <div class="form-group col-12 col-sm-6">
             <span for="Prevision">Previsión</span>
             <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [options]="Previciones" [(ngModel)]="Prevision" filter="true" optionLabel="sNombre">
@@ -95,8 +99,8 @@
             <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==false" [options]="Previciones" [(ngModel)]="Prevision"
                 filter="true" optionLabel="sNombre">
             </p-dropdown>
-        </div>
-        <div class="form-group col-12 ">
+        </div> -->
+        <!-- <div class="form-group col-12 ">
             <div class="custom-control custom-switch" *ngIf="ClienteAntiguo==false">
                 <input type="checkbox" class="custom-control-input" id="titular"  [(ngModel)]="titular">
                 <label class="custom-control-label" for="titular">¿Es usted carga?</label>
@@ -105,10 +109,78 @@
                 <input type="checkbox" class="custom-control-input" id="titular" [(ngModel)]="titular">
                 <label class="custom-control-label" for="titular">¿Es usted carga?</label>
             </div>
-        </div>
+        </div> -->
 
         <button class="btn-siguiente ml-auto" (click)="AgregarCliente()">
             <i class="pi pi-arrow-right"></i>
         </button>
+    </div>
+
+    <div class="row  container">
+        <div class="form-group col-12 col">
+            <h2 for="DatoaMascota">Datos de Mascota</h2>
+        </div>
+        <div class="form-group col-12 col-sm-12" *ngIf="MascotaEncontrada==true">
+            <span for="RUT">Mascota</span> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <p-dropdown styleClass="w-100"  [options]="Mascli" filter="true"
+                optionLabel="sNomMascota" (click)="LlenarMascota()" [(ngModel)]="Mascotaselect">
+            </p-dropdown>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="RUT">Nombre</span> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <input class="form-control" type="text" [(ngModel)]="NombreMascota"
+                placeholder="Ingrese Nombre de su mascota">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="Tipomas">Tipo Mascota</span>
+            <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [options]="RazasMasc" [(ngModel)]="RazaMasc" filter="true" optionLabel="sNomRaza">
+            </p-dropdown> -->
+            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" [options]="TioposMAsc" [(ngModel)]="Tipomas"
+                filter="true" optionLabel="sNomTipo" (click)="GetRazasXtipo()">
+            </p-dropdown>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="ColorMasc">Color</span>
+            <span class="text-danger"> {{emailvalidotext}}</span>
+            <!-- <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [(ngModel)]="ColorMasc" placeholder="Ingrese color de mascota"> -->
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" [(ngModel)]="ColorMasc"
+                placeholder="Ingrese color de mascota">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="RazaMasc">Raza</span>
+            <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [options]="RazasMasc" [(ngModel)]="RazaMasc" filter="true" optionLabel="sNomRaza">
+            </p-dropdown> -->
+            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" [options]="RazasMasc" [(ngModel)]="RazaMasc"
+                filter="true" optionLabel="sNomRaza">
+            </p-dropdown>
+        </div>
+        <div class="form-group col-12 col-sm-12">
+            <span class="text-danger"> {{fechaValidatext}}</span>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="fechaNMascota">Fecha Nacimiento</span>
+            <div class="">
+                <!-- <p-calendar [(ngModel)]="fechaNMascota" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                    [monthNavigator]="true" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                    [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                    panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año"></p-calendar> -->
+                <p-calendar [(ngModel)]="fechaNMascota" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                    [monthNavigator]="true" *ngIf="ClienteAntiguo==true" [yearNavigator]="true" yearRange="1915:2030"
+                    styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+            <span for="TamaMasc">Tamaño</span>
+            <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [options]="TamanosMasc" [(ngModel)]="TamaMasc" filter="true" optionLabel="sNomRaza">
+            </p-dropdown> -->
+            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" [options]="TamanosMasc" [(ngModel)]="TamaMasc"
+                filter="true" optionLabel="sNomRaza">
+            </p-dropdown>
+        </div>
     </div>
 </div>
