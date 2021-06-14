@@ -1,11 +1,11 @@
 @import "../../../../assets/scss/general.scss";
 .container-agenda{
     display: flex;
-    justify-content: center;
     align-items: center;
     background-color: $green-light;
     height: calc(100% - 76px);
     width: 100%;
+    overflow-y: auto;
     .container{
         display: flex;
         justify-content: center;
