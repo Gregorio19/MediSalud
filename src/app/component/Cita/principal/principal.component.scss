@@ -5,13 +5,14 @@
     align-items: center;
     background-color: $green-light;
     height: calc(100% - 76px);
+    overflow-y: auto;
     width: 100%;
     .container{
         display: flex;
         justify-content: center;
         .slogan{
             font-family: 'InkFree';
-            color: $gray-dark;
+            color: $yellow;
         }
     }
 }

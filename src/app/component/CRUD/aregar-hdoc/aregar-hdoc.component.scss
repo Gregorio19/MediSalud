@@ -1,12 +1,13 @@
+@import "../../../../assets/scss/general.scss";
 .mashora{
-    color: #65d4ce;
+    color: $green;
     font-size: 0.8rem;
     margin-top: 3%;
     margin-left: 2%;
 }
 
 .borrar{
-    color: red;
+    color: $red;
 }
 
 .distbtn{
