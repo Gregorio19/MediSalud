@@ -55,6 +55,8 @@ import { TraerFichaComponent } from './component/FichaClinica/traer-ficha/traer-
 import { PacienteComponent } from './component/Videollamada/paciente/paciente.component';
 import { ObtnerCitaComponent } from './component/FichaClinica/obtner-cita/obtner-cita.component';
 import { LoginDComponent } from './component/Shared/login-d/login-d.component';
+import { RazaComponent } from './component/CRUD/raza/raza.component';
+import { TipoMascotaComponent } from './component/CRUD/tipo-mascota/tipo-mascota.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { LoginDComponent } from './component/Shared/login-d/login-d.component';
     TraerFichaComponent,
     PacienteComponent,
     ObtnerCitaComponent,
-    LoginDComponent
+    LoginDComponent,
+    RazaComponent,
+    TipoMascotaComponent
 
   ],
   imports: [

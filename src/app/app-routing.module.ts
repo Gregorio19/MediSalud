@@ -10,6 +10,8 @@ import { SucursalComponent } from './component/CRUD/sucursal/sucursal.component'
 import { EspecialidadComponent } from './component/CRUD/especialidad/especialidad.component';
 import { DoctorComponent } from './component/CRUD/doctor/doctor.component';
 import { AregarHDocComponent } from './component/CRUD/aregar-hdoc/aregar-hdoc.component';
+import { TipoMascotaComponent } from './component/CRUD/tipo-mascota/tipo-mascota.component';
+import { RazaComponent } from './component/CRUD/raza/raza.component';
 
 import { AdmCitaComponent } from './component/Cita/adm-cita/adm-cita.component';
 import { CitaRotatoriaComponent } from './component/Cita/cita-rotatoria/cita-rotatoria.component';
@@ -44,6 +46,7 @@ const routes: Routes = [
   { path: 'TraerFichaTenica', component: TraerFichaComponent},
   { path: 'PacienteComponent', component: PacienteComponent},
   { path: 'CitaFicha', component: ObtnerCitaComponent},
+  { path: 'Raza', component: RazaComponent},
   
   { path: '', component: PrincipalComponent},
   { path: '**', redirectTo: '' }

@@ -83,7 +83,7 @@ export class AdmCitaComponent implements OnInit {
       { header: 'Rut', nombre: 'rutCli' },
       { header: 'Doctor', nombre: 'nomMed' },
       // { header: 'Rut', nombre: 'RutDoc' },
-      { header: 'Prevision', nombre: 'previ' },
+      { header: 'Mascota', nombre: 'nomMas' },
       { header: 'Estado', nombre: 'estCit' },
       { header: 'N Bono', nombre: 'numBon' }
     ];

@@ -1,0 +1,64 @@
+<div class="container mt-3">
+    <p-toast position="top-right" key="tc"></p-toast>
+    <div class="row ">
+        <div class="form-group col-12 col-md-8  row mx-0">
+            
+            <div class="col-sm-6">
+                <label for="especialidades" class="col-form-label">Nombre Raza</label>
+                <input maxlength="30" type="text" class="form-control" [(ngModel)]="Nombre"
+                    placeholder="Ingrese nombre de la raza">
+            </div>
+            
+            <div class="col-sm-6">
+                <label for="especialidades" class="col-form-label">Tipo Raza</label>
+                <p-dropdown styleClass="w-100"  [options]="TioposMAsc" [(ngModel)]="TipoMascota"
+                    filter="true" optionLabel="sNomTipo">
+                </p-dropdown>
+            </div>
+
+        </div>
+        <div class="form-group col-12 col-md-4">
+            <div class="btn btn-medisalud-primary" (click)=" AgregarEspecialidad()">cargar</div>
+            <div class="btn btn-medisalud-primary ml-3" *ngIf="Editar == true" (click)=" ActualizarEspecialidad()">
+                Actualizar
+            </div>
+            <!-- <div class="btn btn-medisalud-primary" *ngIf="Editar == true" (click)=" Cargar_Nuevamente()">AgregarDoc
+            </div> -->
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center w-75">
+        <p-table #dt [columns]="cols" [value]="Razas" [paginator]="true" [rows]="10" sortMode="multiple"
+            [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+            styleClass="ui-table-customers" currentPageReportTemplate="{first} a {last} de {totalRecords} datos"
+            [filterDelay]="0" [globalFilterFields]="['sNomRaza']" class="w-75">
+            <ng-template pTemplate="caption">
+                Razas
+                <div class="ui-table-globalfilter-container">
+                    <input pInputText class="form-control" type="text"
+                        (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Busqueda" />
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.nombre">
+                        {{col.header}}<p-sortIcon [field]="col.nombre"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns" (click)="Especialidad_seleccionado(rowData)">
+                        <div class="cortar-texto">
+                            {{rowData[col.nombre]}}
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8" style="text-align:left">No se encontraron Especialidades Agregadas.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

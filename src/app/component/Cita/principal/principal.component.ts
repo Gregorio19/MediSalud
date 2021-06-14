@@ -22,8 +22,8 @@ export class PrincipalComponent implements OnInit {
     if (this.derecho == true) {
       console.log("hola");
       
-      this.Router.navigate(["/LoginD"]);
       //this.Router.navigate(["/Login"]);
+      this.Router.navigate(["/Login"]);
     }
     else {
       this.derecho = false;

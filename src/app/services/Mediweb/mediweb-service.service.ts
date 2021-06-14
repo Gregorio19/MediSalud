@@ -110,6 +110,22 @@ export class MediwebServiceService {
     }
   }
 
+  async AgregarRaza(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/AdministracionRazas" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async ActualizarEspecialidad(req) {
     try {
       return await this.http.post(

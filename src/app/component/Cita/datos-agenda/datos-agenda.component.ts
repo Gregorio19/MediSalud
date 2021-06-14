@@ -456,6 +456,7 @@ export class DatosAgendaComponent implements OnInit {
 
       var req = {
         "idCli": clienteSelect["iIdCli"],
+        "idMas": this.cliente["IdMasc"],
         "idSuc": this.sucursal["idSuc"],
         "idDoc": this.Doctor["iddoc"],
         "idPre": clienteSelect["iIdPrev"],
@@ -483,7 +484,9 @@ export class DatosAgendaComponent implements OnInit {
         "Especialidad": this.especialidad["sNomEsp"].toString(),
         "fecha": this.FechaSelect.toString(),
         "hora": this.HoraSelect.toString(),
-        "descripcion": this.Descripcion != undefined ? this.Descripcion : ""
+        "descripcion": this.Descripcion != undefined ? this.Descripcion : "",
+        "idMas": this.cliente["IdMasc"],
+        "Nombremasc": this.cliente["NombreMasc"]
       }
 
       localStorage.setItem('DatosCita', JSON.stringify(Cita));

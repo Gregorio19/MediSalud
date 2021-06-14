@@ -353,7 +353,7 @@ export class DatosClienteComponent implements OnInit {
         "sex": susexo,
         "camCli": this.CambioDatos,
         "NombreMasc": this.NombreMascota,
-        "IdMasc":1
+        "IdMasc":this.Mascotaselect["iIdMascota"]
       }
 
 
@@ -377,7 +377,9 @@ export class DatosClienteComponent implements OnInit {
       }
       else {
         localStorage.setItem('Cliente', JSON.stringify(Addcli2));
-        await this.CrearMascota();
+        if (this.Mascotaselect["sNomMascota"] == "Nuevo") {
+          await this.CrearMascota();
+        }
         this.Router.navigate(["Agendar"]);
       }
 
@@ -399,6 +401,10 @@ export class DatosClienteComponent implements OnInit {
     if (this.nuevamacota== true) {
       var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
     console.log(respuestamasc);
+    this.Mascotaselect = respuestamasc["data"][respuestamasc["data"].length-1];
+    var cliente = localStorage.getItem('Cliente');
+    cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
+    localStorage.setItem('Cliente', JSON.stringify(cliente));
     }
   }
 
