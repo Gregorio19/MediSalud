@@ -53,12 +53,15 @@ export class DatosAgendaComponent implements OnInit {
 
   horaselect = false;
 
+  CargaCompleta;
+
   constructor(private MediwebServiceService: MediwebServiceService, private messageService: MessageService, private Router: Router) {
   }
 
   ngOnInit(): void {
     this.cliente = JSON.parse(localStorage.getItem('Cliente'));
     console.log(this.cliente);
+    this.CargaCompleta = true;
     this.traerEspecialidad();
     this.GetClientes();
     this.options = {
@@ -134,7 +137,7 @@ export class DatosAgendaComponent implements OnInit {
       }
       if (tipo == "D") {
         console.log(this.Doctor);
-        this.ImagenUrl = "http://190.47.237.221/ImagenDoc/" + this.Doctor["nomIma"] + ".jpg";
+        this.ImagenUrl = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + this.Doctor["nomIma"] + ".jpg";
         this.SelecDoctor = true;
         this.worksDate = [];
         this.Horas = [];
@@ -170,7 +173,9 @@ export class DatosAgendaComponent implements OnInit {
     var getcli = {
       "acc": "E"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.especialidades = respuesta["dataEsp"];
       console.log(this.especialidades);
@@ -184,8 +189,9 @@ export class DatosAgendaComponent implements OnInit {
       "idSuc": 0
     }
     console.log(req);
-    
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.ConsDetCitDoc(req);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       var sucursales = respuesta["datS"];
       this.sucursales = sucursales;
@@ -200,15 +206,16 @@ export class DatosAgendaComponent implements OnInit {
       "idSuc": this.sucursal["idSuc"]
     }
     console.log(req);
-
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.ConsDetCitDoc(req);
+    this.CargaCompleta = false;
     console.log(respuesta);
     
     if (respuesta["status"]) {
       var doctores = respuesta["datD"];
       this.medico = doctores;
       this.medico.forEach(element => {
-        element["sNomIma"] = "http://190.47.237.221/ImagenDoc/" + element["nomIma"] + ".jpg"
+        element["sNomIma"] = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + element["nomIma"] + ".jpg"
       });
       console.log(this.medico);
     }
@@ -219,7 +226,9 @@ export class DatosAgendaComponent implements OnInit {
     var getcli = {
       "acc": "C"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.Clintes = respuesta["dataCli"];
       console.log(this.Clintes);
@@ -477,25 +486,34 @@ export class DatosAgendaComponent implements OnInit {
       //   "descripcion": this.Descripcion != undefined ? this.Descripcion : "",
       //   "cambioDatos": this.cliente.CambioDato == true ? "1" : "0"
       // }
-      var Cita = {
-        "Sucursal": this.sucursal["sNombre"].toString(),
-        "Direccion": this.sucursal["sDirec"].toString(),
-        "Doctor": this.Doctor["nomDoc"].toString(),
-        "Especialidad": this.especialidad["sNomEsp"].toString(),
-        "fecha": this.FechaSelect.toString(),
-        "hora": this.HoraSelect.toString(),
-        "descripcion": this.Descripcion != undefined ? this.Descripcion : "",
-        "idMas": this.cliente["IdMasc"],
-        "Nombremasc": this.cliente["NombreMasc"]
-      }
 
-      localStorage.setItem('DatosCita', JSON.stringify(Cita));
+    
 
       console.log(req);
+      this.CargaCompleta = true;
       var respuesta = await this.MediwebServiceService.AgregarCita(req);
+      this.CargaCompleta = false;
       console.log(respuesta);
-      this.Router.navigate(["Resumen"]);
-
+      if (respuesta["status"]== false) {
+        this.messageService.clear();
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'No se pudo Agendar', detail: respuesta["message"] });
+      }
+      else{
+        var Cita = {
+          "Sucursal": this.sucursal["sNombre"].toString(),
+          "Direccion": this.sucursal["sDirec"].toString(),
+          "Doctor": this.Doctor["nomDoc"].toString(),
+          "Especialidad": this.especialidad["sNomEsp"].toString(),
+          "fecha": this.FechaSelect.toString(),
+          "hora": this.HoraSelect.toString(),
+          "descripcion": this.Descripcion != undefined ? this.Descripcion : "",
+          "idMas": this.cliente["IdMasc"],
+          "Nombremasc": this.cliente["NombreMasc"],
+          "codigoCita": respuesta["codAge"]+""
+        }
+        localStorage.setItem('DatosCita', JSON.stringify(Cita));
+        this.Router.navigate(["Resumen"]);
+      }
     }
 
 

@@ -10,8 +10,8 @@ export class FichaMedicaService {
   apiUrl="";
   constructor(private http: HttpClient) {
     //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1/Listar";
-    this.apiUrl = "https://localhost:44393/api/v1/Listar";
-    //this.apiUrl = "http://localhost/ApiAgenda/api/v1/Listar";
+    this.apiUrl = "http://demo.nexacon.cl:8080/api/v1/Listar";
+    //this.apiUrl = "http://demo.nexacon.cl:8080/ApiAgenda/api/v1/Listar";
    }
 
    async AdministracionSectores(req) {

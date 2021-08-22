@@ -17,6 +17,9 @@ import {TableModule } from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
 import {FileUploadModule} from 'primeng/fileupload';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {DialogModule} from 'primeng/dialog';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {CardModule} from 'primeng/card';
 
 
 
@@ -57,6 +60,8 @@ import { ObtnerCitaComponent } from './component/FichaClinica/obtner-cita/obtner
 import { LoginDComponent } from './component/Shared/login-d/login-d.component';
 import { RazaComponent } from './component/CRUD/raza/raza.component';
 import { TipoMascotaComponent } from './component/CRUD/tipo-mascota/tipo-mascota.component';
+import { CancelacionComponent } from './component/Cita/cancelacion/cancelacion.component';
+import { ModalComponent } from './services/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +86,9 @@ import { TipoMascotaComponent } from './component/CRUD/tipo-mascota/tipo-mascota
     ObtnerCitaComponent,
     LoginDComponent,
     RazaComponent,
-    TipoMascotaComponent
+    TipoMascotaComponent,
+    CancelacionComponent,
+    ModalComponent
 
   ],
   imports: [
@@ -93,6 +100,9 @@ import { TipoMascotaComponent } from './component/CRUD/tipo-mascota/tipo-mascota
     ToastModule,
     FileUploadModule,
     AutoCompleteModule,
+    DialogModule,
+    CardModule,
+    ProgressSpinnerModule,
     CheckboxModule,
     HttpClientModule,
     RadioButtonModule,

@@ -5,6 +5,7 @@
     background-color: $green-light;
     height: calc(100% - 76px);
     width: 100%;
+    justify-content: center;
     overflow-y: auto;
     .container{
         display: flex;

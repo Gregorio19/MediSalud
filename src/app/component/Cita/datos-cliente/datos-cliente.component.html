@@ -1,3 +1,5 @@
+<app-modal  *ngIf="CargaCompleta"></app-modal>
+
 <div class="container-agenda flex-column">
     <br>
     <p-toast position="center" key="tc"></p-toast>
@@ -121,13 +123,13 @@
             <h2 for="DatoaMascota">Datos de Mascota</h2>
         </div>
         <div class="form-group col-12 col-sm-12" *ngIf="MascotaEncontrada==true">
-            <span for="RUT">Mascota</span> <span class="text-danger"> {{Rutvalidotext}}</span>
-            <p-dropdown styleClass="w-100"  [options]="Mascli" filter="true"
-                optionLabel="sNomMascota" (click)="LlenarMascota()" [(ngModel)]="Mascotaselect">
+            <span for="RUT">Mascota</span> <span class="text-danger"> </span>
+            <p-dropdown styleClass="w-100" [options]="Mascli" filter="true" optionLabel="sNomMascota"
+                (click)="LlenarMascota()" [(ngModel)]="Mascotaselect">
             </p-dropdown>
         </div>
         <div class="form-group col-12 col-sm-6">
-            <span for="RUT">Nombre</span> <span class="text-danger"> {{Rutvalidotext}}</span>
+            <span for="RUT">Nombre</span> <span class="text-danger"> </span>
             <input class="form-control" type="text" [(ngModel)]="NombreMascota"
                 placeholder="Ingrese Nombre de su mascota">
         </div>
@@ -136,16 +138,16 @@
             <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [options]="RazasMasc" [(ngModel)]="RazaMasc" filter="true" optionLabel="sNomRaza">
             </p-dropdown> -->
-            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" [options]="TioposMAsc" [(ngModel)]="Tipomas"
+            <p-dropdown styleClass="w-100" *ngIf="Rutvalido==true" [options]="TioposMAsc" [(ngModel)]="Tipomas"
                 filter="true" optionLabel="sNomTipo" (click)="GetRazasXtipo()">
             </p-dropdown>
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="ColorMasc">Color</span>
-            <span class="text-danger"> {{emailvalidotext}}</span>
+            <span class="text-danger"> </span>
             <!-- <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="ColorMasc" placeholder="Ingrese color de mascota"> -->
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" [(ngModel)]="ColorMasc"
+            <input class="form-control" type="text" *ngIf="Rutvalido==true" [(ngModel)]="ColorMasc"
                 placeholder="Ingrese color de mascota">
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -153,12 +155,12 @@
             <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [options]="RazasMasc" [(ngModel)]="RazaMasc" filter="true" optionLabel="sNomRaza">
             </p-dropdown> -->
-            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" [options]="RazasMasc" [(ngModel)]="RazaMasc"
+            <p-dropdown styleClass="w-100" *ngIf="Rutvalido==true" [options]="RazasMasc" [(ngModel)]="RazaMasc"
                 filter="true" optionLabel="sNomRaza">
             </p-dropdown>
         </div>
         <div class="form-group col-12 col-sm-12">
-            <span class="text-danger"> {{fechaValidatext}}</span>
+            <span class="text-danger"> </span>
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="fechaNMascota">Fecha Nacimiento</span>
@@ -168,7 +170,7 @@
                     [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
                     panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año"></p-calendar> -->
                 <p-calendar [(ngModel)]="fechaNMascota" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
-                    [monthNavigator]="true" *ngIf="ClienteAntiguo==true" [yearNavigator]="true" yearRange="1915:2030"
+                    [monthNavigator]="true" *ngIf="Rutvalido==true" [yearNavigator]="true" yearRange="1915:2030"
                     styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año">
                 </p-calendar>
             </div>
@@ -178,7 +180,7 @@
             <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [options]="TamanosMasc" [(ngModel)]="TamaMasc" filter="true" optionLabel="sNomRaza">
             </p-dropdown> -->
-            <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" [options]="TamanosMasc" [(ngModel)]="TamaMasc"
+            <p-dropdown styleClass="w-100" *ngIf="Rutvalido==true" [options]="TamanosMasc" [(ngModel)]="TamaMasc"
                 filter="true" optionLabel="sNomRaza">
             </p-dropdown>
         </div>

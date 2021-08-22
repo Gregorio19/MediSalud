@@ -37,7 +37,7 @@ export class DatosClienteComponent implements OnInit {
   Tipomas: SelectItem;
   ColorMasc: string;
   IDdueño;
-  
+
   RazasMasc;
   TamanosMasc;
   TioposMAsc;
@@ -60,7 +60,7 @@ export class DatosClienteComponent implements OnInit {
   //validaciones
   telefonovalido;
   emailvalido;
-  Rutvalido;
+  Rutvalido = false;
   NombreValido;
   DireccionValida;
 
@@ -77,6 +77,8 @@ export class DatosClienteComponent implements OnInit {
   ClienteAntiguo;
   CambioDatos;
 
+  CargaCompleta
+
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
   ngOnInit(): void {
@@ -89,11 +91,12 @@ export class DatosClienteComponent implements OnInit {
     this.Direccion = "";
     this.NUmTel = "";
     this.Nombre = "";
+    this.CargaCompleta = true;
 
     //datos validos cliente
     this.telefonovalido = true;
     this.emailvalido = true;
-    this.Rutvalido = true;
+    this.Rutvalido = false;
     this.NombreValido = true;
     this.DireccionValida = true;
 
@@ -172,9 +175,12 @@ export class DatosClienteComponent implements OnInit {
     var getcli = {
       "acc": "C"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     console.log(respuesta);
     if (respuesta["status"]) {
+      
       this.Clintes = respuesta["dataCli"];
       console.log(this.Clintes);
     }
@@ -185,7 +191,9 @@ export class DatosClienteComponent implements OnInit {
     var getcli = {
       "acc": "P"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.Previciones = respuesta["dataPre"];
       console.log(this.Previciones);
@@ -198,7 +206,9 @@ export class DatosClienteComponent implements OnInit {
     var getcli = {
       "acc": "R"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.RazasMasc = respuesta["dataRaz"];
       this.TodasLasRaza = respuesta["dataRaz"];
@@ -210,7 +220,9 @@ export class DatosClienteComponent implements OnInit {
     var gettipomas = {
       "idTipMas": this.Tipomas["iIdTipoMascota"]
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataRazaxtipo(gettipomas);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.RazasMasc = respuesta["data"];
       this.RazaMasc = this.RazasMasc[0];
@@ -222,15 +234,17 @@ export class DatosClienteComponent implements OnInit {
     var getcli = {
       "acc": "T"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.TioposMAsc = respuesta["dataTMa"];
       this.Tipomas = this.TioposMAsc[0];
     }
   }
 
-   GetTamaMAsc() {
-     this.TamanosMasc = [
+  GetTamaMAsc() {
+    this.TamanosMasc = [
       {
         "iDTama": 1,
         "sNomRaza": "Pequeño",
@@ -336,7 +350,7 @@ export class DatosClienteComponent implements OnInit {
         "sex": susexo
       }
 
-      
+
 
 
       var Addcli2 = {
@@ -353,7 +367,7 @@ export class DatosClienteComponent implements OnInit {
         "sex": susexo,
         "camCli": this.CambioDatos,
         "NombreMasc": this.NombreMascota,
-        "IdMasc":this.Mascotaselect["iIdMascota"]
+        "IdMasc": this.Mascotaselect ? this.Mascotaselect["iIdMascota"] : 0
       }
 
 
@@ -367,26 +381,35 @@ export class DatosClienteComponent implements OnInit {
       });
       if (exitcli.length == 0) {
         localStorage.setItem('Cliente', JSON.stringify(Addcli2));
+        this.CargaCompleta = true;
         var respuesta = await this.MediwebServiceService.AgregarCliente(Addcli);
         console.log(respuesta);
         if (respuesta["status"]) {
-          this.IDdueño = respuesta["data"][respuesta["data"].length-1]["iIdCli"];
+          this.IDdueño = respuesta["data"][respuesta["data"].length - 1]["iIdCli"];
         }
         await this.CrearMascota();
+        this.CargaCompleta = false;
         this.Router.navigate(["Agendar"]);
       }
       else {
         localStorage.setItem('Cliente', JSON.stringify(Addcli2));
-        if (this.Mascotaselect["sNomMascota"] == "Nuevo") {
+        if (this.Mascotaselect) {
+          if (this.Mascotaselect["sNomMascota"] == "Nuevo") {
+            await this.CrearMascota();
+          }
+        }
+        else {
+          this.CargaCompleta = true;
           await this.CrearMascota();
         }
         this.Router.navigate(["Agendar"]);
+        this.CargaCompleta = false;
       }
 
     }
   }
 
-  async CrearMascota(){
+  async CrearMascota() {
     var AssMAsc = {
       "acc": "N",
       "idMascota": 0,
@@ -398,19 +421,20 @@ export class DatosClienteComponent implements OnInit {
       "fecNac": this.getfechas(this.fechaNMascota),
     }
     console.log(AssMAsc);
-    if (this.nuevamacota== true) {
+    if (this.nuevamacota == true) {
       var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
-    console.log(respuestamasc);
-    this.Mascotaselect = respuestamasc["data"][respuestamasc["data"].length-1];
-    var cliente = localStorage.getItem('Cliente');
-    cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
-    localStorage.setItem('Cliente', JSON.stringify(cliente));
+      console.log(respuestamasc);
+      this.Mascotaselect = respuestamasc["data"][respuestamasc["data"].length - 1];
+      var cliente = JSON.parse(localStorage.getItem('Cliente'));
+      cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
+      localStorage.setItem('Cliente', JSON.stringify(cliente));
     }
   }
 
-  
+
 
   async CompararCliente() {
+    this.CargaCompleta = true;
     var clienteEncontrado = false;
     var esto = this;
     console.log(this.Prevision);
@@ -467,72 +491,87 @@ export class DatosClienteComponent implements OnInit {
         this.Rutvalidotext = "";
       }
       this.vaciarmascota();
+      this.VaciarPaciente();
     }
 
-    else{
+    else {
       var reqmascli = {
-        "idCli": this.IDdueño
-      }
+        "tipo": "R",
+        "idCli": 0,
+        "rutCli": this.RUT.replace(".", "").replace(".", "").replace(".", "").trim()
+      }      
       var mascotascliente = await this.MediwebServiceService.GetDataMacotaCliente(reqmascli);
       if (mascotascliente["status"]) {
         if (mascotascliente["data"] == null) {
           this.Mascli = null;
-          this.MascotaEncontrada  = false;
+          this.MascotaEncontrada = false;
           this.vaciarmascota();
         }
-        else{
-          this.MascotaEncontrada =  mascotascliente["data"].length > 0 ? true:false;
-          this.Masdeunamascota = mascotascliente["data"].length > 1 ? true:false;
+        else {
+          this.MascotaEncontrada = mascotascliente["data"].length > 0 ? true : false;
+          this.Masdeunamascota = mascotascliente["data"].length > 1 ? true : false;
           this.Mascli = mascotascliente["data"];
           this.Mascotaselect = this.Mascli[0]
-          this.Mascli.push({"iIdMascota":99,"sNomMascota":"Nuevo","iIdRaza":9999,"sColor":"","sTamaño":"","dFechNac":null});
+          this.Mascli.push({ "iIdMascota": 99, "sNomMascota": "Nuevo", "iIdRaza": 9999, "sColor": "", "sTamaño": "", "dFechNac": null });
           this.LlenarMascota();
         }
       }
-      else{
+      else {
         this.Mascli = null;
-        this.MascotaEncontrada  = false;
+        this.MascotaEncontrada = false;
         this.vaciarmascota();
       }
     }
+    this.CargaCompleta = false;
   }
 
-  async LlenarMascota(){
+  async LlenarMascota() {
     if (this.Mascotaselect["sNomMascota"] == "Nuevo") {
       this.vaciarmascota();
       this.Masdeunamascota = true;
     }
-    else{
+    else {
       // llenado de datos de mascota
       this.NombreMascota = this.Mascotaselect["sNomMascota"];
       this.ColorMasc = this.Mascotaselect["sColor"];
       this.fechaNMascota = new Date(this.Mascotaselect["dFechNac"].toString());
       this.TamaMasc = await this.TamanosMasc.filter(x => x["cTama"] == this.Mascotaselect["sTamaño"]);
-      this.TamaMasc = this.TamaMasc[0]; 
+      this.TamaMasc = this.TamaMasc[0];
 
       // buscar y asignar tipo de raza escogida
-      var buscarraza =  await this.TodasLasRaza.filter(x => x["iIdRaza"] ==this.Mascotaselect["iIdRaza"] );
+      var buscarraza = await this.TodasLasRaza.filter(x => x["iIdRaza"] == this.Mascotaselect["iIdRaza"]);
       var gettipomas = {
         "idTipMas": buscarraza[0]["iIdTipoMascota"]
       }
-      this.RazaMasc  = buscarraza[0];
-      
+      this.RazaMasc = buscarraza[0];
+
       //seleccionar tipo marcota escogida
       var respuesta = await this.MediwebServiceService.GetDataRazaxtipo(gettipomas);
       if (respuesta["status"]) {
         this.RazasMasc = respuesta["data"];
       }
-      var newtipomas = await this.TioposMAsc.filter(x => x["iIdTipoMascota"] == buscarraza[0]["iIdTipoMascota"] );
+      var newtipomas = await this.TioposMAsc.filter(x => x["iIdTipoMascota"] == buscarraza[0]["iIdTipoMascota"]);
       this.Tipomas = newtipomas[0];
     }
   }
 
-  vaciarmascota(){
-        this.nuevamacota = true;
-        this.NombreMascota = "";
-        this.ColorMasc ="";
-        this.fechaNMascota = null;
-        this.Masdeunamascota = false;
+  vaciarmascota() {
+
+    this.nuevamacota = true;
+    this.NombreMascota = "";
+    this.ColorMasc = "";
+    this.fechaNMascota = null;
+    this.Masdeunamascota = false;
+  }
+
+  VaciarPaciente() {
+    this.MascotaEncontrada = false;
+    this.IDdueño = "";
+    this.Nombre = "";
+    this.Correo = "";
+    this.fechaN = null;
+    this.NUmTel = "";
+    this.Direccion = "";;
   }
 
   ValidarRut(rutCompleto) {
@@ -597,11 +636,11 @@ export class DatosClienteComponent implements OnInit {
 
   getfechas(date: Date) {
     console.log(date);
-    
+
     var fecha;
     date;
-    let day2  = date.getDate();
-    let day = day2 <10 ? "0"+day2: day2;
+    let day2 = date.getDate();
+    let day = day2 < 10 ? "0" + day2 : day2;
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let hora = (date.getHours() < 10 ? "0" + date.getHours() : "" + date.getHours())

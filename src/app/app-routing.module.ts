@@ -4,6 +4,7 @@ import { DatosClienteComponent } from './component/Cita/datos-cliente/datos-clie
 import { DatosAgendaComponent } from './component/Cita/datos-agenda/datos-agenda.component';
 import { PrincipalComponent } from './component/Cita/principal/principal.component';
 import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
+import { CancelacionComponent } from './component/Cita/cancelacion/cancelacion.component';
 
 
 import { SucursalComponent } from './component/CRUD/sucursal/sucursal.component';
@@ -47,6 +48,8 @@ const routes: Routes = [
   { path: 'PacienteComponent', component: PacienteComponent},
   { path: 'CitaFicha', component: ObtnerCitaComponent},
   { path: 'Raza', component: RazaComponent},
+  { path: 'TipoMascota', component: TipoMascotaComponent},
+  { path: 'Cancelacion', component: CancelacionComponent},
   
   { path: '', component: PrincipalComponent},
   { path: '**', redirectTo: '' }

@@ -552,7 +552,7 @@ export class CitaRotatoriaComponent implements OnInit {
       }
       if (tipo == "D") {
         console.log(this.Doctor);
-        this.ImagenUrl = "http://190.47.237.221/ImagenDoc/" + this.Doctor["nomIma"] + ".jpg";
+        this.ImagenUrl = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + this.Doctor["nomIma"] + ".jpg";
         this.SelecDoctor = true;
         this.worksDate = [];
         this.Horas = [];
@@ -624,7 +624,7 @@ export class CitaRotatoriaComponent implements OnInit {
       var doctores = respuesta["datD"];
       this.medico = doctores;
       this.medico.forEach(element => {
-        element["sNomIma"] = "http://190.47.237.221/ImagenDoc/" + element["nomIma"] + ".jpg"
+        element["sNomIma"] = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + element["nomIma"] + ".jpg"
       });
       console.log(this.medico);
     }
@@ -847,6 +847,7 @@ export class CitaRotatoriaComponent implements OnInit {
 
       var req = {
         "idCli": this.cliente["id"],
+        "idMas": 5,
         "idSuc": this.sucursal["idSuc"],
         "idDoc": this.Doctor["iddoc"],
         "idEsp": this.especialidad["iIdEsp"],
@@ -875,6 +876,7 @@ export class CitaRotatoriaComponent implements OnInit {
           "nSucursal": this.sucursal["sNombre"]+"",
           "nEspecialidad": this.especialidad["sNomEsp"]+"",
           "clienteEmail": this.cliente["mail"]+""
+          //"codigoCita": respok["code"]+""
         }
         console.log(req2);
         var respuesta2 = await this.MediwebServiceService.EnviarCorreoSobrecupo(req2);
@@ -998,6 +1000,7 @@ export class CitaRotatoriaComponent implements OnInit {
 
       var citaro = {
         "idCli": this.cliente["id"],
+        "idMas": 5,
         "idSuc": this.sucursal["idSuc"],
         "idDoc": this.Doctor["iddoc"],
         "idPre": this.cliente["idprev"],

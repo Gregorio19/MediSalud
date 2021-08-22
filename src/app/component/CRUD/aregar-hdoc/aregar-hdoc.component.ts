@@ -273,7 +273,7 @@ export class AregarHDocComponent implements OnInit {
         }
 
         //Agregar Jueves
-        if (element.includes("eJueves")) {
+        if (element.includes("dJueves")) {
           horarioencontrado = true;
           contjueves++;
           this.horariosxDia.forEach(horariosact => {
@@ -295,7 +295,7 @@ export class AregarHDocComponent implements OnInit {
         }
 
         //Agregar Viernes
-        if (element.includes("fViernes")) {
+        if (element.includes("eViernes")) {
           horarioencontrado = true;
           contviernes++;
           this.horariosxDia.forEach(horariosact => {
@@ -317,7 +317,7 @@ export class AregarHDocComponent implements OnInit {
         }
 
         //Agregar Sabado
-        if (element.includes("gSabado")) {
+        if (element.includes("fSabado")) {
           horarioencontrado = true;
           contsabado++;
           this.horariosxDia.forEach(horariosact => {
@@ -339,7 +339,7 @@ export class AregarHDocComponent implements OnInit {
         }
 
         //Agregar Domingo
-        if (element.includes("hDomingo")) {
+        if (element.includes("gDomingo")) {
           horarioencontrado = true;
           contdomingo++;
           this.horariosxDia.forEach(horariosact => {

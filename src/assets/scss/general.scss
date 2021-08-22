@@ -1,5 +1,5 @@
 $green: #88C6C5;
-$green-light: #eefdfd85;
+$green-light: #f0fbfb;
 $green-dark: #6B9C9A;
 $white: #ffffff;
 $blue: #8FCEF9;
@@ -20,6 +20,42 @@ $gray-hour: #DFE5ED;
 $scoll: #d0e1f9;
 $bg-icon: #c8cecd;
 
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke: #CEB268;;
+    }
+}
+
+.back-screen{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(117, 117, 117, 0.618);
+    z-index: 1000;
+}
+.modal-body{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+body .ui-card {
+   width: 50%;
+   display: flex;
+   justify-content: center;
+}
+.ui-card-content{
+display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+font-size: 2.5rem;
+color: #88C6C5;
+}
 
 .btn-medisalud-primary{
     color: $white;
