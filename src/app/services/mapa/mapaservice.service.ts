@@ -11,8 +11,8 @@ export class MapaserviceService {
 
   constructor(private http: HttpClient) { 
     //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1";
-  //this.apiUrl = "https://localhost:44393/api/v1";
-  this.apiUrl = "http://localhost/ApiAgenda/api/v1";
+  //this.apiUrl = "https://demo.nexacon.cl:8080:44393/api/v1";
+  this.apiUrl = "http://demo.nexacon.cl:8080/api/v1";
   }
 
   async ObtenerLatLong(req) {

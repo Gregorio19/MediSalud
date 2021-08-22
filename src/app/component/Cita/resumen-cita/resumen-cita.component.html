@@ -1,4 +1,4 @@
-<div class="container-agenda">
+<div class="container-agenda  d-flex justify-content-center">
     <div class="row  container" id="ficha">
         <div class="col-12">
             <img src="./assets/images/logoCorreo.png" class="img-tama">
@@ -14,7 +14,7 @@
                     PACIENTE
                 </label>
                 <span>
-                    {{cliente.nombre}}
+                    {{Cita.Nombremasc}}
                 </span>
             </div>
             <div class=" form-text col-12">
@@ -53,6 +53,14 @@
                 <span>
                     Por favor presentarse 10 min antes de la hora agendada el día {{Cita.fecha}} a las {{Cita.hora}}h
                 </span>
+            </div>
+            <div class="col-12 px-4">
+                <span>
+                    Cod Cancelacion: {{Cita.codigoCita}}
+                </span>
+                <label>
+                    En caso de no poder presentarse y necesite la cancelacion de su cita, presione <a href=""> Aqui </a>  he ingrese el codigo
+                </label>
             </div>
             <div class="col-12 px-4">
                 <span>

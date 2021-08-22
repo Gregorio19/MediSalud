@@ -10,9 +10,9 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    this.apiUrl = "https://localhost:44393/api/v1";
+    this.apiUrl = "http://demo.nexacon.cl/AgendaApi/api/v1";
     //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1";
-    //this.apiUrl = "http://localhost/ApiAgenda/api/v1";
+    //this.apiUrl = "http://demo.nexacon.cl:8080/ApiAgenda/api/v1";
   }
 
   async AgregarSucursal(req) {
@@ -98,6 +98,22 @@ export class MediwebServiceService {
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionEspecialidades" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async AgregarTipoMascota(req) {
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/AdministracionTipoMascotas" ,req, { headers: this.headers }
       ).toPromise();
     } catch (error) {
       let resultado =
