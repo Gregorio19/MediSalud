@@ -60,11 +60,11 @@
             font-family: Roboto;
             font-style: normal;
             font-weight: 300;
-            font-size: 10px;
-            line-height: 12px;
+            font-size: 18px;
+            line-height: 20px;
             display: flex;
             align-items: center;
-            color: $gray;
+            color: black;
           }
           textarea {
             font-family: Roboto;
@@ -74,10 +74,10 @@
             line-height: 19px;
             display: flex;
             align-items: center;
-            color: $gray-dark;
-            -webkit-box-shadow: 1px 1px 1px 0px $gray-dark;
-            -moz-box-shadow: 1px 1px 1px 0px $gray-dark;
-            box-shadow: 1px 1px 1px 0px $gray-dark;
+            color: black;
+            -webkit-box-shadow: 2px 2px 2px 0px $gray-dark;
+            -moz-box-shadow: 2px 2px 2px 0px $gray-dark;
+            box-shadow: 2px 2px 2px 0px $gray-dark;
             border: none;
           }
           .div-outline {

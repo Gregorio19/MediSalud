@@ -24,6 +24,8 @@ export class DoctorComponent implements OnInit {
   Doctores;
   cols
 
+  CargaCompleta
+
   Editar: boolean
 
   //validaciones 
@@ -50,6 +52,7 @@ export class DoctorComponent implements OnInit {
     if (usu.toString() != "1") {
       this.Router.navigate([""]);
     }
+    this.CargaCompleta = false;
     this.Editar = false;
     this.id = "";
     this.rut = "";
@@ -68,6 +71,7 @@ export class DoctorComponent implements OnInit {
   }
 
   async AgregarDosctor() {
+    this.CargaCompleta = true;
     console.log(this.uploadedFiles);
 
     if (this.rut == "") {
@@ -105,10 +109,11 @@ export class DoctorComponent implements OnInit {
 
         if (element["sRutDoc"] == rutadd) {
           this.Rutvalido = false;
-          this.Rutvalidotext = "El Rut ya se encuentra usado por otros doctor";
+          this.Rutvalidotext = "El Rut ya se encuentra usado por otro doctor";
         }
       });
       if (this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false || this.pasvalido == false) {
+        this.CargaCompleta = false;
         return;
       }
       else {
@@ -133,13 +138,13 @@ export class DoctorComponent implements OnInit {
         }
         else {
           this.MessageService.clear();
-          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al agregar los datos: ' + respuesta[0][""] });
+          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al agregar los datos: ' + respuesta["message"] });
         }
       }
 
 
     }
-
+    this.CargaCompleta = false;
   }
 
 
@@ -172,11 +177,13 @@ export class DoctorComponent implements OnInit {
   }
 
   async TraerDoctor() {
+    this.CargaCompleta = true;
     var GetDoctor = { "acc": "D" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(GetDoctor);
     var JsonDoctor = respuesta["dataDoc"];
     console.log(JsonDoctor);
     this.Doctores = JsonDoctor;
+    this.CargaCompleta = false;
   }
 
   Doctor_seleccionado(doc) {
@@ -200,6 +207,7 @@ export class DoctorComponent implements OnInit {
   }
 
   async ActualizarDosctor() {
+    this.CargaCompleta = true;
     if (this.rut == "") {
       this.Rutvalido = false;
       this.Rutvalidotext = "El Rut no puede estar vacio";
@@ -255,9 +263,10 @@ export class DoctorComponent implements OnInit {
       }
       else {
         this.MessageService.clear();
-        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al actualizar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta[0][""] });
+        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al actualizar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta["message"] });
       }
     }
+    this.CargaCompleta = false;
   }
   Cargar_Nuevamente() {
     this.Editar = false;
@@ -339,6 +348,7 @@ export class DoctorComponent implements OnInit {
   }
 
   async uploadFile(event, fileUpload) {
+    this.CargaCompleta = true;
     if (this.rut != undefined && this.rut != "") {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'info', summary: 'Cargando Archivo', detail: 'La foto de perfil se esta guardando' });
@@ -366,7 +376,7 @@ export class DoctorComponent implements OnInit {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error', detail: 'Primero debe ingresar el rut del Doctor' });
     }
-
+    this.CargaCompleta = false;
   }
 
   delay(ms: number) {

@@ -1,0 +1,5 @@
+{
+    "Api_base": "http://demo.nexacon.cl:8084/api/v1",
+    "Url_Imagen":"http://demo.nexacon.cl/ImgDoctor/",
+    "Api_extra":""
+}

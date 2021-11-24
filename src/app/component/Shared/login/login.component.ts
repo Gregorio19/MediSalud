@@ -17,22 +17,23 @@ export class LoginComponent implements OnInit {
   constructor(private MediwebServiceService: MediwebServiceService, private messageService: MessageService, private Router: Router) { }
 
   ngOnInit(): void {
-    this.TraerUsuarios();
+    //this.TraerUsuarios();
   }
 
   async TraerUsuarios() {
     var getcli = {
-      "acc": "U"
+      "usu": this.Usuario,
+      "pass": this.Contrasena
     }
-    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    var respuesta = await this.MediwebServiceService.Logear(getcli);
     console.log(respuesta);
-    this.Usuarios = respuesta["dataUsu"];
+    this.Usuarios = respuesta;
   }
 
-  logueaer() {
-    this.Usuarios.forEach(element => {
-      if (element["sUsu"] == this.Usuario &&  element["sClave"] == this.Contrasena) {
-        if (element["iPermiso"] == 1) {
+  async logueaer() {
+    await this.TraerUsuarios();
+      if (this.Usuarios["status"] == true ) {
+        if (this.Usuarios["idusu"] == 1) {
           localStorage.setItem('tipou', JSON.stringify(1));
           this.Router.navigate(["/DashBoard"]);
         }
@@ -41,7 +42,6 @@ export class LoginComponent implements OnInit {
           this.Router.navigate(["/DashBoard"]);
         }
       }
-    });
     this.messageService.clear();
       this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Datos invalidos', detail: 'Usuario o contraseña Invalidos' });
   }

@@ -20,11 +20,11 @@ export class RazaComponent implements OnInit {
   TipoMascota;
   TioposMAsc;
   TipoMascotaSelect;
-
+  CargaCompleta;
   constructor(private Router:Router, private MediwebServiceService: MediwebServiceService, private MessageService: MessageService) { }
 
   ngOnInit(): void {
-    
+    this.CargaCompleta = false;
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1") {
       this.Router.navigate([""]);
@@ -44,7 +44,7 @@ export class RazaComponent implements OnInit {
 
 
   async AgregarEspecialidad() {
-
+    this.CargaCompleta = true;
     if (this.Nombre.length < 3 ) {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Nombre invalido', detail: 'El nombre de raza debe ser mayor a 3 caracteres' });
@@ -75,20 +75,22 @@ export class RazaComponent implements OnInit {
       }
       this.TraerRazas();
     }
-
+    this.CargaCompleta = false;
   }
 
 
   async TraerRazas() {
+    this.CargaCompleta = true;
     var GetEspecialidad = { "acc": "R" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(GetEspecialidad);
     var JsonEspecialidad = respuesta["dataRaz"];
     console.log(JsonEspecialidad);
     this.Razas = JsonEspecialidad;
+    this.CargaCompleta = false;
   }
 
   async GetTiposMascotas() {
-
+    this.CargaCompleta = true;
     var getcli = {
       "acc": "T"
     }
@@ -97,6 +99,7 @@ export class RazaComponent implements OnInit {
       this.TioposMAsc = respuesta["dataTMa"];
       this.TipoMascota = this.TioposMAsc[0];
     }
+    this.CargaCompleta = false;
   }
 
   async Especialidad_seleccionado(doc) {
@@ -116,6 +119,7 @@ export class RazaComponent implements OnInit {
   }
 
   async ActualizarEspecialidad() {
+    this.CargaCompleta = true;
     if (this.Nombre.length < 3 ) {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Nombre invalido', detail: 'El nombre de la Raza no puede tener menos de 3 caracteres' });
@@ -142,7 +146,7 @@ export class RazaComponent implements OnInit {
       }
       this.TraerRazas();  
     }
-    
+    this.CargaCompleta = false;
   }
   Cargar_Nuevamente() {
     this.Editar = false;

@@ -1,13 +1,14 @@
+<p-toast position="top-right" key="tc"></p-toast>
 <div class="container-agenda flex-column">
     <br>
-    <p-toast position="center" key="tc"></p-toast>
+    
     <div class="row  container mt-5">
         <div class="form-group col-12 col">
             <h2 for="RUT">Datos de Cita</h2>
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Rut de cliente *</span> <span class="text-danger">{{RutErrorText}}</span>
-            <input  (blur)="DarFormatoRut()" class="form-control" type="text" [(ngModel)]="RutPaciente" placeholder="Ingrese su RUT">
+            <input  (ngModelChange)="formateaRutinpunt()" maxlength="12" class="form-control" type="text" [(ngModel)]="RutPaciente" placeholder="Ingrese su RUT">
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="Nombre">Codigo de Cancelacion *</span> <span class="text-danger"> </span>

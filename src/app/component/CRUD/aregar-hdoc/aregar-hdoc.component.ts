@@ -26,6 +26,8 @@ export class AregarHDocComponent implements OnInit {
   horariosF;
   horario;
 
+  DiasF;
+
   horariosxDia;
 
   horas: any[];
@@ -36,9 +38,12 @@ export class AregarHDocComponent implements OnInit {
   pressEspecialidad: boolean;
   pressTiempo: boolean;
   pressSucursal: boolean;
+  CargaCompleta;
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
   ngOnInit(): void {
+    this.CargaCompleta = false;
+    this.DiasF = 30;
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1") {
       this.Router.navigate([""]);
@@ -112,7 +117,7 @@ export class AregarHDocComponent implements OnInit {
 
   }
 
-  changePress(presionado) {
+  async changePress(presionado) {
     if (presionado == "D") {
       this.horariosxDia = [
         { "dia": "Lunes", "Act": false, "horaI": { "Hora": "00" }, "minI": { "Minuto": "00" }, "horaF": { "Hora": "00" }, "minF": { "Minuto": "00" }, "del": false, "Precar": false },
@@ -145,7 +150,7 @@ export class AregarHDocComponent implements OnInit {
       this.pressSucursal = false;
     }
     if (presionado == "S") {
-     this.OrdenarHorarios();
+     await this.OrdenarHorarios();
 
       //this.GethorarioDoc();
 
@@ -161,6 +166,7 @@ export class AregarHDocComponent implements OnInit {
   }
 
   async GetDoctores() {
+    this.CargaCompleta = true;
     var getdoc = { "acc": "D" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getdoc);
     await this.GetEspecialidad();
@@ -176,9 +182,11 @@ export class AregarHDocComponent implements OnInit {
     this.Sucursal = this.Sucursusales[0];
     this.Especialidad = this.Especialidades[0];
     //this.OrdenarHorarios();
+    this.CargaCompleta = false;
   }
 
   async GethorarioDoc() {
+    this.CargaCompleta = true;
     var gethdoc = {
       "idDoc": this.Doctor["iIdDoc"],
       "idSuc": this.Sucursal["iIdSuc"],
@@ -198,6 +206,7 @@ export class AregarHDocComponent implements OnInit {
     var horariosDoc = respuesta;
     if (horariosDoc["sHorarios"] != "Sin Datos de Horarios") {
       console.log(horariosDoc);
+      this.DiasF = horariosDoc["iAgeDias"];
       var horas = horariosDoc["sHorarios"].split(",");
       console.log(horas);
 
@@ -372,9 +381,11 @@ export class AregarHDocComponent implements OnInit {
     else{
       this.pressSucursal = true;
     }
+    this.CargaCompleta = false;
   }
 
   async GetSucursales() {
+    this.CargaCompleta = true;
     var getSuc = { "acc": "S" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getSuc);
     var primeratributo = respuesta["dataSuc"];
@@ -384,9 +395,11 @@ export class AregarHDocComponent implements OnInit {
       this.Sucursusales.push(element);
     });
     console.log(this.Sucursusales);
+    this.CargaCompleta = false;
   }
 
   async GetEspecialidad() {
+    this.CargaCompleta = true;
     var getEsp = { "acc": "E" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
     var primeratributo = respuesta["dataEsp"];
@@ -396,7 +409,7 @@ export class AregarHDocComponent implements OnInit {
       this.Especialidades.push(element);
     });
     console.log(this.Especialidades);
-
+    this.CargaCompleta = false;
   }
 
   OrdenarHorarios() {
@@ -423,6 +436,7 @@ export class AregarHDocComponent implements OnInit {
   }
 
   async AgregarHorarioDoc() {
+    this.CargaCompleta = true;
     // if (this.Direccion == "") {
     //   this.MessageService.clear();
     //   this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe ingresar una direccion para ubicar la sucursal en el mapa' });
@@ -478,6 +492,7 @@ export class AregarHDocComponent implements OnInit {
           "idEsp": this.Especialidad["iIdEsp"],
           "tipAte": parseInt(this.horario["min"]),
           "hab": true,
+          "ageDias":this.DiasF,
           "shDoc": newhorarios
         }
         var respuesta = await this.MediwebServiceService.AgregarHorarioDoctor(newhdco);
@@ -505,7 +520,7 @@ export class AregarHDocComponent implements OnInit {
         }
         else {
           this.MessageService.clear();
-          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al actualizar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta[0][""] });
+          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al actualizar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta["message"] });
         }
       }
       else {
@@ -519,7 +534,7 @@ export class AregarHDocComponent implements OnInit {
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe ingresar al menos un dia y llenarlo' });
     }
 
-
+    this.CargaCompleta = false;
   }
 
   delay(ms: number) {

@@ -3,7 +3,7 @@
     <div class="row  container">
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
-            <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()"
+            <input class="form-control" maxlength="12" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()" (ngModelChange)="formateaRutinpunt()"
                 placeholder="Ingrese su RUT">
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -48,7 +48,7 @@
         <div class="form-group col-12 col-sm-6">
             <span for="NUmTel">Número de Teléfono</span>
             <span class="text-danger"> {{telefonovalidotext}}</span>
-            <input maxlength="50" class="form-control" type="text" [(ngModel)]="NUmTel" (blur)="compexreg_tel()"
+            <input maxlength="50" maxlength="12" class="form-control" type="text" [(ngModel)]="NUmTel" (blur)="compexreg_tel()"
                 placeholder="ingrese su telefono +56912345678">
         </div>
 
@@ -59,7 +59,7 @@
                 placeholder="Ingrese su correo">
         </div>
 
-        <div class="form-group col-12 col-sm-6">
+        <!-- <div class="form-group col-12 col-sm-6">
             <span for="Prevision">Previsión</span>
             <p-dropdown styleClass="w-100" [options]="Previciones" [(ngModel)]="Prevision" filter="true"
                 optionLabel="sNombre">
@@ -70,7 +70,7 @@
                 <input type="checkbox" class="custom-control-input" id="titular" [(ngModel)]="titular">
                 <label class="custom-control-label" for="titular">¿Es usted carga?</label>
             </div>
-        </div>
+        </div> -->
 
         <button class="btn-siguiente ml-auto" (click)="AgregarCliente()">
             <i class="pi pi-arrow-right"></i>

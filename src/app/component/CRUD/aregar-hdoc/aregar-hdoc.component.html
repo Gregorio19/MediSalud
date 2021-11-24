@@ -1,3 +1,4 @@
+<app-modal  *ngIf="CargaCompleta"></app-modal>
 <div class="container mt-3">
     <div class="row">
         <p-toast position="top-right" key="tc"></p-toast>
@@ -23,6 +24,12 @@
             <label for="horarios">Minutos de consulta</label>
             <p-dropdown [options]="horarios" (ngModelChange)="changePress('T')" [(ngModel)]="horario" optionLabel="min" styleClass="w-100">
             </p-dropdown>
+            <!-- //<input type="number" min="9" max="15">:<input type="number" min="0" max="59"> -->
+        </div>
+
+        <div [hidden]="!pressSucursal" class="form-group col-12 col-md-6">
+            <label for="horarios">Dias Maximos a Agendar: </label>
+            <input type="number" class="form-control" [(ngModel)]="DiasF" min="1" max="366" styleClass="w-100">
             <!-- //<input type="number" min="9" max="15">:<input type="number" min="0" max="59"> -->
         </div>
 

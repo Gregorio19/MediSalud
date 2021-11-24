@@ -11,7 +11,7 @@
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
-            <input class="form-control" type="text" [(ngModel)]="RUT" readonly placeholder="Ingrese su RUT">
+            <input class="form-control" type="text" maxlength="12" [(ngModel)]="RUT" readonly placeholder="Ingrese su RUT">
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="Nombre">Nombre *</span> <span class="text-danger"> {{NombreValidotext}}</span>
@@ -41,7 +41,7 @@
         <div class="form-group col-12 col-sm-6">
             <span for="NUmTel">Número de Teléfono</span>
             <span class="text-danger"> {{telefonovalidotext}}</span>
-            <input class="form-control" type="text" [(ngModel)]="NUmTel" readonly
+            <input class="form-control" maxlength="12" type="text" [(ngModel)]="NUmTel" readonly
                 placeholder="ingrese su telefono +56912345678">
         </div>
 

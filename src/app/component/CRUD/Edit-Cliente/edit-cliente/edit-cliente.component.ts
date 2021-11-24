@@ -232,7 +232,7 @@ export class EditClienteComponent implements OnInit {
           "direc": this.Direccion,
           "mail": this.Correo,
           "nac": this.getfechas(this.fechaN),
-          "idPrev": this.Prevision["iIdPrev"],
+          "idPrev": 0,
           "tit": estitu==1?true:false,
           "sex": susexo
         }
@@ -269,11 +269,6 @@ export class EditClienteComponent implements OnInit {
         this.fechaN = new Date(element["dfechNac"].toString());
         this.NUmTel = element["sNumTel"];
         this.Direccion = element["sDirec"];
-        this.Previciones.filter(function (array) {
-          if (element["iIdPrev"] == array["iIdPrev"]) {
-            esto.Prevision = array;
-          }
-        });
         if (element["btit"] == true) {
           this.titular = false;
         }
@@ -388,6 +383,39 @@ export class EditClienteComponent implements OnInit {
       fecha = `${year}-${month}-${day}`;
     }
     return fecha;
+  }
+
+  formateaRutinpunt() {
+    setTimeout(() => {
+      if (this.RUT.length > 2) {
+        this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
+      }
+    }, 50);
+
+  }
+
+  formateaRut(rut) {
+
+    var actual = rut.replace(/^0+/, "");
+    if (actual != '' && actual.length > 1) {
+      var sinPuntos = actual.replace(/\./g, "");
+      var actualLimpio = sinPuntos.replace(/-/g, "");
+      var inicio = actualLimpio.substring(0, actualLimpio.length - 1);
+      var rutPuntos = "";
+      var i = 0;
+      var j = 1;
+      for (i = inicio.length - 1; i >= 0; i--) {
+        var letra = inicio.charAt(i);
+        rutPuntos = letra + rutPuntos;
+        if (j % 3 == 0 && j <= inicio.length - 1) {
+          rutPuntos = "." + rutPuntos;
+        }
+        j++;
+      }
+      var dv = actualLimpio.substring(actualLimpio.length - 1);
+      rutPuntos = rutPuntos + "-" + dv;
+    }
+    return rutPuntos;
   }
 
   

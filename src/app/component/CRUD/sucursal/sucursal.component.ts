@@ -29,9 +29,12 @@ export class SucursalComponent implements OnInit {
   Sucursales;
   cols;
 
+  CargaCompleta;
+
   constructor(private Router:Router, private MapaserviceService: MapaserviceService, private MediwebServiceService: MediwebServiceService, private MessageService: MessageService) { }
 
   ngOnInit(): void {
+    this.CargaCompleta = false;
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1") {
       this.Router.navigate([""]);
@@ -73,6 +76,7 @@ export class SucursalComponent implements OnInit {
   }
 
   async obtenerlatlon(map) {
+    this.CargaCompleta = true;
     if (this.Direccion == "") {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe ingresar una direccion para ubicar la sucursal en el mapa' });
@@ -93,10 +97,11 @@ export class SucursalComponent implements OnInit {
       map.setZoom(16);
       this.overlays = [new google.maps.Marker({ position: { lat: lat, lng: long }, title: "mapa", draggable: false })];
     }
-
+    this.CargaCompleta = false;
   }
 
   async CrearSucursal() {
+    this.CargaCompleta = true;
     var horainicio =  moment(this.Horini.toString()).format('HH:mm');
     if (horainicio.toString() == "Invalid date") {
       horainicio = this.Horini.toString();
@@ -168,19 +173,22 @@ export class SucursalComponent implements OnInit {
         }
         else {
           this.MessageService.clear();
-          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al agregar los datos: ' + respuesta[0][""] });
+          this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al agregar los datos: ' + respuesta["message"] });
         }
         this.TraerSucursales();
       }
     }
+    this.CargaCompleta = false;
   }
 
   async TraerSucursales() {
+    this.CargaCompleta = true;
     var GetSucursales = { "acc": "S" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(GetSucursales);
     var JsonSucursales = respuesta["dataSuc"];
     console.log(JsonSucursales);
     this.Sucursales = JsonSucursales;
+    this.CargaCompleta = false;
   }
 
   Sucursal_seleccionado(doc) {
@@ -205,6 +213,7 @@ export class SucursalComponent implements OnInit {
   }
 
   async ActualizarSucursal() {
+    this.CargaCompleta = true;
     var horainicio =  moment(this.Horini.toString()).format('HH:mm');
     if (horainicio.toString() == "Invalid date") {
       horainicio = this.Horini.toString();
@@ -279,12 +288,12 @@ export class SucursalComponent implements OnInit {
       }
       else {
         this.MessageService.clear();
-        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta[0][""] });
+        this.MessageService.add({ key: 'tc', severity: 'error', summary: 'Error al Ingresar', detail: 'Ha ocurrido un error al actualizar los datos: ' + respuesta["message"] });
       }
       this.TraerSucursales();
     }
 
-
+    this.CargaCompleta = false;
   }
   Cargar_Nuevamente() {
     this.Editar = false;

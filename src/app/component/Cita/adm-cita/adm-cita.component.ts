@@ -30,6 +30,9 @@ export class AdmCitaComponent implements OnInit {
 
   cambiado
 
+  CargaCompleta;
+
+
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) {
     this.es = undefined;
     this.es = {};
@@ -37,6 +40,7 @@ export class AdmCitaComponent implements OnInit {
 
   ngOnInit(): void {
     this.cambiado = false;
+    this.CargaCompleta = false;
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
@@ -79,13 +83,14 @@ export class AdmCitaComponent implements OnInit {
       { header: 'idcli', nombre: 'idcli' },
       { header: 'Fecha', nombre: 'fecAge' },
       { header: 'Hora', nombre: 'horAge' },
+      { header: 'Tipo Agenda', nombre: 'tipAge' },
       { header: 'Cliente', nombre: 'nomCli' },
       { header: 'Rut', nombre: 'rutCli' },
       { header: 'Doctor', nombre: 'nomMed' },
       // { header: 'Rut', nombre: 'RutDoc' },
       { header: 'Mascota', nombre: 'nomMas' },
-      { header: 'Estado', nombre: 'estCit' },
-      { header: 'N Bono', nombre: 'numBon' }
+      { header: 'Estado', nombre: 'estCit' }
+      // { header: 'N Bono', nombre: 'numBon' }
     ];
 
     this.EstadosCIta = [
@@ -101,6 +106,7 @@ export class AdmCitaComponent implements OnInit {
 
   async GetSucursales() {
     var getSuc = { "acc": "S" }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getSuc);
     if (respuesta["status"]) {
       var primeratributo = respuesta["dataSuc"];
@@ -117,6 +123,7 @@ export class AdmCitaComponent implements OnInit {
   }
 
   async GetDoctor() {
+    this.CargaCompleta = true;
     var getEsp = { "acc": "D" }
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getEsp);
     if (respuesta["status"]) {
@@ -128,9 +135,11 @@ export class AdmCitaComponent implements OnInit {
       });
       console.log(this.Doctores);
     }
+    this.CargaCompleta = false;
   }
 
   async GetAllCitas() {
+    this.CargaCompleta = true;
     var fechas = true;
     var fechaI = this.fechaI.getUTCFullYear() + "-" + (this.fechaI.getUTCMonth() + 1) + "-" + this.fechaI.getUTCDate();
     var fechaF = this.fechaF.getUTCFullYear() + "-" + (this.fechaF.getUTCMonth() + 1) + "-" + this.fechaF.getUTCDate();
@@ -180,6 +189,7 @@ export class AdmCitaComponent implements OnInit {
       }
 
     }
+    this.CargaCompleta = false;
   }
 
   filtrar() {

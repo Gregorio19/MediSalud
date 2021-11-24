@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
 })
 export class CancelacionComponent implements OnInit {
 
-  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
+  constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private messageService: MessageService) { }
 
   RutPaciente;
   CodigoCancelacion
@@ -21,18 +21,37 @@ export class CancelacionComponent implements OnInit {
   ngOnInit(): void {
     this.RutErrorText="";
   }
-  CancelaCita(){
+ async  CancelaCita(){
     var Cancelacita = {
       "acc": "A",
       "idcita": 0,
       "estado": 0,
       "camDatCli": true,
       "numBon": 0,
-      "rutCli": this.RutPaciente,
+      "rutCli": this.RutPaciente.replace(".", "").replace(".", "").replace(".", ""),
       "codAge": this.CodigoCancelacion
     }
 
-    this.MediwebServiceService.ActCita(Cancelacita);
+    var datoscance = await this.MediwebServiceService.ActCita(Cancelacita);
+    if (datoscance["status"]) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'tc', severity: 'success', summary: 'Cancelacion Correcta', detail: 'Su cita se ha cancelado correctamente' });
+    }
+    else{
+      this.messageService.clear();
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Cancelacion Erronea', detail: 'EL RUT o Codigo de cancelacion no son correctos' });
+    }
+    
+
+
+  }
+
+  formateaRutinpunt() {
+    setTimeout(() => {
+      if (this.RutPaciente.length > 2) {
+        this.RutPaciente = this.formateaRut(this.RutPaciente.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
+      }
+    }, 50);
 
   }
 

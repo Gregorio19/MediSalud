@@ -2,7 +2,7 @@
 <div class="container-fluid agenda">
     <div class="row">
         <div class="col-12 col-md-3 box-data">
-            <div class="resumen">
+            <div class="resumen" *ngIf="cliente">
                 <div class="title-resumen">
                     <h4>RESUMEN</h4>
                     <p>
@@ -12,7 +12,7 @@
                 <div class="datos-paciente">
                     <div class="form-group form-text">
                         <label>
-                            PACIENTE
+                            CLIENTE
                         </label>
                         <span>
                             {{cliente["nom"]}}
@@ -66,8 +66,8 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        <textarea class="form-control" id="nota" rows="5" [(ngModel)]="Descripcion" placeholder="Nota al especialista"></textarea>
+                    <div class="form-group" *ngIf="mostrarDetalle == true">
+                        <textarea class="form-control" id="nota" rows="5" [(ngModel)]="Descripcion" placeholder="Escriba algun detalle opcional a saber de su mascota para esta cita"></textarea>
                     </div>
 
                 </div>
@@ -141,11 +141,11 @@
                         <div class="col-12">
                             <p-gmap #gmap id="map" [options]="options" [overlays]="overlays" [style]="{'width':'100%','height':'150px'}"></p-gmap>
                         </div>
-                        <div class="col-12 mt-2">
+                        <div class="col-12 mt-2" *ngIf="es">
                             <p-calendar [(ngModel)]="calendarHorario" [locale]="es" [inline]="true"
                                 styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" dateFormat="dd/mm/yy"
                                 [disabledDates]="invalidDates" [monthNavigator]="true" [yearNavigator]="true"
-                                yearRange="2020:2050" (onSelect)="onSelect($event)">
+                                yearRange="2021:2050" (onSelect)="onSelect($event)">
                                 <ng-template pTemplate="date" let-date>
                                     <div *ngIf="checkDateForWork(date);then workDate else normalDate"></div>
                                     <ng-template #workDate>
@@ -160,6 +160,20 @@
                                     <span [ngClass]=" (date.day < 21 && date.day > 10) ? 'workday' : 'inherit'" style="display:block">{{date.day}}</span>
                                 </ng-template> -->
                             </p-calendar>
+                            <div class="row mx-0  justify-content-end" *ngIf="Horas">
+                                <div class="indicators" *ngIf="Horas.length >0">
+                                    <div class="circle-indicator libre"></div>
+                                    <span>Libre</span>
+                                </div>
+                                <div class="indicators" *ngIf="Horas.length >0">
+                                    <div class="circle-indicator seleccionada"></div>
+                                    <span>Seleccionada</span>
+                                </div>
+                                <div class="indicators" *ngIf="Horas.length >0">
+                                    <div class="circle-indicator ocupada"></div>
+                                    <span>Ocupada</span>
+                                </div>
+                            </div>
 
                             <div class="InputGroup row mx-0 mt-2" *ngIf="Horas">
                                 <div *ngIf="Horas.length == 0 && horaselect == true">Lo sentimos no hay mas horas disponibles para hoy</div>
@@ -216,20 +230,6 @@
                                     <input type="radio" name="size" id="size_13" value="small" class="full" />
                                     <label for="size_13" class="hour_label">15:30</label>
                                 </div> -->
-                            </div>
-                            <div class="row mx-0  justify-content-end">
-                                <div class="indicators">
-                                    <div class="circle-indicator libre"></div>
-                                    <span>Libre</span>
-                                </div>
-                                <div class="indicators">
-                                    <div class="circle-indicator seleccionada"></div>
-                                    <span>Seleccionada</span>
-                                </div>
-                                <div class="indicators">
-                                    <div class="circle-indicator ocupada"></div>
-                                    <span>Ocupada</span>
-                                </div>
                             </div>
                             <div class="row mx-0 ">
                                 <div class="col-12 px-0" (click)="AgregarCita()">

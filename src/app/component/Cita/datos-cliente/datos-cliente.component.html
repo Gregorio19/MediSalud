@@ -9,12 +9,12 @@
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
-            <input class="form-control" type="text" [(ngModel)]="RUT" (blur)="CompararCliente()"
+            <input class="form-control" type="text" (ngModelChange)="formateaRutinpunt()" maxlength="12" [(ngModel)]="RUT" (blur)="CompararCliente()"
                 placeholder="Ingrese su RUT">
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="Nombre">Nombre *</span> <span class="text-danger"> {{NombreValidotext}}</span>
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Nombre"
+            <input (blur)="validarNombre()" class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Nombre"
                 placeholder="Ingrese su nombre" maxlength="50">
             <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="Nombre" placeholder="Ingrese su nombre">
@@ -28,10 +28,10 @@
                 <div class="col-12 col-sm-8 px-0">
                     <p-calendar [(ngModel)]="fechaN" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
                         [monthNavigator]="true" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
-                        [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
+                        [yearNavigator]="true" (ngModelChange)="ValidarFechacliente()" yearRange="1915:2030" styleClass="medi_calendar"
                         panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año"></p-calendar>
                     <p-calendar [(ngModel)]="fechaN" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
-                        [monthNavigator]="true" *ngIf="ClienteAntiguo==false" [yearNavigator]="true"
+                        [monthNavigator]="true" (ngModelChange)="ValidarFechacliente()" *ngIf="ClienteAntiguo==false" [yearNavigator]="true"
                         yearRange="1915:2030" styleClass="medi_calendar" panelStyleClass="medi_calendar--panel"
                         placeholder="Dia/Mes/año"></p-calendar>
                 </div>
@@ -70,17 +70,17 @@
         <div class="form-group col-12 col-sm-6">
             <span for="Direccion">Dirección</span>
             <span class="text-danger"> {{DireccionValidatext}}</span>
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+            <input (blur)="validarDireccion()" class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="Direccion" placeholder="Ingrese su direccion" maxlength="50">
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Direccion"
+            <input (blur)="validarDireccion()" class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Direccion"
                 placeholder="Ingrese su direccion">
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="NUmTel">Número de Teléfono</span>
             <span class="text-danger"> {{telefonovalidotext}}</span>
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+            <input class="form-control" maxlength="12" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="NUmTel" (blur)="compexreg_tel()" placeholder="ingrese su telefono +56912345678">
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="NUmTel"
+            <input class="form-control" maxlength="12" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="NUmTel"
                 (blur)="compexreg_tel()" placeholder="ingrese su telefono +56912345678">
         </div>
 
@@ -131,7 +131,7 @@
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Nombre</span> <span class="text-danger"> </span>
             <input class="form-control" type="text" [(ngModel)]="NombreMascota"
-                placeholder="Ingrese Nombre de su mascota">
+                placeholder="Ingrese Nombre de su mascota" (blur)="validarMascota()">
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="Tipomas">Tipo Mascota</span>
@@ -148,7 +148,7 @@
             <!-- <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="ColorMasc" placeholder="Ingrese color de mascota"> -->
             <input class="form-control" type="text" *ngIf="Rutvalido==true" [(ngModel)]="ColorMasc"
-                placeholder="Ingrese color de mascota">
+                placeholder="Ingrese color de mascota" (blur)="validarMascota()">
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="RazaMasc">Raza</span>
@@ -169,7 +169,7 @@
                     [monthNavigator]="true" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
                     [yearNavigator]="true" yearRange="1915:2030" styleClass="medi_calendar"
                     panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año"></p-calendar> -->
-                <p-calendar [(ngModel)]="fechaNMascota" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
+                <p-calendar (ngModelChange)="validarMascota()" [(ngModel)]="fechaNMascota" [showIcon]="true" [locale]="es" dateFormat="dd/mm/yy"
                     [monthNavigator]="true" *ngIf="Rutvalido==true" [yearNavigator]="true" yearRange="1915:2030"
                     styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año">
                 </p-calendar>

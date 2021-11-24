@@ -10,12 +10,27 @@ export class MediwebServiceService {
   headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
 
   constructor(private http: HttpClient) { 
-    this.apiUrl = "http://demo.nexacon.cl/AgendaApi/api/v1";
+    //.apiUrl = "http://demo.nexacon.cl:8084/api/v1";
     //this.apiUrl = "http://190.47.237.221/ApiAgenda/api/v1";
     //this.apiUrl = "http://demo.nexacon.cl:8080/ApiAgenda/api/v1";
+    this.ngoninit();
+  }
+  
+  async ngoninit() {
+    var resp = await this.getConfig();
+    this.apiUrl = resp["Api_base"];
+  }
+  
+  async getConfig(): Promise<any> {
+    try {
+      return await this.http.get('./assets/config/config.json').toPromise();
+    } catch (error) {
+      return { status: false, code: 804, message: 'Error al ejecutar petición' };
+    }
   }
 
   async AgregarSucursal(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionSucursales" ,req, { headers: this.headers }
@@ -32,6 +47,7 @@ export class MediwebServiceService {
   }
 
   async ActualizarSucursal(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionSucursales" ,req, { headers: this.headers }
@@ -48,6 +64,7 @@ export class MediwebServiceService {
   }
 
   async AgregarCliente(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionClientes" ,req, { headers: this.headers }
@@ -63,7 +80,25 @@ export class MediwebServiceService {
     }
   }
 
+  async TraerClienteRut(req) {
+    await this.getConfig();
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetCliente" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async AgregarMascota(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionMascotas" ,req, { headers: this.headers }
@@ -79,6 +114,7 @@ export class MediwebServiceService {
     }
   }
   async ActualizarCliente(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/ActualizarCliente" ,req, { headers: this.headers }
@@ -95,6 +131,7 @@ export class MediwebServiceService {
   }
 
   async AgregarEspecialidad(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionEspecialidades" ,req, { headers: this.headers }
@@ -111,6 +148,7 @@ export class MediwebServiceService {
   }
 
   async AgregarTipoMascota(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionTipoMascotas" ,req, { headers: this.headers }
@@ -127,6 +165,7 @@ export class MediwebServiceService {
   }
 
   async AgregarRaza(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionRazas" ,req, { headers: this.headers }
@@ -143,6 +182,7 @@ export class MediwebServiceService {
   }
 
   async ActualizarEspecialidad(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionEspecialidades" ,req, { headers: this.headers }
@@ -159,6 +199,7 @@ export class MediwebServiceService {
   }
 
   async AgregarDocotr(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionDoctores" ,req, { headers: this.headers }
@@ -175,6 +216,7 @@ export class MediwebServiceService {
   }
 
   async ActualizarDoctor(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/AdministracionDoctores" ,req, { headers: this.headers }
@@ -192,6 +234,7 @@ export class MediwebServiceService {
 
 
   async AgregarHorarioDoctor(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/InsertarHorasMedicos" ,req, { headers: this.headers }
@@ -208,6 +251,7 @@ export class MediwebServiceService {
   }
 
   async ObtenerHorario(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetHorarios" ,req, { headers: this.headers }
@@ -224,6 +268,7 @@ export class MediwebServiceService {
   }
 
   async ActualizaHorariosDoc(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/InsertarHorasMedicos" ,req, { headers: this.headers }
@@ -240,6 +285,7 @@ export class MediwebServiceService {
   }
 
   async GetDatosCliente(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetDatosCliente" ,req, { headers: this.headers }
@@ -255,6 +301,7 @@ export class MediwebServiceService {
     }
   }
   async GetDataGeneral(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetDatos" ,req, { headers: this.headers }
@@ -270,7 +317,42 @@ export class MediwebServiceService {
     }
   }
 
+  async GetHorariosAAgenda(req) {
+    await this.getConfig();
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetHorarios" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
+  async Logear(req) {
+    await this.getConfig();
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/login" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async GetDataRazaxtipo(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetRazas" ,req, { headers: this.headers }
@@ -287,6 +369,7 @@ export class MediwebServiceService {
   }
 
   async GetDataMacotaCliente(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetMascotas" ,req, { headers: this.headers }
@@ -303,6 +386,7 @@ export class MediwebServiceService {
   }
 
   async LogDoctor(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetCredencialesDoc" ,req, { headers: this.headers }
@@ -319,6 +403,7 @@ export class MediwebServiceService {
   }
 
   async GetAllCitas(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetCitas" ,req, { headers: this.headers }
@@ -335,6 +420,7 @@ export class MediwebServiceService {
   }
 
   async ObtenerCitasMedicas(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/ObtenerCitasMedicas" ,req, { headers: this.headers }
@@ -351,6 +437,7 @@ export class MediwebServiceService {
   }
 
   async ObtenerDocXSucursalXEspecialidades(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/ObtenerDocXSucursalXEspecialidades" ,req, { headers: this.headers }
@@ -367,6 +454,7 @@ export class MediwebServiceService {
   }
 
   async ConsDetCitDoc(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GetDetalleCitasDoc" ,req, { headers: this.headers }
@@ -383,6 +471,7 @@ export class MediwebServiceService {
   }
 
   async Traerespecialidad() {
+    await this.getConfig();
     try {
       return await this.http.get(
         this.apiUrl  + "/Listar/ObtenerEspecialidades" , { headers: this.headers }
@@ -399,6 +488,7 @@ export class MediwebServiceService {
   }
 
   async ActCita(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/updateCitas" ,req, { headers: this.headers }
@@ -415,6 +505,7 @@ export class MediwebServiceService {
   }
 
   async ActuNBonoCita(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/ActuNBonoCita" ,req, { headers: this.headers }
@@ -431,6 +522,7 @@ export class MediwebServiceService {
   }
 
   async CrearCitasRotatoria(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/InsertarCitasVarias" ,req, { headers: this.headers }
@@ -447,6 +539,7 @@ export class MediwebServiceService {
   }
 
   async EnviarCorreoSobrecupo(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/EnviarCorreoSobrecupo" ,req, { headers: this.headers }
@@ -463,6 +556,7 @@ export class MediwebServiceService {
   }
 
   async EnviarCorreorotatorio(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/EnviarCorreorotatorio" ,req, { headers: this.headers }
@@ -481,6 +575,7 @@ export class MediwebServiceService {
   
 
   async AgregarCita(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/InsertarCitas" ,req, { headers: this.headers }
@@ -497,6 +592,7 @@ export class MediwebServiceService {
   }
 
   async GuardarImagen(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/GuardarImagen" ,req, { headers: this.headers }
@@ -513,6 +609,7 @@ export class MediwebServiceService {
   }
 
   async EnviarCorreo(req) {
+    await this.getConfig();
     try {
       return await this.http.post(
         this.apiUrl  + "/Listar/EnviarCorreo" ,req, { headers: this.headers }

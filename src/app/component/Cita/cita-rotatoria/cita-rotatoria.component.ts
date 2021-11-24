@@ -37,6 +37,28 @@ export class CitaRotatoriaComponent implements OnInit {
 
   CrearCliente = false;
 
+  // Mascota
+  CargaCompleta;
+
+  NombreMascota: string;
+  fechaNMascota: Date;
+  RazaMasc: SelectItem;
+  TamaMasc: SelectItem;
+  Tipomas: SelectItem;
+  ColorMasc: string;
+  IDdueño;
+
+  RazasMasc;
+  TamanosMasc;
+  TioposMAsc;
+  TodasLasRaza;
+  Mascli;
+  Mascotaselect;
+
+  MascotaEncontrada = false;
+  Masdeunamascota = false;
+  nuevamacota = true;
+//fin mascota
 
   minDate: Date;
   maxDate: Date;
@@ -62,6 +84,8 @@ export class CitaRotatoriaComponent implements OnInit {
 
   ClienteAntiguo;
   CambioDatos;
+
+  clienteEncontradobtn;
 
   // Variables Agenda
   especialidades;
@@ -102,16 +126,22 @@ export class CitaRotatoriaComponent implements OnInit {
 
   overlays: any[];
 
+  url
+
   RotatorioCita = true;
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.url = await this.MediwebServiceService.getConfig();
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
     }
+
+    this.CargaCompleta = false;
     this.RotatorioCita = true;
     this.CrearCliente = false;
+    this.clienteEncontradobtn = false;
     this.RUT = "";
     this.Correo = "";
     this.Direccion = "";
@@ -123,6 +153,8 @@ export class CitaRotatoriaComponent implements OnInit {
     this.Rutvalido = true;
     this.NombreValido = true;
     this.DireccionValida = true;
+    this.ColorMasc ="";
+    this.NombreMascota = "";
 
     this.telefonovalidotext = "";
     this.emailvalidotext = "";
@@ -132,9 +164,13 @@ export class CitaRotatoriaComponent implements OnInit {
     this.fechaValidatext = "";
     this.ClienteAntiguo = false;
     this.CambioDatos = false;
+    this.Mascotaselect = [];
 
-    this.GetPreviciones();
-    this.GetClientes();
+   // this.GetPreviciones();
+    //this.GetClientes();
+    this.GetRazas();
+    this.GetTamaMAsc();
+    this.GetTiposMascotas();
     this.sexo = "Masculino";
     this.titular = false;
     this.es = {
@@ -187,7 +223,7 @@ export class CitaRotatoriaComponent implements OnInit {
     console.log(this.cliente);
 
     this.traerEspecialidad();
-    this.GetClientes();
+    //this.GetClientes();
     this.options = {
       center: { lat: 36.890257, lng: 30.707417 },
       zoom: 12
@@ -210,7 +246,9 @@ export class CitaRotatoriaComponent implements OnInit {
     var getcli = {
       "acc": "C"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     console.log(respuesta);
     if (respuesta["status"]) {
       this.Clintes = respuesta["dataCli"];
@@ -223,7 +261,9 @@ export class CitaRotatoriaComponent implements OnInit {
     var getcli = {
       "acc": "P"
     }
+    this.CargaCompleta = true;
     var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
     if (respuesta["status"]) {
       this.Previciones = respuesta["dataPre"];
       console.log(this.Previciones);
@@ -232,12 +272,15 @@ export class CitaRotatoriaComponent implements OnInit {
   }
 
   async AgregarCliente() {
+    
+    var fechavalida = true;
+    
     var fechaelegida;
     if (this.fechaN) {
-      fechaelegida = this.fechaN.getUTCFullYear() + "-" + (this.fechaN.getUTCMonth() + 1) + "-" + this.fechaN.getUTCDate();
+      fechaelegida = this.getfechas(this.fechaN);
     }
     let today = new Date();
-    var hoy = today.getUTCFullYear() + "-" + (today.getUTCMonth() + 1) + "-" + today.getUTCDate()
+    var hoy = this.getfechas(today);
     console.log(hoy);
 
     this.telefonovalido = true;
@@ -284,6 +327,31 @@ export class CitaRotatoriaComponent implements OnInit {
       this.emailvalido = false;
       this.fechaValidatext = "La fecha no puede ser mayor al dia actual";
     }
+    
+      if (this.fechaNMascota) {
+      fechaelegida = this.getfechas(this.fechaNMascota);
+    }
+    
+
+    if (this.fechaNMascota == undefined) {
+      fechavalida = false;
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'La fecha de nacimiento es incorrecta' });
+      return;
+    }
+    if (fechaelegida > hoy) {
+      fechavalida = false;
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'La fecha de nacimiento es incorrecta' });
+      return;
+    }
+
+     if (this.NombreMascota.length <3 || this.ColorMasc.length <3) {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'Debe LLenar todos los datos de la mascota' });
+      return;
+    }
+    
 
     if (this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false) {
       return;
@@ -305,63 +373,182 @@ export class CitaRotatoriaComponent implements OnInit {
         "fono": this.NUmTel,
         "direc": this.Direccion,
         "mail": this.Correo,
-        "nac": this.fechaN.getUTCFullYear() + "-" + (this.fechaN.getUTCMonth() + 1) + "-" + this.fechaN.getUTCDate(),
-        "idPrev": this.Prevision["iIdPrev"],
+        "nac": this.getfechas(this.fechaN),
+        "idPrev": 0,
         "tit": estitu == 1 ? true : false,
         "sex": susexo
       }
-      // {
-      //   "id": "0",
-      //   "rut": rutadd,
-      //   "nombre": this.Nombre,
-      //   "tel": this.NUmTel,
-      //   "mail": this.Correo,
-      //   "direccion": this.Direccion,
-      //   "cumpleaños": this.fechaN.getUTCFullYear() + "-" + (this.fechaN.getUTCMonth() + 1) + "-" + this.fechaN.getUTCDate(),
-      //   "idprev": this.Prevision["iIdPrev"],
-      //   "titular": estitu,
-      //   "sexo": susexo,
-      //   "CambioDato":this.CambioDatos
-      // }
 
 
 
-      console.log(Addcli);
 
-      var exitcli = this.Clintes.filter(function (array) {
-        if (array.sRutCli.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == rutadd.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
-          return array;
-        }
-      });
-      if (exitcli.length == 0) {
-        localStorage.setItem('Cliente', JSON.stringify(Addcli));
+      var Addcli2 = {
+        "acc": "N",
+        "idcli": 0,
+        "rutCli": rutadd,
+        "nom": this.Nombre,
+        "fono": this.NUmTel,
+        "direc": this.Direccion,
+        "mail": this.Correo,
+        "nac": this.getfechas(this.fechaN),
+        "idPrev": 0,
+        "tit": estitu == 1 ? true : false,
+        "sex": susexo,
+        "camCli": this.CambioDatos,
+        "NombreMasc": this.NombreMascota,
+        "IdMasc": this.Mascotaselect ? this.Mascotaselect["iIdMascota"] : 0
+      }
+
+      this.cliente = {
+        "id": 0,
+        "rut": this.RUT,
+        "nombre": this.Nombre,
+        "tel":  this.NUmTel,
+        "mail":   this.Correo,
+        "direccion": this.Direccion,
+        "cumpleaños": this.getfechas(this.fechaN),
+        "idprev": 0,
+        "NombreMasc": this.NombreMascota,
+        "IdMasc": this.Mascotaselect ? this.Mascotaselect["iIdMascota"] : 0
+      }
+
+
+
+      console.log(Addcli2);
+      var exitcli = !this.Clintes["status"];
+      // var exitcli = this.Clintes.filter(function (array) {
+      //   if (array.sRutCli.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == rutadd.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
+      //     return array;
+      //   }
+      //});
+      if (exitcli) {
+        localStorage.setItem('Cliente', JSON.stringify(Addcli2));
+        this.CargaCompleta = true;
         var respuesta = await this.MediwebServiceService.AgregarCliente(Addcli);
         console.log(respuesta);
+        if (respuesta["status"]) {
+          this.IDdueño = respuesta["idCliente"];
+        }
 
-        this.Router.navigate(["Agendar"]);
+        if (this.Mascotaselect["sNomMascota"] == "Agregar una nueva mascota") {
+          await this.CrearMascota();
+        }else{
+          await this.ActualizarMascota();
+        }
+        this.CargaCompleta = false;
+        //this.Router.navigate(["Agendar"]);
+        this.ClienteAntiguo = true;
       }
       else {
-        localStorage.setItem('Cliente', JSON.stringify(Addcli));
-        this.Router.navigate(["Agendar"]);
+        localStorage.setItem('Cliente', JSON.stringify(Addcli2));
+        if (this.Mascotaselect) {
+          if (this.Mascotaselect["sNomMascota"] == "Agregar una nueva mascota") {
+            await this.CrearMascota();
+          }else{
+            await this.ActualizarMascota();
+          }
+        }
+        else {
+          this.CargaCompleta = true;
+          if (this.Mascotaselect["sNomMascota"] == "Agregar una nueva mascota") {
+            await this.CrearMascota();
+          }
+          else{
+            await this.ActualizarMascota();
+          }
+        }
+        //this.Router.navigate(["Agendar"]);
+        this.ClienteAntiguo = true;
+        this.CargaCompleta = false;
       }
 
     }
   }
+  async reserva(){
 
-  CompararCliente() {
+    if (this.NombreMascota == undefined || this.NombreMascota == "") {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe llenar los datos del cliente y la mascota' });
+      return;
+    }
+
+    if (this.ColorMasc == undefined || this.ColorMasc == "") {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe llenar los datos del cliente y la mascota' });
+      return;
+    }
+
+    if (this.fechaNMascota == undefined || this.fechaNMascota == null) {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe llenar los datos del cliente y la mascota' });
+      return;
+    }
+
+    if (this.Mascotaselect["sNomMascota"] == "Agregar nueva mascota") {
+      await this.CrearMascota();
+    }
+    else{
+      this.cliente["NombreMasc"] = this.NombreMascota;
+      this.cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
+    }
+
+    this.ClienteAntiguo = true;
+
+  }
+  async GetCliente(req) {
+
+    var getcli = {
+      "rut": req
+    }
+    this.CargaCompleta = true;
+    var respuesta = await this.MediwebServiceService.TraerClienteRut(getcli);
+    this.CargaCompleta = false;
+       this.Clintes = respuesta;
+  }
+
+  
+
+  async CompararCliente() {
+    if (this.RUT.length < 5) {
+      this.Rutvalidotext ="ingrese un rut valido"
+      return;
+    }
+    this.CargaCompleta = true;
     var clienteEncontrado = false;
-    console.log(this.Prevision);
-    var nrut = this.RUT.replace(".", "").replace(".", "").replace(".", "").trim();
-    this.Clintes.forEach(element => {
+    var esto = this;
+
+    
+    var nrut = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
+    nrut = nrut.replace(".", "").replace(".", "").replace(".", "").trim();
+
+    await this.GetCliente(nrut)
+
+    if (this.Clintes["status"]== true) {
+      this.CrearCliente = false;
+      this.cliente = this.Clintes;
+      this.cliente["nombre"] = this.Clintes["nomCli"];
+      this.cliente["rut"] = this.formateaRut(this.RUT);
+      this.cliente["mail"] = this.Clintes["correo"];
+      this.cliente["id"] = this.Clintes["idCli"];
+      this.Clintes["sRutCli"] = this.formateaRut(this.RUT);
+      
+      var element = this.Clintes;
       if (element["sRutCli"].replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim() == nrut.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim()) {
         clienteEncontrado = true;
-        this.ClienteAntiguo = true;
-        this.Nombre = element["sNombre"];
-        this.Correo = element["sMail"];
-        this.fechaN = new Date(element["dfechNac"].toString());
-        this.NUmTel = element["sNumTel"];
-        this.Direccion = element["sDirec"];
-        this.Prevision = this.Previciones[element["iIdPrev"]];
+        this.clienteEncontradobtn = true;
+       // this.ClienteAntiguo = true;
+        this.IDdueño = element["idCli"]
+        this.Nombre = element["nomCli"];
+        this.Correo = element["correo"];
+        this.fechaN = new Date(element["fechNac"].toString());
+        this.NUmTel = element["numTele"];
+        this.Direccion = element["direccion"];
+
+        // this.Previciones.filter(function (array) {
+        //   if (element["iIdPrev"] == array["iIdPrev"]) {
+        //     esto.Prevision = array;
+        //   }
+        // });
         if (element["btit"] == true) {
           this.titular = false;
         }
@@ -369,7 +556,7 @@ export class CitaRotatoriaComponent implements OnInit {
           this.titular = true;
         }
 
-        if (element["sSexo"] == "F") {
+        if (element["sexo"] == "F") {
           this.sexo = "Femenino";
         }
         else {
@@ -378,22 +565,17 @@ export class CitaRotatoriaComponent implements OnInit {
         this.Rutvalidotext = "";
         this.Rutvalido = true;
         this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
-        this.cliente = {
-          "id": element["iIdCli"],
-          "rut": this.RUT,
-          "nombre": element["sNombre"],
-          "tel": element["sNumTel"],
-          "mail": element["sMail"],
-          "direccion": element["sDirec"],
-          "cumpleaños": element["dfechNac"].toString(),
-          "idprev": element["iIdPrev"]
-        }
+        //console.log(this.Prevision);
       }
-    });
+    }
 
     if (clienteEncontrado == false) {
+      this.LimpiarDatosCliente()
+      this.MascotaEncontrada =false;
+      this.Mascotaselect["sNomMascota"] = "Agregar una nueva mascota";
       this.ClienteAntiguo = false;
       this.CambioDatos = false;
+      this.CrearCliente = true;
       var rutadd = this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim();
       console.log(rutadd);
 
@@ -406,8 +588,38 @@ export class CitaRotatoriaComponent implements OnInit {
         this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
         this.Rutvalidotext = "";
       }
-
+      this.vaciarmascota();
     }
+
+    else {
+      var reqmascli = {
+        "tipo": "R",
+        "idCli": 0,
+        "rutCli": this.RUT.replace(".", "").replace(".", "").replace(".", "").trim()
+      }      
+      var mascotascliente = await this.MediwebServiceService.GetDataMacotaCliente(reqmascli);
+      if (mascotascliente["status"]) {
+        if (mascotascliente["data"] == null) {
+          this.Mascli = null;
+          this.MascotaEncontrada = false;
+          this.vaciarmascota();
+        }
+        else {
+          this.MascotaEncontrada = mascotascliente["data"].length > 0 ? true : false;
+          this.Masdeunamascota = mascotascliente["data"].length > 1 ? true : false;
+          this.Mascli = mascotascliente["data"];
+          this.Mascotaselect = this.Mascli[0]
+          this.Mascli.push({ "iIdMascota": 99, "sNomMascota": "Agregar nueva mascota", "iIdRaza": 9999, "sColor": "", "sTamaño": "", "dFechNac": null });
+          this.LlenarMascota();
+        }
+      }
+      else {
+        this.Mascli = null;
+        this.MascotaEncontrada = false;
+        this.vaciarmascota();
+      }
+    }
+    this.CargaCompleta = false;
   }
 
   LimpiarDatosCliente() {
@@ -416,7 +628,7 @@ export class CitaRotatoriaComponent implements OnInit {
     this.Direccion = "";
     this.NUmTel = "";
     this.Correo = "";
-    this.Prevision = this.Previciones[0];
+    //this.Prevision = this.Previciones[0];
   }
 
   ValidarRut(rutCompleto) {
@@ -502,7 +714,240 @@ export class CitaRotatoriaComponent implements OnInit {
     return rutPuntos;
   }
 
-  //Meyodos Agenda
+  async GetRazas() {
+
+    var getcli = {
+      "acc": "R"
+    }
+    this.CargaCompleta = true;
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
+    if (respuesta["status"]) {
+      this.RazasMasc = respuesta["dataRaz"];
+      this.TodasLasRaza = respuesta["dataRaz"];
+      this.RazaMasc = this.RazasMasc[0];
+    }
+  }
+
+  async GetRazasXtipo() {
+    var gettipomas = {
+      "idTipMas": this.Tipomas["iIdTipoMascota"]
+    }
+    this.CargaCompleta = true;
+    var respuesta = await this.MediwebServiceService.GetDataRazaxtipo(gettipomas);
+    this.CargaCompleta = false;
+    if (respuesta["status"]) {
+      this.RazasMasc = respuesta["data"];
+      this.RazaMasc = this.RazasMasc[0];
+    }
+  }
+
+  async GetTiposMascotas() {
+
+    var getcli = {
+      "acc": "T"
+    }
+    this.CargaCompleta = true;
+    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    this.CargaCompleta = false;
+    if (respuesta["status"]) {
+      this.TioposMAsc = respuesta["dataTMa"];
+      this.Tipomas = this.TioposMAsc[0];
+    }
+  }
+
+  GetTamaMAsc() {
+    this.TamanosMasc = [
+      {
+        "iDTama": 1,
+        "sNomRaza": "Pequeño",
+        "cTama": "P"
+      },
+      {
+        "iDTama": 2,
+        "sNomRaza": "Mediano",
+        "cTama": "M"
+      },
+      {
+        "iDTama": 3,
+        "sNomRaza": "Grande",
+        "cTama": "L"
+      },
+      {
+        "iDTama": 4,
+        "sNomRaza": "Extra Grande",
+        "cTama": "X"
+      }
+    ];
+
+    this.TamaMasc = this.TamanosMasc[0];
+  }
+
+  async CrearMascota() {
+    var AssMAsc = {
+      "acc": "N",
+      "idMascota": 0,
+      "nomMascota": this.NombreMascota,
+      "idCli": this.IDdueño,
+      "idRaza": this.RazaMasc["iIdRaza"],
+      "color": this.ColorMasc,
+      "tamaño": this.TamaMasc["cTama"],
+      "fecNac": this.getfechas(this.fechaNMascota),
+    }
+    console.log(AssMAsc);
+    if (this.nuevamacota == true) {
+      var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
+      console.log(respuestamasc);
+      this.Mascotaselect["iIdMascota"]  = respuestamasc["idMas"];
+      var cliente = JSON.parse(localStorage.getItem('Cliente'));
+      cliente["IdMasc"] = this.Mascotaselect["iIdMascota"] ;
+      localStorage.setItem('Cliente', JSON.stringify(cliente));
+    }
+  }
+
+  async ActualizarMascota() {
+    var AssMAsc = {
+      "acc": "U",
+      "idMascota": this.Mascotaselect["iIdMascota"],
+      "nomMascota": this.NombreMascota,
+      "idCli": this.IDdueño,
+      "idRaza": this.RazaMasc["iIdRaza"],
+      "color": this.ColorMasc,
+      "tamaño": this.TamaMasc["cTama"],
+      "fecNac": this.getfechas(this.fechaNMascota),
+    }
+    console.log("Actualizar MAsc",AssMAsc);
+      var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
+      console.log(respuestamasc);
+      this.Mascotaselect["iIdMascota"]  = respuestamasc["idMas"];
+      var cliente = JSON.parse(localStorage.getItem('Cliente'));
+      cliente["IdMasc"] = this.Mascotaselect["iIdMascota"] ;
+      localStorage.setItem('Cliente', JSON.stringify(cliente));
+  }
+
+
+  async LlenarMascota() {
+    if (this.Mascotaselect["sNomMascota"] == "Agregar nueva mascota") {
+      this.vaciarmascota();
+      this.Masdeunamascota = true;
+    }
+    else {
+      // llenado de datos de mascota
+      this.NombreMascota = this.Mascotaselect["sNomMascota"];
+      this.ColorMasc = this.Mascotaselect["sColor"];
+      this.fechaNMascota = new Date(this.Mascotaselect["dFechNac"].toString());
+      this.TamaMasc = await this.TamanosMasc.filter(x => x["cTama"] == this.Mascotaselect["sTamaño"]);
+      this.TamaMasc = this.TamaMasc[0];
+
+      // buscar y asignar tipo de raza escogida
+      var buscarraza = await this.TodasLasRaza.filter(x => x["iIdRaza"] == this.Mascotaselect["iIdRaza"]);
+      var gettipomas = {
+        "idTipMas": buscarraza[0]["iIdTipoMascota"]
+      }
+      this.RazaMasc = buscarraza[0];
+
+      //seleccionar tipo marcota escogida
+      var respuesta = await this.MediwebServiceService.GetDataRazaxtipo(gettipomas);
+      if (respuesta["status"]) {
+        this.RazasMasc = respuesta["data"];
+      }
+      var newtipomas = await this.TioposMAsc.filter(x => x["iIdTipoMascota"] == buscarraza[0]["iIdTipoMascota"]);
+      this.Tipomas = newtipomas[0];
+    }
+  }
+
+  vaciarmascota() {
+
+    this.nuevamacota = true;
+    this.NombreMascota = "";
+    this.ColorMasc = "";
+    this.fechaNMascota = null;
+    this.Masdeunamascota = false;
+  }
+
+  formateaRutinpunt() {
+    setTimeout(() => {
+      if (this.RUT.length > 2) {
+        this.RUT = this.formateaRut(this.RUT.replace(".", "").replace(".", "").replace(".", "").replace("-", "").trim());
+      }
+    }, 50);
+
+  }
+
+  validarDireccion(){
+    if (this.Direccion.length <3) {
+      this.DireccionValida = false;
+      this.DireccionValidatext = "la direccion no puede ser corta o vacia";
+    }
+    else{
+      this.DireccionValida = true;
+      this.DireccionValidatext = "";
+    }
+  }
+
+  validarNombre(){
+    if (this.Nombre.length <3) {
+      this.NombreValido = false;
+      this.NombreValidotext = "El nombre no puede ser tan corto o vacio";
+    }
+    else{
+      this.NombreValido = true;
+      this.NombreValidotext = "";
+    }
+  }
+
+  ValidarFechacliente() {
+    setTimeout(() => {
+      this.fechaValidatext = "";
+      var fechaelegida;
+      if (this.fechaN) {
+        fechaelegida = this.getfechas(this.fechaN);
+      }
+      let today = new Date();
+      var hoy = this.getfechas(today);
+
+      if (this.fechaN == undefined) {
+        this.fechaValidatext = "La fecha no puede estar vacia";
+      }
+      if (fechaelegida > hoy) {
+        this.emailvalido = false;
+        this.fechaValidatext = "La fecha no puede ser mayor al dia actual";
+      }
+    }, 50);
+
+  }
+  validarMascota(){
+    setTimeout(() => {
+      var fechavalida = true;
+      var fechaelegida;
+      if (this.fechaNMascota) {
+        fechaelegida = this.getfechas(this.fechaNMascota);
+      }
+      let today = new Date();
+      var hoy = this.getfechas(today);
+
+      if (this.fechaNMascota == undefined) {
+        fechavalida = false;
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'La fecha de nacimiento es incorrecta' });
+        return;
+      }
+      if (fechaelegida > hoy) {
+        fechavalida = false;
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'La fecha de nacimiento es incorrecta' });
+        return;
+      }
+
+      if (this.NombreMascota.length <3 || this.ColorMasc.length <3) {
+        this.MessageService.clear();
+        this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'Debe LLenar todos los datos de la mascota' });
+      }
+    }, 50);
+    
+  }
+
+  //Meyodos Agenda----------------------------------------------------------
   ActivarAtributos(tipo, map) {
     this.horaselect = false;
     setTimeout(() => {
@@ -552,14 +997,16 @@ export class CitaRotatoriaComponent implements OnInit {
       }
       if (tipo == "D") {
         console.log(this.Doctor);
-        this.ImagenUrl = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + this.Doctor["nomIma"] + ".jpg";
+        this.ImagenUrl = this.url["Url_Imagen"]  + this.Doctor["nomIma"] + ".jpg";
         this.SelecDoctor = true;
         this.worksDate = [];
         this.Horas = [];
 
         this.FechaSelect = undefined;
         this.HoraSelect = undefined;
+        this.CargaCompleta = true;
         this.obtenerDiasDetrabajo();
+        //this.mostrarDetalle = true;
       }
       if (tipo == "F") {
         this.SelecFechaA = true;
@@ -624,13 +1071,29 @@ export class CitaRotatoriaComponent implements OnInit {
       var doctores = respuesta["datD"];
       this.medico = doctores;
       this.medico.forEach(element => {
-        element["sNomIma"] = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + element["nomIma"] + ".jpg"
+        element["sNomIma"] = this.url["Url_Imagen"] + element["nomIma"] + ".jpg"
       });
       console.log(this.medico);
     }
   }
 
-  obtenerDiasDetrabajo() {
+  async obtenerDiasDetrabajo() {
+
+    var datodoc = {
+      "idDoc": this.Doctor["iddoc"],
+      "idEsp": this.especialidad["iIdEsp"],
+      "idSuc": this.sucursal["idSuc"]
+    }
+    var horariosdoc = await this.MediwebServiceService.GetHorariosAAgenda(datodoc);
+    console.log(horariosdoc);
+    this.CargaCompleta = false;
+    
+    if (horariosdoc["status"]) {
+      this.Doctor["iAgeDias"] = horariosdoc["iAgeDias"];
+      this.Doctor["horAte"] = horariosdoc["iTpoAte"];
+      this.Doctor["horCon"] = horariosdoc["sHorarios"];
+      this.Doctor["horOcu"] = horariosdoc["sHorOcu"];
+    }
 
     this.worksDate = [];
     var hoy = moment().format("DD/MM/YYYY");
@@ -638,7 +1101,8 @@ export class CitaRotatoriaComponent implements OnInit {
     console.log(moment(moment().add(5, 'day').format("DD/MM/YYYY")).toDate());
 
 
-    for (let index = 0; index < 665; index++) {
+    for (let index = 0; index < this.Doctor["iAgeDias"]; index++) {
+      //for (let index = 0; index < 5; index++) {
       if (this.Doctor["horCon"].includes("Lunes")) {
         if (moment().add(index, 'day').format("dddd") == "Monday") {
           let newday = moment(moment().add(index, 'day').format("DD/MM/YYYY"), "DD/MM/YYYY").toDate();
@@ -698,6 +1162,20 @@ export class CitaRotatoriaComponent implements OnInit {
     console.log(day);
     let diaelegido = month + "/" + day + "/" + year;
     this.FechaSelect = moment(diaelegido).format("YYYY-MM-DD");
+    if (this.FechaSelect < moment().format("YYYY-MM-DD")) {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'El dia elegido debe ser mayor a la fecha actual' });
+      this.FechaSelect = "";
+      return;
+    }
+    console.log(moment().add(this.Doctor["iAgeDias"], 'days').format("YYYY-MM-DD"))
+    if (this.FechaSelect > moment().add(this.Doctor["iAgeDias"] - 1, 'days').format("YYYY-MM-DD")) {
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'El dia elegido debe ser menor a las fechas adminitidas' });
+      this.FechaSelect = "";
+      return;
+    }
+    
     let newday = moment(moment(diaelegido).format("DD/MM/YYYY"), "DD/MM/YYYY").toDate();
     console.log(moment(newday).format("dddd"));
     this.horaselect = false;
@@ -819,6 +1297,7 @@ export class CitaRotatoriaComponent implements OnInit {
   }
 
   async AgregarCita() {
+
     if (this.especialidad == undefined) {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'Debe Seleccionar una especialidad' });
@@ -845,20 +1324,30 @@ export class CitaRotatoriaComponent implements OnInit {
     }
     else {
 
-      var req = {
+      // var req = {
+      //   "idCli": this.cliente["id"],
+      //   "idMas": this.cliente["IdMasc"],
+      //   "idSuc": this.sucursal["idSuc"],
+      //   "idDoc": this.Doctor["iddoc"],
+      //   "idEsp": this.especialidad["iIdEsp"],
+      //   "idPre": this.cliente["idprev"],
+      //   "fecAge": this.FechaSelect.toString()+"T"+moment(this.HoraSelect.toString()).format('HH:mm')+":00.279Z",
+      //   "datoCita": this.Descripcion != undefined ? this.Descripcion : ""
+      // }
+      var citaro = {
+        "tipAge": "S",
         "idCli": this.cliente["id"],
-        "idMas": 5,
+        "idMas": this.cliente["IdMasc"],
         "idSuc": this.sucursal["idSuc"],
         "idDoc": this.Doctor["iddoc"],
+        "idPre": 0,
         "idEsp": this.especialidad["iIdEsp"],
-        "idPre": this.cliente["idprev"],
-        "fecAge": this.FechaSelect.toString()+"T"+moment(this.HoraSelect.toString()).format('HH:mm')+":00.279Z",
-        "datoCita": this.Descripcion != undefined ? this.Descripcion : ""
+        "fecAges": this.FechaSelect.toString()+"T"+moment(this.HoraSelect.toString()).format('HH:mm')+":00.279Z",
       }
-      console.log(req);
+      console.log(citaro);
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'info', summary: 'Cita Ingresada', detail: 'La Cita se esta ingresando al sistema por favor espere' });
-      var respuesta = await this.MediwebServiceService.AgregarCita(req);
+      var respuesta = await this.MediwebServiceService.CrearCitasRotatoria(citaro);
       var respok = respuesta;
       if (respok["status"] == true) {
         var req2 = {
@@ -867,7 +1356,7 @@ export class CitaRotatoriaComponent implements OnInit {
           "idSucursal": this.sucursal["idSuc"]+"",
           "idDoctor": this.Doctor["iddoc"]+"",
           "idEsp": this.especialidad["iIdEsp"]+"",
-          "idPrev": this.cliente["idprev"]+"",
+          "idPrev": 0,
           "fecha": this.FechaSelect.toString() + " " + moment(this.HoraSelect.toString()).format('HH:mm'),
           "hora": "",
           "descripcion": "",
@@ -999,11 +1488,12 @@ export class CitaRotatoriaComponent implements OnInit {
       horasrotatorias = horasrotatorias.substring(0, horasrotatorias.length - 1);
 
       var citaro = {
+        "tipAge": "R",
         "idCli": this.cliente["id"],
-        "idMas": 5,
+        "idMas": this.cliente["IdMasc"],
         "idSuc": this.sucursal["idSuc"],
         "idDoc": this.Doctor["iddoc"],
-        "idPre": this.cliente["idprev"],
+        "idPre": 0,
         "idEsp": this.especialidad["iIdEsp"],
         "fecAges": horasrotatorias
       }
@@ -1019,7 +1509,7 @@ export class CitaRotatoriaComponent implements OnInit {
         "idSucursal": this.sucursal["idSuc"].toString(),
         "idDoctor": this.Doctor["iddoc"].toString(),
         "idEsp": this.especialidad["iIdEsp"].toString(),
-        "idPrev": this.cliente["idprev"] + "",
+        "idPrev": 0,
         "fecha": horasrotatorias,
         "hora": "",
         "descripcion": "",

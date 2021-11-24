@@ -47,6 +47,7 @@ export class DatosAgendaComponent implements OnInit {
   FechaSelect;
   HoraSelect;
   Descripcion;
+  mostrarDetalle;
 
   overlays: any[];
   Clintes;
@@ -55,10 +56,14 @@ export class DatosAgendaComponent implements OnInit {
 
   CargaCompleta;
 
+  url;
+
   constructor(private MediwebServiceService: MediwebServiceService, private messageService: MessageService, private Router: Router) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.url = await this.MediwebServiceService.getConfig();
+    this.mostrarDetalle = false;
     this.cliente = JSON.parse(localStorage.getItem('Cliente'));
     console.log(this.cliente);
     this.CargaCompleta = true;
@@ -89,6 +94,7 @@ export class DatosAgendaComponent implements OnInit {
   }
 
   ActivarAtributos(tipo, map) {
+    this.mostrarDetalle = false;
     this.horaselect = false;
     setTimeout(() => {
       if (tipo == "E") {
@@ -136,15 +142,18 @@ export class DatosAgendaComponent implements OnInit {
         this.traerDoctores();
       }
       if (tipo == "D") {
+
         console.log(this.Doctor);
-        this.ImagenUrl = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + this.Doctor["nomIma"] + ".jpg";
+        this.ImagenUrl = this.Doctor["sNomIma"];
         this.SelecDoctor = true;
         this.worksDate = [];
         this.Horas = [];
 
         this.FechaSelect = undefined;
         this.HoraSelect = undefined;
+        this.CargaCompleta = true;
         this.obtenerDiasDetrabajo();
+        this.mostrarDetalle = true;
       }
       if (tipo == "F") {
         this.SelecFechaA = true;
@@ -155,6 +164,7 @@ export class DatosAgendaComponent implements OnInit {
     }, 300);
 
   }
+
 
   checkDateForWork(date: any) {
     var calendarDate = new Date(date.year, date.month, date.day);
@@ -210,12 +220,12 @@ export class DatosAgendaComponent implements OnInit {
     var respuesta = await this.MediwebServiceService.ConsDetCitDoc(req);
     this.CargaCompleta = false;
     console.log(respuesta);
-    
+
     if (respuesta["status"]) {
       var doctores = respuesta["datD"];
       this.medico = doctores;
       this.medico.forEach(element => {
-        element["sNomIma"] = "http://demo.nexacon.cl/AgendaApi/ImgDoctor/" + element["nomIma"] + ".jpg"
+        element["sNomIma"] = this.url["Url_Imagen"] + element["nomIma"] + ".jpg"
       });
       console.log(this.medico);
     }
@@ -236,7 +246,23 @@ export class DatosAgendaComponent implements OnInit {
     console.log(this.Clintes);
   }
 
-  obtenerDiasDetrabajo() {
+  async obtenerDiasDetrabajo() {
+
+    var datodoc = {
+      "idDoc": this.Doctor["iddoc"],
+      "idEsp": this.especialidad["iIdEsp"],
+      "idSuc": this.sucursal["idSuc"]
+    }
+    var horariosdoc = await this.MediwebServiceService.GetHorariosAAgenda(datodoc);
+    console.log(horariosdoc);
+    this.CargaCompleta = false;
+    
+    if (horariosdoc["status"]) {
+      this.Doctor["iAgeDias"] = horariosdoc["iAgeDias"];
+      this.Doctor["horAte"] = horariosdoc["iTpoAte"];
+      this.Doctor["horCon"] = horariosdoc["sHorarios"];
+      this.Doctor["horOcu"] = horariosdoc["sHorOcu"];
+    }
 
     this.worksDate = [];
     var hoy = moment().format("DD/MM/YYYY");
@@ -244,7 +270,8 @@ export class DatosAgendaComponent implements OnInit {
     console.log(moment(moment().add(5, 'day').format("DD/MM/YYYY")).toDate());
 
 
-    for (let index = 0; index < 665; index++) {
+    for (let index = 0; index < this.Doctor["iAgeDias"]; index++) {
+      //for (let index = 0; index < 5; index++) {
       if (this.Doctor["horCon"].includes("Lunes")) {
         if (moment().add(index, 'day').format("dddd") == "Monday") {
           let newday = moment(moment().add(index, 'day').format("DD/MM/YYYY"), "DD/MM/YYYY").toDate();
@@ -304,6 +331,18 @@ export class DatosAgendaComponent implements OnInit {
     console.log(day);
     let diaelegido = month + "/" + day + "/" + year;
     this.FechaSelect = moment(diaelegido).format("YYYY-MM-DD");
+    if (this.FechaSelect < moment().format("YYYY-MM-DD")) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'El dia elegido debe ser mayor a la fecha actual' });
+      return;
+    }
+    console.log(moment().add(this.Doctor["iAgeDias"], 'days').format("YYYY-MM-DD"))
+    if (this.FechaSelect > moment().add(this.Doctor["iAgeDias"] - 1, 'days').format("YYYY-MM-DD")) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Faltan datos por llenar', detail: 'El dia elegido debe ser menor a las fechas adminitidas' });
+      return;
+    }
+
     let newday = moment(moment(diaelegido).format("DD/MM/YYYY"), "DD/MM/YYYY").toDate();
     console.log(moment(newday).format("dddd"));
     this.horaselect = false;
@@ -487,18 +526,18 @@ export class DatosAgendaComponent implements OnInit {
       //   "cambioDatos": this.cliente.CambioDato == true ? "1" : "0"
       // }
 
-    
+
 
       console.log(req);
       this.CargaCompleta = true;
       var respuesta = await this.MediwebServiceService.AgregarCita(req);
       this.CargaCompleta = false;
       console.log(respuesta);
-      if (respuesta["status"]== false) {
+      if (respuesta["status"] == false) {
         this.messageService.clear();
-      this.messageService.add({ key: 'tc', severity: 'warn', summary: 'No se pudo Agendar', detail: respuesta["message"] });
+        this.messageService.add({ key: 'tc', severity: 'warn', summary: 'No se pudo Agendar', detail: respuesta["message"] });
       }
-      else{
+      else {
         var Cita = {
           "Sucursal": this.sucursal["sNombre"].toString(),
           "Direccion": this.sucursal["sDirec"].toString(),
@@ -509,7 +548,7 @@ export class DatosAgendaComponent implements OnInit {
           "descripcion": this.Descripcion != undefined ? this.Descripcion : "",
           "idMas": this.cliente["IdMasc"],
           "Nombremasc": this.cliente["NombreMasc"],
-          "codigoCita": respuesta["codAge"]+""
+          "codigoCita": respuesta["codAge"] + ""
         }
         localStorage.setItem('DatosCita', JSON.stringify(Cita));
         this.Router.navigate(["Resumen"]);

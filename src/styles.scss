@@ -336,8 +336,8 @@ input[type="radio"].full:hover  + .hour_label{
     padding: 0 5px ;
     .circle-indicator{
    
-      height: 11px;
-      width: 11px;
+      height: 20px;
+      width: 20px;
       border-radius: 50%;
       margin-right: 3px;
 
@@ -354,7 +354,7 @@ input[type="radio"].full:hover  + .hour_label{
     }
     span{
       color: $gray-dark;
-      font-size: 10px;
+      font-size: 15px;
     }
   }
 
