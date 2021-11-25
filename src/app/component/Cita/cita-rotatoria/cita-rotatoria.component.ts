@@ -490,6 +490,8 @@ export class CitaRotatoriaComponent implements OnInit {
     else{
       this.cliente["NombreMasc"] = this.NombreMascota;
       this.cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
+
+      this.ActualizarMascota();
     }
 
     this.ClienteAntiguo = true;
