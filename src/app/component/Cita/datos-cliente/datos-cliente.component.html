@@ -1,11 +1,12 @@
+<app-timeout></app-timeout>
 <app-modal  *ngIf="CargaCompleta"></app-modal>
 
 <div class="container-agenda flex-column">
     <br>
     <p-toast position="center" key="tc"></p-toast>
-    <div class="row  container mt-5">
+    <div class="row  container mt-5 pb-0">
         <div class="form-group col-12 col">
-            <h2 for="RUT">Datos de CLiente</h2>
+            <h2 for="RUT">Datos de Cliente</h2>
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="RUT">Rut *</span> <span class="text-danger"> {{Rutvalidotext}}</span>
@@ -14,12 +15,12 @@
         </div>
         <div class="form-group col-12 col-sm-6">
             <span for="Nombre">Nombre *</span> <span class="text-danger"> {{NombreValidotext}}</span>
-            <input (blur)="validarNombre()" class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Nombre"
+            <input (blur)="validarNombre()" class="form-control" type="text" *ngIf="ClienteAntiguo==false || canedit == true" [(ngModel)]="Nombre"
                 placeholder="Ingrese su nombre" maxlength="50">
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true && canedit != true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="Nombre" placeholder="Ingrese su nombre">
         </div>
-        <div class="form-group col-12 col-sm-12">
+        <!-- <div class="form-group col-12 col-sm-12">
             <span class="text-danger"> {{fechaValidatext}}</span>
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -74,22 +75,22 @@
                 [(ngModel)]="Direccion" placeholder="Ingrese su direccion" maxlength="50">
             <input (blur)="validarDireccion()" class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Direccion"
                 placeholder="Ingrese su direccion">
-        </div>
+        </div> -->
         <div class="form-group col-12 col-sm-6">
             <span for="NUmTel">Número de Teléfono</span>
             <span class="text-danger"> {{telefonovalidotext}}</span>
-            <input class="form-control" maxlength="12" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+            <input class="form-control" maxlength="12" type="text" *ngIf="ClienteAntiguo==true && canedit != true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="NUmTel" (blur)="compexreg_tel()" placeholder="ingrese su telefono +56912345678">
-            <input class="form-control" maxlength="12" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="NUmTel"
+            <input class="form-control" maxlength="12" type="text" *ngIf="ClienteAntiguo==false || canedit == true" [(ngModel)]="NUmTel"
                 (blur)="compexreg_tel()" placeholder="ingrese su telefono +56912345678">
         </div>
 
         <div class="form-group col-12 col-sm-6">
             <span for="Correo">Correo</span>
             <span class="text-danger"> {{emailvalidotext}}</span>
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==true && canedit != true" readonly (click)="UsuarioAntiguo()"
                 [(ngModel)]="Correo" (blur)="compexreg_email()" placeholder="Ingrese su correo">
-            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false" [(ngModel)]="Correo"
+            <input class="form-control" type="text" *ngIf="ClienteAntiguo==false || canedit == true" [(ngModel)]="Correo"
                 (blur)="compexreg_email()" placeholder="Ingrese su correo">
         </div>
 
@@ -118,7 +119,7 @@
         </button>
     </div>
 
-    <div class="row  container mb-5">
+    <div class="row  container mb-5 pt-0">
         <div class="form-group col-12 col">
             <h2 for="DatoaMascota">Datos de Mascota</h2>
         </div>
@@ -143,13 +144,22 @@
             </p-dropdown>
         </div>
         <div class="form-group col-12 col-sm-6">
+            <span for="TamaMasc">Tamaño</span>
+            <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [options]="TamanosMasc" [(ngModel)]="TamaMasc" filter="true" optionLabel="sNomRaza">
+            </p-dropdown> -->
+            <p-dropdown styleClass="w-100" *ngIf="Rutvalido==true" [options]="TamanosMasc" [(ngModel)]="TamaMasc"
+                filter="true" optionLabel="sNomRaza">
+            </p-dropdown>
+        </div>
+        <!-- <div class="form-group col-12 col-sm-6">
             <span for="ColorMasc">Color</span>
             <span class="text-danger"> </span>
-            <!-- <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
-                [(ngModel)]="ColorMasc" placeholder="Ingrese color de mascota"> -->
+ <input class="form-control" type="text" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
+                [(ngModel)]="ColorMasc" placeholder="Ingrese color de mascota"> 
             <input class="form-control" type="text" *ngIf="Rutvalido==true" [(ngModel)]="ColorMasc"
                 placeholder="Ingrese color de mascota" (blur)="validarMascota()">
-        </div>
+        </div> -->
         <div class="form-group col-12 col-sm-6">
             <span for="RazaMasc">Raza</span>
             <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
@@ -174,15 +184,6 @@
                     styleClass="medi_calendar" panelStyleClass="medi_calendar--panel" placeholder="Dia/Mes/año">
                 </p-calendar>
             </div>
-        </div>
-        <div class="form-group col-12 col-sm-6">
-            <span for="TamaMasc">Tamaño</span>
-            <!-- <p-dropdown styleClass="w-100" *ngIf="ClienteAntiguo==true" readonly (click)="UsuarioAntiguo()"
-                [options]="TamanosMasc" [(ngModel)]="TamaMasc" filter="true" optionLabel="sNomRaza">
-            </p-dropdown> -->
-            <p-dropdown styleClass="w-100" *ngIf="Rutvalido==true" [options]="TamanosMasc" [(ngModel)]="TamaMasc"
-                filter="true" optionLabel="sNomRaza">
-            </p-dropdown>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { MediwebServiceService } from '../../../services/Mediweb/mediweb-service.service';
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -13,6 +13,8 @@ import { MessageService } from 'primeng/api';
 })
 export class DatosClienteComponent implements OnInit {
 
+  //Editiar
+  @Input() canedit: any;
   //Variable Cliente
   RUT: string;
   RutTitular: string;
@@ -82,13 +84,16 @@ export class DatosClienteComponent implements OnInit {
   constructor(private MediwebServiceService: MediwebServiceService, private Router: Router, private MessageService: MessageService) { }
 
   ngOnInit(): void {
-
+    if (this.canedit != true) {
+      localStorage.setItem('tipou', JSON.stringify(3));
+    }
+    
     //variables inicializacion
 
     //cliente datos
     this.RUT = "";
     this.Correo = "";
-    this.Direccion = "";
+    this.Direccion = "Aeropuerto 7500";
     this.NUmTel = "";
     this.Nombre = "";
     this.CargaCompleta = true;
@@ -110,7 +115,7 @@ export class DatosClienteComponent implements OnInit {
     this.ClienteAntiguo = false;
     this.CambioDatos = false;
     this.NombreMascota = "";
-    this.ColorMasc="";
+    this.ColorMasc = "No Aplica";
     this.Mascotaselect = [];
 
     //this.GetPreviciones();
@@ -154,6 +159,7 @@ export class DatosClienteComponent implements OnInit {
     let month = today.getMonth();
     let year = today.getFullYear();
     console.log(year);
+    this.fechaN = today;
 
     this.añoactual = "1915:" + year;
     let prevMonth = (month === 0) ? 11 : month - 1;
@@ -284,14 +290,18 @@ export class DatosClienteComponent implements OnInit {
     this.TamaMasc = this.TamanosMasc[0];
   }
 
-  validardatos() {
+  async validardatos() {
     var fechaelegida;
     if (this.fechaN) {
       fechaelegida = this.getfechas(this.fechaN);
     }
+    var fechaval = true;
     let today = new Date();
     var hoy = this.getfechas(today);
     console.log(hoy);
+    this.fechaN = today;
+    this.Direccion = "Aeropuerto 7500";
+    this.ColorMasc = "no aplica";
 
     this.telefonovalido = true;
     this.emailvalido = true;
@@ -306,7 +316,14 @@ export class DatosClienteComponent implements OnInit {
     this.DireccionValidatext = "";
     this.fechaValidatext = "";
 
-    if (this.Direccion.length <3) {
+    await this.validarDireccion();
+    await this.compexreg_tel();
+    await this.compexreg_email();
+    await this.validarNombre();
+    await this.ValidarFechacliente();
+
+
+    if (this.Direccion.length < 3) {
       this.DireccionValida = false;
       this.DireccionValidatext = "la direccion no puede ser corta";
     }
@@ -327,6 +344,7 @@ export class DatosClienteComponent implements OnInit {
     }
 
     if (this.fechaN == undefined) {
+      fechaval = false;
       this.fechaValidatext = "La fecha no puede estar vacia";
     }
 
@@ -340,10 +358,11 @@ export class DatosClienteComponent implements OnInit {
       this.emailvalidotext = "El email no puede estar vacio";
     }
     if (fechaelegida > hoy) {
-      this.emailvalido = false;
+      fechaval = false;
+      
       this.fechaValidatext = "La fecha no puede ser mayor al dia actual";
     }
-    if (this.NombreMascota.length <3 || this.ColorMasc.length <3) {
+    if (this.NombreMascota.length < 3 || this.ColorMasc.length < 3) {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'Debe LLenar todos los datos de la mascota' });
       return false;
@@ -351,7 +370,7 @@ export class DatosClienteComponent implements OnInit {
     if (this.fechaNMascota) {
       fechaelegida = this.getfechas(this.fechaNMascota);
     }
-    
+
 
     if (this.fechaNMascota == undefined) {
       this.MessageService.clear();
@@ -364,18 +383,20 @@ export class DatosClienteComponent implements OnInit {
       return false;
     }
 
-     if (this.NombreMascota.length <3 || this.ColorMasc.length <3) {
+    if (this.NombreMascota.length < 3 || this.ColorMasc.length < 3) {
       this.MessageService.clear();
       this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'Debe LLenar todos los datos de la mascota' });
       return false;
     }
-    if (this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false) {
+
+    if (this.DireccionValida == false || this.Rutvalido == false || this.NombreValido == false || this.telefonovalido == false || this.emailvalido == false || fechaval == false) {
       return false;
     }
   }
 
   async AgregarCliente() {
-    if (this.validardatos() == false) {
+    var respv = await this.validardatos();
+    if (respv == false) {
       return;
     }
     else {
@@ -436,18 +457,23 @@ export class DatosClienteComponent implements OnInit {
         }
         if (this.Mascotaselect["sNomMascota"] == "Agregar una nueva mascota") {
           await this.CrearMascota();
-        }else{
+        } else {
           await this.ActualizarMascota();
         }
         this.CargaCompleta = false;
         this.Router.navigate(["Agendar"]);
       }
       else {
+        if (this.canedit == true) {
+          Addcli["acc"]="U";
+          Addcli["idCli"]=this.Clintes["idCli"]
+          await this.MediwebServiceService.AgregarCliente(Addcli);
+        }
         localStorage.setItem('Cliente', JSON.stringify(Addcli2));
         if (this.Mascotaselect) {
           if (this.Mascotaselect["sNomMascota"] == "Agregar una nueva mascota") {
             await this.CrearMascota();
-          }else{
+          } else {
             await this.ActualizarMascota();
           }
         }
@@ -456,11 +482,17 @@ export class DatosClienteComponent implements OnInit {
           if (this.Mascotaselect["sNomMascota"] == "Agregar una nueva mascota") {
             await this.CrearMascota();
           }
-          else{
+          else {
             await this.ActualizarMascota();
           }
         }
-        this.Router.navigate(["Agendar"]);
+        if (this.canedit != true) {
+          this.Router.navigate(["Agendar"]);
+        }
+        else{
+          this.Router.navigate(["/DashBoard"]);
+        }
+        
         this.CargaCompleta = false;
       }
 
@@ -482,9 +514,9 @@ export class DatosClienteComponent implements OnInit {
     if (this.nuevamacota == true) {
       var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
       console.log(respuestamasc);
-      this.Mascotaselect["iIdMascota"]  = respuestamasc["idMas"];
+      this.Mascotaselect["iIdMascota"] = respuestamasc["idMas"];
       var cliente = JSON.parse(localStorage.getItem('Cliente'));
-      cliente["IdMasc"] = this.Mascotaselect["iIdMascota"] ;
+      cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
       localStorage.setItem('Cliente', JSON.stringify(cliente));
     }
   }
@@ -500,13 +532,13 @@ export class DatosClienteComponent implements OnInit {
       "tamaño": this.TamaMasc["cTama"],
       "fecNac": this.getfechas(this.fechaNMascota),
     }
-    console.log("Actualizar MAsc",AssMAsc);
-      var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
-      console.log(respuestamasc);
-      this.Mascotaselect["iIdMascota"]  = respuestamasc["idMas"];
-      var cliente = JSON.parse(localStorage.getItem('Cliente'));
-      cliente["IdMasc"] = this.Mascotaselect["iIdMascota"] ;
-      localStorage.setItem('Cliente', JSON.stringify(cliente));
+    console.log("Actualizar MAsc", AssMAsc);
+    var respuestamasc = await this.MediwebServiceService.AgregarMascota(AssMAsc);
+    console.log(respuestamasc);
+    this.Mascotaselect["iIdMascota"] = respuestamasc["idMas"];
+    var cliente = JSON.parse(localStorage.getItem('Cliente'));
+    cliente["IdMasc"] = this.Mascotaselect["iIdMascota"];
+    localStorage.setItem('Cliente', JSON.stringify(cliente));
   }
 
 
@@ -595,6 +627,7 @@ export class DatosClienteComponent implements OnInit {
         if (mascotascliente["data"] == null) {
           this.Mascli = null;
           this.MascotaEncontrada = false;
+          this.Mascotaselect["sNomMascota"] = "Agregar una nueva mascota";
           this.vaciarmascota();
         }
         else {
@@ -649,7 +682,7 @@ export class DatosClienteComponent implements OnInit {
 
     this.nuevamacota = true;
     this.NombreMascota = "";
-    this.ColorMasc = "";
+    this.ColorMasc = "No Aplica";;
     this.fechaNMascota = null;
     this.Masdeunamascota = false;
   }
@@ -681,23 +714,23 @@ export class DatosClienteComponent implements OnInit {
     return S ? S - 1 : 'k';
   }
 
-  validarDireccion(){
+  validarDireccion() {
     this.DireccionValidatext = "";
-    if (this.Direccion.length <3) {
+    if (this.Direccion.length < 3) {
       this.DireccionValida = false;
       this.DireccionValidatext = "la direccion no puede ser corta o vacia";
     }
   }
 
-  validarNombre(){
-    this.NombreValidotext="";
-    if (this.Nombre.length <3) {
+  validarNombre() {
+    this.NombreValidotext = "";
+    if (this.Nombre.length < 3) {
       this.NombreValido = false;
       this.NombreValidotext = "El nombre no puede ser tan corto o vacio";
     }
   }
 
-  validarMascota(){
+  validarMascota() {
     setTimeout(() => {
       var fechavalida = true;
       var fechaelegida;
@@ -707,7 +740,7 @@ export class DatosClienteComponent implements OnInit {
       let today = new Date();
       var hoy = this.getfechas(today);
 
-      if (this.NombreMascota.length <3 || this.ColorMasc.length <3) {
+      if (this.NombreMascota.length < 3 || this.ColorMasc.length < 3) {
         this.MessageService.clear();
         this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Datos Incompletos', detail: 'Debe LLenar todos los datos de la mascota' });
         return;
@@ -725,9 +758,9 @@ export class DatosClienteComponent implements OnInit {
         return;
       }
 
-      
+
     }, 50);
-    
+
   }
 
   compexreg_email() {
@@ -750,7 +783,10 @@ export class DatosClienteComponent implements OnInit {
   }
 
   compexreg_tel() {
-
+    var prin = this.NUmTel.substring(0, 3);
+    if (prin != "+56") {
+      this.NUmTel = "+56" + this.NUmTel
+    }
     if (this.NUmTel != "") {
       if (!/^\+{1}([0-9]){11}$/.test(this.NUmTel)) {
         this.telefonovalido = false;
@@ -768,9 +804,12 @@ export class DatosClienteComponent implements OnInit {
   }
 
   UsuarioAntiguo() {
-    this.CambioDatos = true;
-    this.MessageService.clear();
-    this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio Bloqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
+    if (this.canedit != true) {
+      this.CambioDatos = true;
+      this.MessageService.clear();
+      this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Cambio Bloqueado', detail: 'Los datos asociado a este rut se encuentran bloqueados por cuestiones de seguridad, se enviara un notificacion a nuestros encargados para realizar los cambios en su proxima visita' });
+    }
+
   }
 
   getfechas(date: Date) {

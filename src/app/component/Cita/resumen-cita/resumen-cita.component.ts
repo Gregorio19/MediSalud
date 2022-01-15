@@ -14,6 +14,7 @@ export class ResumenCitaComponent implements OnInit {
   constructor(private MediwebServiceService:MediwebServiceService) { }
 
   ngOnInit(): void {
+    localStorage.setItem('tipou', JSON.stringify(3));
     this.cliente = JSON.parse(localStorage.getItem('Cliente'));
     console.log(this.cliente);
     this.Cita = JSON.parse(localStorage.getItem('DatosCita'));
@@ -24,13 +25,13 @@ export class ResumenCitaComponent implements OnInit {
   async enviarcorreo() {
     await this.delay(1000);
     var correos = this;
-    html2canvas(document.getElementById("ficha")).then(canvas => {
-      console.log(canvas);
-      var dataURL = canvas.toDataURL();
-      console.log(dataURL);
-      dataURL = dataURL.split("data:image/png;base64,")[1];
-      correos.llamarcorreo(dataURL);
-  });
+  //   html2canvas(document.getElementById("ficha")).then(canvas => {
+  //     console.log(canvas);
+  //     var dataURL = canvas.toDataURL();
+  //     console.log(dataURL);
+  //     dataURL = dataURL.split("data:image/png;base64,")[1];
+  //     correos.llamarcorreo(dataURL);
+  // });
   }
 
   async llamarcorreo(dataURL){

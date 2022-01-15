@@ -63,8 +63,8 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr [pSelectableRow]="rowData">
-                        <td *ngFor="let col of columns">
-                            <div *ngIf="col.nombre == 'estCit'">
+                        <td *ngFor="let col of columns; ; let i = index" data-toggle="tooltip" data-placement="top" title="{{textotooltip(rowData,i)}}">
+                            <div *ngIf="col.nombre == 'estCit'" >
                                 <p-dropdown [options]="EstadosCIta" [(ngModel)]="rowData['agendas']"
                                     (ngModelChange)="cambiotipoagenda()" filter="true" optionLabel="nombre"
                                     styleClass="ui-column-filter">
@@ -73,12 +73,12 @@
                                     </ng-template>
                                 </p-dropdown>
                             </div>
-                            <div *ngIf="col.nombre == 'numBon'">
+                            <div *ngIf="col.nombre == 'numBon'" >
                                 <input class="form-control" type="number" [(ngModel)]="rowData['numBon']"
                                     (blur)="ActNBono(rowData['numBon'],rowData['idcitas'],rowData)" placeholder="N° Bono"  [disabled]="rowData['estCit'] != 'En Espera'">
                             </div>
 
-                            <div *ngIf="col.nombre != 'estCit' && col.nombre != 'numBon'">
+                            <div *ngIf="col.nombre != 'estCit' && col.nombre != 'numBon'" >
                                 <div> <span>{{rowData[col.nombre]}}</span><i class="pi pi-user-edit verde"
                                         *ngIf="col.header == 'Cliente' && rowData['estCam'] == 'S'"
                                         routerLink="/EditCliente" (click)="ActNCita(rowData['idcitas'],rowData['idcli'])"></i>

@@ -12,8 +12,10 @@ export class DashboardComponent implements OnInit {
   usu;
   ngOnInit(): void {
     this.usu = JSON.parse(localStorage.getItem('tipou'));
+    console.log(this.usu)
     if (this.usu.toString() != "1" && this.usu.toString() != "2") {
       this.Router.navigate([""]);
+      return
     }
   }
 

@@ -49,8 +49,9 @@ export class DoctorComponent implements OnInit {
 
   ngOnInit(): void {
     var usu = JSON.parse(localStorage.getItem('tipou'));
-    if (usu.toString() != "1") {
+    if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
+      return
     }
     this.CargaCompleta = false;
     this.Editar = false;

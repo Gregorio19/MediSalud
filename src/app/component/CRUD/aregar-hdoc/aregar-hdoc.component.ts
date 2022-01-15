@@ -45,8 +45,9 @@ export class AregarHDocComponent implements OnInit {
     this.CargaCompleta = false;
     this.DiasF = 30;
     var usu = JSON.parse(localStorage.getItem('tipou'));
-    if (usu.toString() != "1") {
+    if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
+      return
     }
     this.GetDoctores();
     this.pressdoctor = false;
@@ -255,7 +256,11 @@ export class AregarHDocComponent implements OnInit {
             }
           });
           if (contmartes > 1) {
-            this.horariosxDia.splice((contlunes + contmartes) - 1, 0, { "dia": "Martes", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
+            var contextre = 0;
+            if (contlunes== 0) {
+              contextre++;
+            }
+            this.horariosxDia.splice((contlunes + contmartes +contextre) - 1, 0, { "dia": "Martes", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
           }
         }
 
@@ -277,7 +282,15 @@ export class AregarHDocComponent implements OnInit {
             }
           });
           if (contmiercoles > 1) {
-            this.horariosxDia.splice((contlunes + contmartes + contmiercoles) - 1, 0, { "dia": "Miercoles", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
+
+            var contextre = 0;
+            if (contlunes== 0) {
+              contextre++;
+            }
+            if (contmartes== 0) {
+              contextre++;
+            }
+            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contextre) - 1, 0, { "dia": "Miercoles", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
           }
         }
 
@@ -299,7 +312,18 @@ export class AregarHDocComponent implements OnInit {
             }
           });
           if (contjueves > 1) {
-            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves) - 1, 0, { "dia": "Jueves", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
+            var contextre = 0;
+            if (contlunes== 0) {
+              contextre++;
+            }
+            if (contmartes== 0) {
+              contextre++;
+            }
+            if (contmiercoles== 0) {
+              contextre++;
+            }
+            
+            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contextre) - 1, 0, { "dia": "Jueves", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
           }
         }
 
@@ -321,7 +345,20 @@ export class AregarHDocComponent implements OnInit {
             }
           });
           if (contviernes > 1) {
-            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contviernes) - 1, 0, { "dia": "Viernes", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
+            var contextre = 0;
+            if (contlunes== 0) {
+              contextre++;
+            }
+            if (contmartes== 0) {
+              contextre++;
+            }
+            if (contmiercoles== 0) {
+              contextre++;
+            }
+            if (contjueves== 0) {
+              contextre++;
+            }
+            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contextre + contviernes) - 1, 0, { "dia": "Viernes", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
           }
         }
 
@@ -343,7 +380,25 @@ export class AregarHDocComponent implements OnInit {
             }
           });
           if (contsabado > 1) {
-            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contviernes + contsabado) - 1, 0, { "dia": "Sabado", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
+
+            var contextre = 0;
+
+            if (contlunes== 0) {
+              contextre++;
+            }
+            if (contmartes== 0) {
+              contextre++;
+            }
+            if (contmiercoles== 0) {
+              contextre++;
+            }
+            if (contjueves== 0) {
+              contextre++;
+            }
+            if (contviernes== 0) {
+              contextre++;
+            }
+            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contviernes + contsabado + contextre) - 1, 0, { "dia": "Sabado", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
           }
         }
 
@@ -365,7 +420,27 @@ export class AregarHDocComponent implements OnInit {
             }
           });
           if (contdomingo > 1) {
-            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contviernes + contsabado + contdomingo) - 1, 0, { "dia": "Domingo", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
+            var contextre = 0;
+
+            if (contlunes== 0) {
+              contextre++;
+            }
+            if (contmartes== 0) {
+              contextre++;
+            }
+            if (contmiercoles== 0) {
+              contextre++;
+            }
+            if (contjueves== 0) {
+              contextre++;
+            }
+            if (contviernes== 0) {
+              contextre++;
+            }
+            if (contsabado== 0) {
+              contextre++;
+            }
+            this.horariosxDia.splice((contlunes + contmartes + contmiercoles + contjueves + contviernes + contsabado + contextre+contdomingo) - 1, 0, { "dia": "Domingo", "Act": true, "horaI": { "Hora": element.split(";")[1] < 10 ? "0" + element.split(";")[1] : element.split(";")[1] }, "minI": { "Minuto": element.split(";")[2] < 10 ? "0" + element.split(";")[2] : element.split(";")[2] }, "horaF": { "Hora": element.split(";")[3] < 10 ? "0" + element.split(";")[3] : element.split(";")[3] }, "minF": { "Minuto": element.split(";")[4] < 10 ? "0" + element.split(";")[4] : element.split(";")[4] }, "del": true, "Precar": true });
           }
         }
 

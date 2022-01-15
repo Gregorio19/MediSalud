@@ -26,8 +26,9 @@ export class TipoMascotaComponent implements OnInit {
   ngOnInit(): void {
     this.CargaCompleta = false;
     var usu = JSON.parse(localStorage.getItem('tipou'));
-    if (usu.toString() != "1") {
+    if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
+      return
     }
 
     this.Editar = false;

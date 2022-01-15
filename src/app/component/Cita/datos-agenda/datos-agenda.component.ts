@@ -62,6 +62,7 @@ export class DatosAgendaComponent implements OnInit {
   }
 
   async ngOnInit() {
+    localStorage.setItem('tipou', JSON.stringify(3));
     this.url = await this.MediwebServiceService.getConfig();
     this.mostrarDetalle = false;
     this.cliente = JSON.parse(localStorage.getItem('Cliente'));
@@ -227,22 +228,25 @@ export class DatosAgendaComponent implements OnInit {
       this.medico.forEach(element => {
         element["sNomIma"] = this.url["Url_Imagen"] + element["nomIma"] + ".jpg"
       });
+      var as = this.medico;
+      var s = as.sort(func);
+
+      function func(a, b) {
+        return 0.5 - Math.random();
+      }
+      this.medico = s;
       console.log(this.medico);
     }
   }
 
   async GetClientes() {
-
     var getcli = {
-      "acc": "C"
+      "rut": this.cliente["rutCli"]
     }
     this.CargaCompleta = true;
-    var respuesta = await this.MediwebServiceService.GetDataGeneral(getcli);
+    var respuesta = await this.MediwebServiceService.TraerClienteRut(getcli);
     this.CargaCompleta = false;
-    if (respuesta["status"]) {
-      this.Clintes = respuesta["dataCli"];
-      console.log(this.Clintes);
-    }
+    this.Clintes = respuesta;
     console.log(this.Clintes);
   }
 
@@ -256,7 +260,7 @@ export class DatosAgendaComponent implements OnInit {
     var horariosdoc = await this.MediwebServiceService.GetHorariosAAgenda(datodoc);
     console.log(horariosdoc);
     this.CargaCompleta = false;
-    
+
     if (horariosdoc["status"]) {
       this.Doctor["iAgeDias"] = horariosdoc["iAgeDias"];
       this.Doctor["horAte"] = horariosdoc["iTpoAte"];
@@ -404,13 +408,13 @@ export class DatosAgendaComponent implements OnInit {
             console.log(Fbusqueda);
             console.log("HOY " + moment().format('YYYY-MM-DD'));
             console.log("FEHCA A COMPARAR " + fecha);
-            console.log("hora actual mas 1 " + (parseInt(moment().format('HH')) + 1));
+            console.log("hora actual " + (parseInt(moment().format('HH'))));
             console.log("hora a comprar " + (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))));
 
 
 
-            (moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS).format('HH'))) < (parseInt(moment().format('HH')) + 1)
-            if ((moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))) < (parseInt(moment().format('HH')) + 1)) {
+            //(moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS).format('HH'))) < (parseInt(moment().format('HH')) )
+            if ((moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))) < (parseInt(moment().format('HH'))) - 1) {
 
             }
             else {
@@ -433,21 +437,29 @@ export class DatosAgendaComponent implements OnInit {
           let Fbusqueda = fecha + " " + minutos;
           console.log(Fbusqueda);
           if (minutos < horaFinal) {
-            if ((moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))) < (parseInt(moment().format('HH')) + 1)) {
+            if ((moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))) < (parseInt(moment().format('HH')) - 1)) {
 
             }
             else {
-              if (this.Doctor["horOcu"]) {
-                if (this.Doctor["horOcu"].includes(Fbusqueda)) {
-                  this.Horas.push({ "Hora": minutos, "disp": false })
+              console.log(moment(minutos, 'HH:mm').format('HH:mm'));
+              console.log(moment().format('HH:mm'));
+
+              if (moment().format('HH:mm') < moment(minutos, 'HH:mm').format('HH:mm')) {
+                console.log("si es menor " + minutos);
+                
+                if (this.Doctor["horOcu"]) {
+                  if (this.Doctor["horOcu"].includes(Fbusqueda)) {
+                    this.Horas.push({ "Hora": minutos, "disp": false })
+                  }
+                  else {
+                    this.Horas.push({ "Hora": minutos, "disp": true })
+                  }
                 }
                 else {
                   this.Horas.push({ "Hora": minutos, "disp": true })
                 }
               }
-              else {
-                this.Horas.push({ "Hora": minutos, "disp": true })
-              }
+
             }
           }
 
@@ -495,19 +507,14 @@ export class DatosAgendaComponent implements OnInit {
       var clienteSelect
       console.log(this.Clintes);
 
-      this.Clintes.forEach(element => {
-        if (element["sRutCli"] == this.cliente.rutCli) {
-          clienteSelect = element;
-          console.log(clienteSelect);
-        }
-      });
+      clienteSelect = this.Clintes;
 
       var req = {
-        "idCli": clienteSelect["iIdCli"],
+        "idCli": clienteSelect["idCli"],
         "idMas": this.cliente["IdMasc"],
         "idSuc": this.sucursal["idSuc"],
         "idDoc": this.Doctor["iddoc"],
-        "idPre": clienteSelect["iIdPrev"],
+        "idPre": 0,
         "idEsp": this.especialidad["iIdEsp"],
         "fecAge": this.FechaSelect.toString() + "T" + this.HoraSelect.toString() + ":00.279Z",
         "datoCita": this.Descripcion != undefined ? this.Descripcion : "",

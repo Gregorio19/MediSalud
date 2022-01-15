@@ -44,6 +44,7 @@ export class AdmCitaComponent implements OnInit {
     var usu = JSON.parse(localStorage.getItem('tipou'));
     if (usu.toString() != "1" && usu.toString() != "2") {
       this.Router.navigate([""]);
+      return
     }
     this.filtros = "";
     this.GetSucursales();
@@ -87,8 +88,8 @@ export class AdmCitaComponent implements OnInit {
       { header: 'Cliente', nombre: 'nomCli' },
       { header: 'Rut', nombre: 'rutCli' },
       { header: 'Doctor', nombre: 'nomMed' },
-      // { header: 'Rut', nombre: 'RutDoc' },
       { header: 'Mascota', nombre: 'nomMas' },
+      { header: 'Cod Agenda', nombre: 'codAge' },
       { header: 'Estado', nombre: 'estCit' }
       // { header: 'N Bono', nombre: 'numBon' }
     ];
@@ -250,7 +251,7 @@ export class AdmCitaComponent implements OnInit {
     }, 200);
   }
 
-  async ActNBono(Nbono, idcita,row) {
+  async ActNBono(Nbono, idcita, row) {
     setTimeout(async () => {
       console.log(Nbono);
       console.log("entro a bono", Nbono);
@@ -265,11 +266,11 @@ export class AdmCitaComponent implements OnInit {
 
       var resp = await this.MediwebServiceService.ActCita(actcita);
       if (resp["status"] == false) {
-        row["numBon"]= "";
+        row["numBon"] = "";
         this.MessageService.clear();
         this.MessageService.add({ key: 'tc', severity: 'warn', summary: 'Error N° Bono', detail: resp["message"] });
       }
-      else{
+      else {
         this.MessageService.clear();
         this.MessageService.add({ key: 'tc', severity: 'success', summary: 'Cita Actualizada', detail: "La cita a Actualizado el numero de bono correctamente" });
       }
@@ -324,6 +325,15 @@ export class AdmCitaComponent implements OnInit {
 
     console.log(fechan);
     return fechan;
+  }
+
+  textotooltip(row, index) {
+    if (index > 6) {
+      return "Detalle cita: " + row['datCit']
+    }
+    else{
+      return "Correo cliente: " + row['correo'] + " Telefono cliente: " + row['numTel']
+    }
   }
 
 }
