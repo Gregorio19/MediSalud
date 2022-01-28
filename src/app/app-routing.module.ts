@@ -5,7 +5,7 @@ import { DatosAgendaComponent } from './component/Cita/datos-agenda/datos-agenda
 import { PrincipalComponent } from './component/Cita/principal/principal.component';
 import { ResumenCitaComponent } from './component/Cita/resumen-cita/resumen-cita.component';
 import { CancelacionComponent } from './component/Cita/cancelacion/cancelacion.component';
-
+import { HorasMedicasComponent } from './component/CRUD/horas-medicas/horas-medicas.component';
 
 import { SucursalComponent } from './component/CRUD/sucursal/sucursal.component';
 import { EspecialidadComponent } from './component/CRUD/especialidad/especialidad.component';
@@ -50,6 +50,7 @@ const routes: Routes = [
   { path: 'Raza', component: RazaComponent},
   { path: 'TipoMascota', component: TipoMascotaComponent},
   { path: 'Cancelacion', component: CancelacionComponent},
+  { path: 'Horasmedicas', component: HorasMedicasComponent},
   
   { path: '', component: PrincipalComponent},
   { path: '**', redirectTo: '' }

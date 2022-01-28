@@ -766,7 +766,7 @@ export class CitaRotatoriaComponent implements OnInit {
   compexreg_email() {
 
     if (this.Correo != "") {
-      if (!/^([a-zA-Z0-9\._-])+@{1}([a-zA-Z0-9])+\.{1}([a-zA-Z]){2,3}$/.test(this.Correo)) {
+      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.Correo)) {
         this.emailvalido = false;
         this.emailvalidotext = "Formato de correo invalido";
       }

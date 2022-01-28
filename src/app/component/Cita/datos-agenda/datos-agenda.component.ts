@@ -401,18 +401,15 @@ export class DatosAgendaComponent implements OnInit {
 
         var HoraS = horaI + ":" + minI + ":" + "00";
         for (let index = 0; index < CantHoras; index++) {
-
           if (index == 0) {
             var primerminuto = (moment(HoraS, 'HH:mm:ss').format('HH:mm'));
             let Fbusqueda = fecha + " " + primerminuto;
+            let minutos = (moment(HoraS, 'HH:mm:ss').add(parseInt(this.Doctor["horAte"]), 'minutes').format('HH:mm'));
             console.log(Fbusqueda);
             console.log("HOY " + moment().format('YYYY-MM-DD'));
             console.log("FEHCA A COMPARAR " + fecha);
             console.log("hora actual " + (parseInt(moment().format('HH'))));
             console.log("hora a comprar " + (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))));
-
-
-
             //(moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS).format('HH'))) < (parseInt(moment().format('HH')) )
             if ((moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))) < (parseInt(moment().format('HH'))) - 1) {
 
@@ -430,23 +427,19 @@ export class DatosAgendaComponent implements OnInit {
                 this.Horas.push({ "Hora": primerminuto, "disp": true })
               }
             }
-
           }
 
           let minutos = (moment(HoraS, 'HH:mm:ss').add(parseInt(this.Doctor["horAte"]), 'minutes').format('HH:mm'));
           let Fbusqueda = fecha + " " + minutos;
           console.log(Fbusqueda);
+          
+          console.log("hora", moment().format('HH:mm'));
+          console.log("hora com",moment(minutos, 'HH:mm').format('HH:mm'));
           if (minutos < horaFinal) {
             if ((moment().format('YYYY-MM-DD') == fecha) && (parseInt(moment(HoraS, 'HH:mm:ss').format('HH'))) < (parseInt(moment().format('HH')) - 1)) {
 
             }
             else {
-              console.log(moment(minutos, 'HH:mm').format('HH:mm'));
-              console.log(moment().format('HH:mm'));
-
-              if (moment().format('HH:mm') < moment(minutos, 'HH:mm').format('HH:mm')) {
-                console.log("si es menor " + minutos);
-                
                 if (this.Doctor["horOcu"]) {
                   if (this.Doctor["horOcu"].includes(Fbusqueda)) {
                     this.Horas.push({ "Hora": minutos, "disp": false })
@@ -458,17 +451,22 @@ export class DatosAgendaComponent implements OnInit {
                 else {
                   this.Horas.push({ "Hora": minutos, "disp": true })
                 }
-              }
-
             }
           }
-
           HoraS = minutos;
         }
       }
     });
     if (this.Horas.length == 0) {
       this.horaselect = true;
+    }
+    for (let index = 0; index < this.Horas.length; index++) {
+      const element = this.Horas[index];
+      console.log("Antes", element);
+      if (element["Hora"] < moment().format('HH:mm') && moment().format('YYYY-MM-DD') == fecha) {
+        this.Horas.splice(index, 1);
+        index --;
+      }
     }
     console.log(this.Horas);
 

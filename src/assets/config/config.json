@@ -1,5 +1,5 @@
 {
-    "Api_base": "https://srvagenda.vetoeste.cl/api/v1",
+    "Api_base": "https://desarrollo.vetoeste.cl/api/v1",
     "Url_Imagen":"https://srvagenda.vetoeste.cl/ImgDoctor/",
     "Api_extra":""
 }

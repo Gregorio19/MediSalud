@@ -63,6 +63,7 @@ import { TipoMascotaComponent } from './component/CRUD/tipo-mascota/tipo-mascota
 import { CancelacionComponent } from './component/Cita/cancelacion/cancelacion.component';
 import { ModalComponent } from './services/modal/modal.component';
 import { TimeoutComponent } from './component/Shared/timeout/timeout.component';
+import { HorasMedicasComponent } from './component/CRUD/horas-medicas/horas-medicas.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { TimeoutComponent } from './component/Shared/timeout/timeout.component';
     TipoMascotaComponent,
     CancelacionComponent,
     ModalComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    HorasMedicasComponent
 
   ],
   imports: [

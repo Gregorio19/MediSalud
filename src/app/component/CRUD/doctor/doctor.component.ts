@@ -300,7 +300,7 @@ export class DoctorComponent implements OnInit {
   compexreg_email() {
 
     if (this.mail != "") {
-      if (!/^([a-zA-Z0-9\._-])+@{1}([a-zA-Z0-9])+\.{1}([a-zA-Z]){2,3}$/.test(this.mail)) {
+      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.mail)) {
         this.emailvalido = false;
         this.emailvalidotext = "Formato de correo invalido";
       }

@@ -317,6 +317,23 @@ export class MediwebServiceService {
     }
   }
 
+  async GetHorasMedicas(req) {
+    await this.getConfig();
+    try {
+      return await this.http.post(
+        this.apiUrl  + "/Listar/GetHorasMedicasV1" ,req, { headers: this.headers }
+      ).toPromise();
+    } catch (error) {
+      let resultado =
+      {
+        'status': false,
+        'data': 'error al ejeceutar petición',
+        'codeStatus': error.status
+      };
+      return resultado;
+    }
+  }
+
   async GetHorariosAAgenda(req) {
     await this.getConfig();
     try {
